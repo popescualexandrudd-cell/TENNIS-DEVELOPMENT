@@ -21,8 +21,8 @@ export function ArticleCard({ article, locale, headingLevel = 'h3' }: { article:
         ) : (
           // Monogramă decorativă (SVG, nu text) când articolul nu are încă imagine
           <svg viewBox="0 0 64 64" className="absolute bottom-4 left-4 h-16 w-16 opacity-20" aria-hidden="true" focusable="false">
-            <path d="M14 18h9.5c8 0 13 5.4 13 14s-5 14-13 14H14V18zm6 5.2v17.6h3.2c4.6 0 7.3-3.3 7.3-8.8s-2.7-8.8-7.3-8.8H20z" fill="#0F1B33" />
-            <path d="M39 18h8.6c5.6 0 9 3 9 8.1s-3.4 8.2-9 8.2H45V46h-6V18zm6 5v6.4h2.3c2.2 0 3.3-1.1 3.3-3.2s-1.1-3.2-3.3-3.2H45z" fill="#0F1B33" />
+            <path d="M14 18h9.5c8 0 13 5.4 13 14s-5 14-13 14H14V18zm6 5.2v17.6h3.2c4.6 0 7.3-3.3 7.3-8.8s-2.7-8.8-7.3-8.8H20z" fill="#1C2633" />
+            <path d="M39 18h8.6c5.6 0 9 3 9 8.1s-3.4 8.2-9 8.2H45V46h-6V18zm6 5v6.4h2.3c2.2 0 3.3-1.1 3.3-3.2s-1.1-3.2-3.3-3.2H45z" fill="#1C2633" />
           </svg>
         )}
       </div>

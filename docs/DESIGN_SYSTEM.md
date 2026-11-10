@@ -1,7 +1,7 @@
 # Design system
 
-**Direcția v4** (decizii [0007](decisions/0007-dark-editorial-sport.md) + [0008](decisions/0008-light-3d-hero.md), 10.11.2026):
-editorial-sportiv pe fundal albicios, cu hero 3D din straturi soft blue. Structura pornește de la capturile patrickmouratoglou.com
+**Direcția v5** (decizii [0007](decisions/0007-dark-editorial-sport.md) + [0008](decisions/0008-light-3d-hero.md) + [0009](decisions/0009-sunset-court-palette.md), 10.11.2026):
+editorial-sportiv pe fundal albicios, cu hero 3D din straturi; paleta „apus pe teren” (portocaliu, ardezie, albastru prăfuit) după imaginea de referință trimisă de Daniel. Structura pornește de la capturile patrickmouratoglou.com
 trimise de Daniel (bară laterală, titluri late cu majuscule, carduri, butoane pastilă); am preluat principii, nu identitate —
 fără texte, logo, fotografii sau wordmark-ul în două greutăți al referinței. **Propunere — așteaptă validarea lui Daniel** (issue #1).
 
@@ -10,24 +10,25 @@ Capturi (conținut local de seed marcat `[EXEMPLU]`): `docs/design/homepage-desk
 
 ## Culori
 Sursa tehnică: `src/styles/globals.css`. Verificare automată: `node scripts/contrast.mjs` (CI) + axe în e2e.
-Zonele navy (`.on-navy`, `.card-navy`) redefinesc variabilele text/focus/contur — valorile din coloana „pe navy”.
+Zonele ardezie (`.on-navy`, `.card-navy` — numele claselor au rămas din v4) redefinesc variabilele text/focus/contur — valorile din coloana „pe ardezie”.
 
-| Token | Fundal deschis | Pe navy | Utilizare / contrast |
+| Token | Fundal deschis | Pe ardezie | Utilizare / contrast |
 |---|---|---|---|
 | `background` | `#F4F7FB` | — | fundal albicios |
 | `panel` | `#FFFFFF` | — | inputuri, mesaje |
-| `soft-blue` 1/2/3 | `#DCE8F5` · `#C9DAEE` · `#B7CCE6` | — | straturile hero, placeholder imagini; negru pe ele ≥ 13.8:1 |
-| `navy` / `navy-card` | `#0F1B33` / `#10264D` | — | footer, carduri cifre, pași, antrenamente, testimoniale |
-| `text-primary` | `#0B0B0C` (18.3:1) | `#F4F7FB` (13.9:1 pe card) | titluri, text |
-| `text-secondary` | `#4B5565` (7.0:1) | `#A9B8D0` (7.4:1) | explicații, metadate |
-| `coral` | `#FF6B4A` | `#FF6B4A` | **fundal** CTA cu text negru (7.0:1); niciodată text alb (2.8:1) |
-| `coral-text` | `#B83C22` (5.3:1) | `#FF6B4A` (5.3:1) | etichete, numerotări, erori; coralul pur ca text pe deschis are doar 2.6:1 |
-| `control-border` | `#6B7689` (4.6:1 pe alb) | `#7D879A` (4.1:1) | contur inputuri și butoane outline |
-| `focus` | `#1D5FD1` (5.4:1) | `#FF6B4A` | inel de focus 3px |
+| `soft-blue` 1/2/3 (albastru prăfuit / oțel) | `#D5E0EB` · `#B9C8D9` · `#9AAEC4` | — | straturile hero, placeholder imagini; negru pe `#D5E0EB` 14.7:1 |
+| `navy` / `navy-card` (ardezie) | `#1C2633` / `#2A3646` | — | footer, carduri cifre, pași, antrenamente, testimoniale |
+| `text-primary` | `#0B0B0C` (18.3:1) | `#F4F7FB` (11.4:1 pe card) | titluri, text |
+| `text-secondary` | `#4B5565` (7.0:1) | `#AEBBCB` (6.3:1 pe card) | explicații, metadate |
+| `coral` (portocaliu apus) | `#F26A3D` | `#F26A3D` | **fundal** CTA cu text negru (6.5:1); niciodată text alb (3.0:1) |
+| `coral-text` | `#B4441D` (5.2:1) | `#F28A5E` (5.0:1 pe card) | etichete, numerotări, erori; portocaliul pur ca text pe deschis are doar 2.8:1 |
+| `control-border` | `#6B7689` (4.6:1 pe alb) | `#8794A6` (4.0:1) | contur inputuri și butoane outline |
+| `focus` | `#1D5FD1` (5.4:1) | `#F28A5E` (6.2:1) | inel de focus 3px |
 | `border` | negru 12% | alb 14% | doar separatoare decorative |
 
 ## Hero 3D
-Trei straturi rotite în perspectivă CSS, liniile terenului și mingea coral pe stratul de sus, voal albicios sub titlu pentru lizibilitate,
+Trei straturi rotite în perspectivă CSS: ardezie (jos), albastru oțel (mijloc), portocaliu → piersică → albastru prăfuit (sus), cu dâre fine
+de „mișcare”, linii albe de teren și minge galben-verzuie; voal albicios sub titlu pentru lizibilitate,
 plutire de 14 s (oprită la `prefers-reduced-motion`). Fără WebGL, fără JavaScript. Fotografia reală, când există, devine un card plutitor.
 
 ## Tipografie
@@ -37,7 +38,7 @@ plutire de 14 s (oprită la `prefers-reduced-motion`). Fără WebGL, fără Java
 - Diacritice ă â î ș ț și majuscule verificate în fișierele reale. Preîncărcate: doar fișierele `latin` normale.
 - Stiluri: `.display` = majuscule, 850, spațiere -0.035em, line-height 0.92; `.display-light` = 500 (titluri în două tonuri,
   ex. „CUM **LUCREZ**”). Mărimi: `.h-hero` 36 → 88 px · `.h-page` 24 → 80 px (cuvinte lungi pe mobil) · `.h-section` 32 → 64 px ·
-  `.h-card`. Text 17/18 px; articole 18/19 px, line-height 1.7, culoare `#E3E9F2`, coloană 68ch.
+  `.h-card`. Text 17/18 px; articole 18/19 px, line-height 1.7, culoare `#1F2530`, coloană 68ch.
 
 ## Layout
 - Desktop (≥ 1024 px): bară laterală fixă de 320 px, pe fundalul albicios — wordmark sus; navigație mare cu majuscule, CTA, limbă și social jos.
@@ -73,4 +74,5 @@ fără carusel cu JavaScript, fără scroll controlat, fără video automat.
   folosesc text live — trebuie convertite în contururi înainte de folosirea în afara site-ului.
 
 ## Istoric
-v1 verde/zgură (brief) → v2 navy/coral pe fundal deschis (0006) → v3 temă închisă (0007) → v4 albicios + hero 3D soft blue (0008).
+v1 verde/zgură (brief) → v2 navy/coral pe fundal deschis (0006) → v3 temă închisă (0007) → v4 albicios + hero 3D soft blue (0008)
+→ v5 paleta „apus pe teren”: portocaliu, ardezie, albastru prăfuit (0009).

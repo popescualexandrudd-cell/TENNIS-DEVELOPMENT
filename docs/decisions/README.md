@@ -12,4 +12,5 @@ Deciziile înlocuite nu se rescriu; se marchează și se leagă de cea nouă.
 | 0005 | [Analytics: Plausible, opțional](0005-analytics.md) | propusă — necesită acordul lui Daniel |
 | 0006 | [Paleta v2: soft blue, navy, coral, negru](0006-palette-navy-coral.md) | paleta rămâne; structura pe fundal deschis înlocuită de 0007 |
 | 0007 | [Temă închisă editorial-sportivă, Archivo Expanded](0007-dark-editorial-sport.md) | structura și tipografia rămân; fundalul negru înlocuit de 0008 |
-| 0008 | [Fundal albicios + hero 3D soft blue (CSS)](0008-light-3d-hero.md) | acceptată ca propunere de lucru (cerută de Daniel) |
+| 0008 | [Fundal albicios + hero 3D soft blue (CSS)](0008-light-3d-hero.md) | acceptată ca propunere de lucru (cerută de Daniel); culorile înlocuite de 0009 |
+| 0009 | [Paleta „apus pe teren”: portocaliu, ardezie, albastru prăfuit](0009-sunset-court-palette.md) | acceptată ca propunere de lucru (cerută de Daniel) |

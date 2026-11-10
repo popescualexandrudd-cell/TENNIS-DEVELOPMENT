@@ -1,11 +1,11 @@
 # Starea proiectului
 
 **Actualizat:** 10.11.2026 · **Etapa activă:** Etapa 1 — Website și jurnal (parțială)
-**Branch / commit de cod verificat:** `claude/jolly-galileo-04v2nq` @ `11052f8` (design v4; commitul următor schimbă doar acest fișier)
+**Branch / commit de cod verificat:** `claude/jolly-galileo-04v2nq` @ commitul „Design v5” (paleta „apus pe teren”)
 **Modificări locale necomise:** niciuna după commitul acestui fișier.
 
 ## Finalizat (cu dovezi)
-Toate verificările de mai jos au rulat **local** pe `11052f8` (Ubuntu 24.04, Node 22.23.4, PostgreSQL 16.15). CI pe GitHub: încă nerulat.
+Verificările de mai jos au rulat **local** pe `11052f8` și din nou pe design v5 (lint, typecheck, contrast, unit 14/14, int 14/14, build, e2e 16 trecute + 2 omise intenționat) (Ubuntu 24.04, Node 22.23.4, PostgreSQL 16.15). CI pe GitHub: încă nerulat.
 
 - [x] Fundație tehnică: Next.js 16.3.8 + Payload 3.92.0 + PostgreSQL; migrația inițială rulează pe o bază curată (`pnpm migrate`).
 - [x] Pagini RO: homepage (6 secțiuni, afișate doar cu conținut real), despre, antrenamente, jurnal, articol, contact, confidențialitate.
@@ -14,7 +14,7 @@ Toate verificările de mai jos au rulat **local** pe `11052f8` (Ubuntu 24.04, No
 - [x] Acces: drafturile, modificările nepublicate, sursele, solicitările și adminii nu sunt publici — `tests/int/articles-access.test.ts`, `tests/e2e/editorial.spec.ts`.
 - [x] Cache: publicarea și retragerea unui articol actualizează pagina și lista (e2e).
 - [x] Contact: salvare înaintea emailului, validare, honeypot, limită de mărime/origine, rate limit în DB — `tests/int/contact.test.ts` + e2e UI.
-- [x] Design v4 (decizii 0007 + 0008): structură editorial-sportivă după capturile trimise de Daniel, fundal albicios, hero 3D soft blue din CSS; contrast verificat (`scripts/contrast.mjs`), fonturi locale (Archivo Expanded, Source Sans 3) cu diacritice verificate.
+- [x] Design v5 (decizii 0007 + 0008 + 0009 — paleta „apus pe teren”: portocaliu `#F26A3D`, ardezie `#1C2633`, albastru prăfuit, după imaginea de referință a lui Daniel): structură editorial-sportivă după capturile trimise de Daniel, fundal albicios, hero 3D din CSS; contrast verificat (`scripts/contrast.mjs`), fonturi locale (Archivo Expanded, Source Sans 3) cu diacritice verificate.
 - [x] CMS homepage: cifre confirmate, testimoniale doar cu acord, titluri-afirmație; antrenamente cu fotografie opțională (migrația `20261110_103117`).
 - [x] SEO tehnic: metadata per pagină, canonical, sitemap, robots (`Disallow: /` în afara producției), Open Graph, JSON-LD.
 - [x] Backup + restaurare testate local (`docs/RUNBOOK.md`).
