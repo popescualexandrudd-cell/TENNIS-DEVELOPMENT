@@ -1,11 +1,11 @@
 # Starea proiectului
 
 **Actualizat:** 10.11.2026 · **Etapa activă:** Etapa 1 — Website și jurnal (parțială)
-**Branch / commit de cod verificat:** `claude/jolly-galileo-04v2nq` @ `d4da602` (commitul următor schimbă doar documentația)
+**Branch / commit de cod verificat:** `claude/jolly-galileo-04v2nq` @ `11052f8` (design v4; commitul următor schimbă doar acest fișier)
 **Modificări locale necomise:** niciuna după commitul acestui fișier.
 
 ## Finalizat (cu dovezi)
-Toate verificările de mai jos au rulat **local** pe `d4da602` (Ubuntu 24.04, Node 22.23.4, PostgreSQL 16.15). CI pe GitHub: încă nerulat.
+Toate verificările de mai jos au rulat **local** pe `11052f8` (Ubuntu 24.04, Node 22.23.4, PostgreSQL 16.15). CI pe GitHub: încă nerulat.
 
 - [x] Fundație tehnică: Next.js 16.3.8 + Payload 3.92.0 + PostgreSQL; migrația inițială rulează pe o bază curată (`pnpm migrate`).
 - [x] Pagini RO: homepage (6 secțiuni, afișate doar cu conținut real), despre, antrenamente, jurnal, articol, contact, confidențialitate.
@@ -14,10 +14,11 @@ Toate verificările de mai jos au rulat **local** pe `d4da602` (Ubuntu 24.04, No
 - [x] Acces: drafturile, modificările nepublicate, sursele, solicitările și adminii nu sunt publici — `tests/int/articles-access.test.ts`, `tests/e2e/editorial.spec.ts`.
 - [x] Cache: publicarea și retragerea unui articol actualizează pagina și lista (e2e).
 - [x] Contact: salvare înaintea emailului, validare, honeypot, limită de mărime/origine, rate limit în DB — `tests/int/contact.test.ts` + e2e UI.
-- [x] Design system v2 (decizia 0006), contrast verificat (`scripts/contrast.mjs`), fonturi locale cu diacritice verificate.
+- [x] Design v4 (decizii 0007 + 0008): structură editorial-sportivă după capturile trimise de Daniel, fundal albicios, hero 3D soft blue din CSS; contrast verificat (`scripts/contrast.mjs`), fonturi locale (Archivo Expanded, Source Sans 3) cu diacritice verificate.
+- [x] CMS homepage: cifre confirmate, testimoniale doar cu acord, titluri-afirmație; antrenamente cu fotografie opțională (migrația `20261110_103117`).
 - [x] SEO tehnic: metadata per pagină, canonical, sitemap, robots (`Disallow: /` în afara producției), Open Graph, JSON-LD.
 - [x] Backup + restaurare testate local (`docs/RUNBOOK.md`).
-- [x] Rezultate: lint ✓ · typecheck ✓ · unit 14/14 ✓ · integrare 14/14 ✓ · build ✓ · e2e 16 trecute, 2 omise intenționat (desktop + mobil, axe fără încălcări serioase/critice).
+- [x] Rezultate: lint ✓ · typecheck ✓ · contrast ✓ · unit 14/14 ✓ · integrare 14/14 ✓ · build ✓ · e2e 16 trecute, 2 omise intenționat (desktop + mobil; axe fără încălcări serioase/critice pe 4 pagini; fără scroll orizontal; meniul mobil verificat pe ecran).
 
 ## În lucru / urmează
 | Issue | Stare |
@@ -40,7 +41,7 @@ PR: vezi lista de PR-uri a repository-ului (branch `claude/jolly-galileo-04v2nq`
 - Formatul skillurilor `.claude/skills/*` față de documentația online (urmează formatul skillurilor disponibile în mediu).
 
 ## Informații lipsă (marcaje interne — nu apar pe site)
-Bio și ce experiență poate fi menționată · oferte confirmate · locație publică · email/telefon/social · fotografii și drepturi ·
+Cifre reale pentru „Pe scurt” și testimoniale cu acord scris (opționale) · Bio și ce experiență poate fi menționată · oferte confirmate · locație publică · email/telefon/social · fotografii și drepturi ·
 validarea textelor din hero și „Cum lucrez” · operatorul datelor · domeniu, gazdă, SMTP · analytics da/nu.
 
 ## Următoarea acțiune concretă
@@ -50,9 +51,9 @@ validarea textelor din hero și „Cum lucrez” · operatorul datelor · domeni
 ## Predare
 - Obiectiv activ: Etapa 1 — validarea designului și conținutul real.
 - Stare actuală: fundație + site + fluxuri verificate local; conținut real lipsă.
-- Branch / commit verificat: `claude/jolly-galileo-04v2nq` @ `d4da602`.
+- Branch / commit verificat: `claude/jolly-galileo-04v2nq` @ `11052f8`.
 - Modificări locale: niciuna.
-- Fișiere relevante: `src/features/site/HomeView.tsx`, `src/styles/globals.css`, `src/cms/collections/*`, `docs/DESIGN_SYSTEM.md`.
+- Fișiere relevante: `src/features/site/HomeView.tsx`, `src/features/site/HeroStage.tsx`, `src/styles/globals.css`, `src/cms/collections/*`, `docs/DESIGN_SYSTEM.md`.
 - Verificări efectuate: vezi „Finalizat”.
 - Probleme rămase: vezi „Nerulat” și issues blocate.
 - Următoarea acțiune: vezi mai sus.
