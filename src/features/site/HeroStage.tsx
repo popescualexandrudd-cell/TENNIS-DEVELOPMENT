@@ -22,14 +22,14 @@ function CourtOnLayer() {
 }
 
 /**
- * Hero cu „scenă 3D” din CSS: straturi ardezie, albastru oțel și portocaliu „în mișcare”, pe fundal albicios.
+ * Hero cu „scenă 3D” din CSS: panou ardezie cu straturi albastru oțel și portocaliu „în mișcare”.
  * Fără WebGL și fără JavaScript; animația plutitoare se oprește la `prefers-reduced-motion`.
  * O fotografie sau o buclă video (cu drepturi verificate) apare ca un card plutitor deasupra straturilor.
  */
 export function HeroStage({ image, locale, children }: { image?: Media | number | string | null; locale: Locale; children: ReactNode }) {
   const photo = hasPublicMedia(image)
   return (
-    <div className="hero-stage flex min-h-[72svh] flex-col justify-between lg:min-h-[80vh]">
+    <div className="hero-stage on-navy flex min-h-[72svh] flex-col justify-between lg:min-h-[80vh]">
       <div className="hero-layers" aria-hidden="true">
         <div className="hero-layer hero-layer-1" />
         <div className="hero-layer hero-layer-2" />
@@ -40,9 +40,12 @@ export function HeroStage({ image, locale, children }: { image?: Media | number 
           <SectionMedia media={image} locale={locale} priority sizes="(min-width: 1024px) 40vw, 100vw" />
         </div>
       ) : null}
-      <div className="relative mt-auto p-6 sm:p-10 lg:max-w-[62%] lg:p-14">
-        {/* Voal albicios sub titlu: păstrează lizibilitatea peste liniile terenului */}
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(80%_90%_at_20%_80%,rgb(250_252_254/0.92),rgb(250_252_254/0.55)_55%,transparent_80%)]" aria-hidden="true" />
+      <div className="relative isolate mt-auto p-6 sm:p-10 lg:max-w-[62%] lg:p-14">
+        {/* Voal ardezie sub titlu (în contextul `isolate` al blocului, deci peste straturi): textul alb rămâne lizibil peste portocaliu */}
+        <div
+          className="absolute inset-x-0 -top-20 bottom-0 -z-10 bg-[linear-gradient(to_top,rgb(28_38_51/0.96)_0%,rgb(28_38_51/0.92)_72%,transparent_100%)] lg:-inset-x-14 lg:-top-32 lg:-right-40 lg:bg-[radial-gradient(50%_56%_at_40%_62%,rgb(28_38_51/0.95)_0%,rgb(28_38_51/0.88)_55%,transparent_100%)]"
+          aria-hidden="true"
+        />
         {children}
       </div>
     </div>

@@ -26,17 +26,19 @@ Zonele ardezie (`.on-navy`, `.card-navy` — numele claselor au rămas din v4) r
 | `focus` | `#1D5FD1` (5.4:1) | `#F28A5E` (6.2:1) | inel de focus 3px |
 | `border` | negru 12% | alb 14% | doar separatoare decorative |
 
-## Hero 3D
-Trei straturi rotite în perspectivă CSS: ardezie (jos), albastru oțel (mijloc), portocaliu → piersică → albastru prăfuit (sus), cu dâre fine
-de „mișcare”, linii albe de teren și minge galben-verzuie; voal albicios sub titlu pentru lizibilitate,
+## Hero 3D ([0011](decisions/0011-dark-hero-italic-display.md))
+Panou ardezie (`.hero-stage.on-navy`) pe fundalul albicios al paginii. Trei straturi rotite în perspectivă CSS: albastru oțel (jos, mijloc),
+portocaliu → piersică → albastru prăfuit (sus), cu dâre fine de „mișcare”, linii albe de teren și minge galben-verzuie. Titlu alb, ultimul
+cuvânt al numelui în portocaliu (ca „OWN THE NEXT **POINT**”); voal ardezie ≥ 88% sub titlu; pe telefon terenul stă în partea de sus;
 plutire de 14 s (oprită la `prefers-reduced-motion`). Fără WebGL, fără JavaScript. Fotografia reală, când există, devine un card plutitor.
 
 ## Tipografie
 - **Archivo Expanded** (titluri, navigație, cifre): Archivo variabil (Omnibus-Type, SIL OFL 1.1, fără Reserved Font Name) instanțiat
   la lățime 125%, greutăți 500–900, cu fontTools → `public/fonts/archivo-{latin,latin-ext}-expanded-normal.woff2` (~32 KB fiecare).
 - **Source Sans 3** (text, formulare, articole), variabil 200–900, normal + italic (OFL).
-- Diacritice ă â î ș ț și majuscule verificate în fișierele reale. Preîncărcate: doar fișierele `latin` normale.
-- Stiluri: `.display` = majuscule, 850, spațiere -0.035em, line-height 0.92; `.display-light` = 500 (titluri în două tonuri,
+- Archivo Expanded **Italic**: aceeași instanțiere, din Archivo Italic variabil → `public/fonts/archivo-{latin,latin-ext}-expanded-italic.woff2`.
+- Diacritice ă â î ș ț și majuscule verificate în fișierele reale (normal + italic). Preîncărcate: Archivo italic `latin` + Source Sans normal `latin`.
+- Stiluri: `.display` = majuscule, **italic** (Archivo Italic real, `font-synthesis: none`), 850, spațiere -0.035em, line-height 0.92; `.display-light` = 500 (titluri în două tonuri,
   ex. „CUM **LUCREZ**”). Mărimi: `.h-hero` 36 → 88 px · `.h-page` 24 → 80 px (cuvinte lungi pe mobil) · `.h-section` 32 → 64 px ·
   `.h-card`. Text 17/18 px; articole 18/19 px, line-height 1.7, culoare `#1F2530`, coloană 68ch.
 
@@ -79,4 +81,4 @@ fără carusel cu JavaScript, fără scroll controlat; video doar ca buclă scur
 
 ## Istoric
 v1 verde/zgură (brief) → v2 navy/coral pe fundal deschis (0006) → v3 temă închisă (0007) → v4 albicios + hero 3D soft blue (0008)
-→ v5 paleta „apus pe teren”: portocaliu, ardezie, albastru prăfuit (0009).
+→ v5 paleta „apus pe teren”: portocaliu, ardezie, albastru prăfuit (0009) → hero pe panou ardezie + titluri italic (0011).

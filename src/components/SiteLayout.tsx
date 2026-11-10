@@ -11,7 +11,7 @@ import { SiteHeader } from './SiteHeader'
 
 export async function SiteLayout({ locale, children }: { locale: Locale; children: ReactNode }) {
   const t = getDictionary(locale)
-  for (const href of ['/fonts/archivo-latin-expanded-normal.woff2', '/fonts/source-sans-3-latin-wght-normal.woff2']) {
+  for (const href of ['/fonts/archivo-latin-expanded-italic.woff2', '/fonts/source-sans-3-latin-wght-normal.woff2']) {
     preload(href, { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' })
   }
   const otherLocale: Locale = locale === 'ro' ? 'en' : 'ro'

@@ -15,7 +15,7 @@ Verificările de mai jos au rulat **local** pe `11052f8` și din nou pe design v
 - [x] Cache: publicarea și retragerea unui articol actualizează pagina și lista (e2e).
 - [x] Contact: salvare înaintea emailului, validare, honeypot, limită de mărime/origine, rate limit în DB — `tests/int/contact.test.ts` + e2e UI.
 - [x] Design v5 (decizii 0007 + 0008 + 0009 — paleta „apus pe teren”: portocaliu `#F26A3D`, ardezie `#1C2633`, albastru prăfuit, după imaginea de referință a lui Daniel): structură editorial-sportivă după capturile trimise de Daniel, fundal albicios, hero 3D din CSS; contrast verificat (`scripts/contrast.mjs`), fonturi locale (Archivo Expanded, Source Sans 3) cu diacritice verificate.
-- [x] Meniu unificat (bară de sus pe toate ecranele; dropdown pe laptop, ecran complet pe telefon) și media de secțiune: fotografie sau buclă video fără sunet cu poster și pauză (decizia 0010); media demonstrative Mixkit doar în seed-ul local, creditate vizibil.
+- [x] Meniu unificat (bară de sus pe toate ecranele; dropdown pe laptop, ecran complet pe telefon) și media de secțiune: fotografie sau buclă video fără sunet cu poster și pauză (decizia 0010); media demonstrative Mixkit doar în seed-ul local, creditate vizibil (fără media în hero, la cererea lui Daniel). Hero pe panou ardezie + titluri Archivo Italic (decizia 0011).
 - [x] CMS homepage: cifre confirmate, testimoniale doar cu acord, titluri-afirmație; antrenamente cu fotografie opțională (migrația `20261110_103117`).
 - [x] SEO tehnic: metadata per pagină, canonical, sitemap, robots (`Disallow: /` în afara producției), Open Graph, JSON-LD.
 - [x] Backup + restaurare testate local (`docs/RUNBOOK.md`).

@@ -147,9 +147,12 @@
     color: var(--color-coral-text);
   }
   /* Titluri display: majuscule, late, foarte compacte */
+  /* Titluri display: italic adevărat (Archivo Italic, nu înclinare sintetică), ca în afișul de referință — decizia 0011 */
   .display {
     hyphens: manual;
     font-family: var(--font-display);
+    font-style: italic;
+    font-synthesis: none;
     font-weight: 850;
     text-transform: uppercase;
     letter-spacing: -0.035em;
@@ -230,12 +233,13 @@
   }
 
   /* —— Hero 3D: straturi în perspectivă (ardezie, albastru oțel, portocaliu cu „mișcare”), pe fundal albicios (doar CSS) —— */
+  /* Scena hero e un panou ardezie închis (ca afișul de referință), pe fundalul albicios al paginii — decizia 0011 */
   .hero-stage {
     position: relative;
     isolation: isolate;
     overflow: hidden;
     border-radius: var(--radius-lg);
-    background: radial-gradient(120% 90% at 75% 5%, #ffffff 0%, #fafcfe 40%, #eef3f9 100%);
+    background: radial-gradient(120% 90% at 75% 5%, #3d4c60 0%, #2a3646 45%, var(--color-navy) 100%);
     perspective: 1600px;
   }
   .hero-layers {
@@ -255,16 +259,16 @@
     transform-origin: 50% 60%;
     transform: rotateX(52deg) rotateZ(-32deg) translateZ(var(--z, 0px));
     box-shadow:
-      0 50px 80px -30px rgb(28 38 51 / 0.35),
+      0 50px 80px -30px rgb(0 0 0 / 0.55),
       inset 0 1px 0 rgb(255 255 255 / 0.7);
   }
   .hero-layer-1 {
     --z: -140px;
-    background: linear-gradient(140deg, #3d4c60, var(--color-navy-card) 70%);
+    background: linear-gradient(140deg, #5d7088, #46566c 70%);
   }
   .hero-layer-2 {
     --z: -40px;
-    background: linear-gradient(140deg, var(--color-soft-blue-2), var(--color-soft-blue-3));
+    background: linear-gradient(140deg, var(--color-soft-blue-3), #7f94ad);
   }
   .hero-layer-3 {
     --z: 70px;
@@ -296,11 +300,12 @@
     }
   }
   @media (max-width: 1023px) {
+    /* Pe telefon terenul stă în partea de sus, iar titlul pe ardezie, dedesubt */
     .hero-layer {
-      left: 10%;
-      top: 34%;
+      left: 8%;
+      top: -6%;
       width: 120%;
-      height: 80%;
+      height: 66%;
     }
   }
   .field-label {

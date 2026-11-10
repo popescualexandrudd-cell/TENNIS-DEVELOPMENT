@@ -37,6 +37,9 @@ export async function HomeView({ locale }: { locale: Locale }) {
   ])
   const home = page?.home
   const name = settings.personName || 'Daniel Popescu'
+  const nameWords = name.trim().split(/\s+/)
+  const nameTail = nameWords.pop() ?? name
+  const nameHead = nameWords.join(' ')
   const tagline = page?.title
   const facts = home?.facts ?? []
   const testimonials = (home?.testimonials ?? []).filter((x) => x.consent && x.quote && x.name)
@@ -47,7 +50,11 @@ export async function HomeView({ locale }: { locale: Locale }) {
       <section className="container-site pt-2 lg:pt-8" aria-labelledby="h-hero">
         <HeroStage image={page?.image} locale={locale}>
           <h1 id="h-hero" className="display">
-            <span className="h-hero block">{name}</span>
+            {/* Ultimul cuvânt al numelui în portocaliu, ca „OWN THE NEXT POINT” din referință */}
+            <span className="h-hero block">
+              {nameHead ? `${nameHead} ` : null}
+              <span className="text-coral-text">{nameTail}</span>
+            </span>
             {tagline ? <span className="display-light mt-3 block text-[clamp(1.375rem,0.9rem+2.2vw,3rem)]">{tagline}</span> : null}
           </h1>
         </HeroStage>

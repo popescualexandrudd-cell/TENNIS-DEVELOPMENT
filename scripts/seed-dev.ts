@@ -172,7 +172,6 @@ async function seedDemoMedia(payload: Payload, ctx: { disableRevalidate: boolean
   }
   const video = async (name: string, alt: string) => upload(`${name}.mp4`, alt, await upload(`${name}-poster.jpg`, alt))
 
-  const heroVideo = await video('teren-aerian-mixkit-880', 'Doi jucători într-un schimb de mingi, filmați de sus, pe un teren albastru')
   const serveVideo = await video('serviciu-mixkit-878', 'Jucător văzut din spate, pregătind serviciul pe un teren în aer liber')
   const aerialServe = await video('serva-aerian-mixkit-879', 'Jucător care servește, filmat de sus, pe un teren albastru')
   const stills = [
@@ -190,7 +189,8 @@ async function seedDemoMedia(payload: Payload, ctx: { disableRevalidate: boolean
       locale: 'ro',
       context: ctx,
       data: {
-        image: heroVideo,
+        // Hero fără media demonstrativă (cerut de Daniel): rămân straturile 3D până la o fotografie reală.
+        image: null,
         home: { ...home.home, method: home.home.method.map((step, i) => ({ ...step, media: stills[i] ?? null })) },
         _status: 'published',
       },

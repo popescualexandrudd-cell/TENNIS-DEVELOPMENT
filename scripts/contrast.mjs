@@ -8,7 +8,6 @@ const pairs = [
   ['text-primary (negru) pe background', '#0B0B0C', '#F4F7FB', 4.5],
   ['text-primary pe panel (alb)', '#0B0B0C', '#FFFFFF', 4.5],
   ['text-primary pe albastru prăfuit', '#0B0B0C', '#D5E0EB', 4.5],
-  ['text-primary pe voalul hero peste portocaliu (alb 92% ≈ #FDF4EF)', '#0B0B0C', '#FDF4EF', 4.5],
   ['text-secondary pe background', '#4B5565', '#F4F7FB', 4.5],
   ['text-secondary pe albastru prăfuit', '#4B5565', '#D5E0EB', 4.5],
   ['text articol pe background', '#1F2530', '#F4F7FB', 4.5],
@@ -31,6 +30,11 @@ const pairs = [
   ['focus portocaliu pe ardezie', '#F28A5E', '#1C2633', 3],
   ['control-border pe card ardezie', '#8794A6', '#2A3646', 3],
   ['negru pe portocaliu (CTA în footer)', '#0B0B0C', '#F26A3D', 4.5],
+  // Hero pe panou ardezie (decizia 0011): textul stă pe voalul ardezie ≥ 88%
+  ['nume alb pe voalul hero (ardezie)', '#F4F7FB', '#1C2633', 4.5],
+  ['ultimul cuvânt al numelui, portocaliu pe voalul hero', '#F28A5E', '#1C2633', 4.5],
+  ['text alb pe voal 88% peste piersica #F6A985 (= #36363D)', '#F4F7FB', '#36363D', 4.5],
+  ['portocaliu pe voal 88% peste piersica #F6A985 (= #36363D)', '#F28A5E', '#36363D', 4.5],
 ]
 let fail = 0
 for (const [name, fg, bg, min] of pairs) {
