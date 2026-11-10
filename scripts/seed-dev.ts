@@ -50,10 +50,12 @@ async function main() {
     home: {
       aboutHeading: `${EX} Titlu-afirmație scurt`,
       coachingHeading: 'Antrenamente cu obiective clare',
+      // Cifre confirmate de Daniel (10.11.2026) — nu mai sunt substituente.
       facts: [
-        { value: '00', label: `${EX} Ani de experiență`, note: 'De completat cu date reale' },
-        { value: '00', label: `${EX} Jucători antrenați`, note: 'Doar dacă poate fi verificat' },
-        { value: '00', label: `${EX} Altă cifră reală`, note: 'Sau secțiunea rămâne ascunsă' },
+        { value: '12', label: 'Ani de experiență ca jucător' },
+        { value: '5', label: 'Ani de antrenorat' },
+        { value: '200+', label: 'Sportivi la inițiere' },
+        { value: '20+', label: 'Jucători de competiție antrenați' },
       ],
       testimonials: [
         { name: 'Nume Exemplu', role: `${EX} Context jucător`, quote: `${EX} Aici apare un citat real, publicat doar cu acordul scris al persoanei.`, consent: true },

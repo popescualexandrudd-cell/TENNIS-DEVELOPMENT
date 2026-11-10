@@ -117,12 +117,12 @@ export async function HomeView({ locale }: { locale: Locale }) {
           <h2 id="h-facts" className="display h-card">
             {t.home.facts}
           </h2>
-          <dl className="mt-8 grid gap-1.5 sm:grid-cols-2 xl:grid-cols-3">
+          <dl className={`mt-8 grid gap-1.5 sm:grid-cols-2 ${facts.length === 4 ? 'xl:grid-cols-4' : 'xl:grid-cols-3'}`}>
             {facts.map((f) => (
               <div key={f.id ?? f.label} className="card-navy flex flex-col p-8 sm:p-10">
                 <dt className="sr-only">{f.label}</dt>
                 <dd className="display text-[clamp(3rem,2rem+3vw,5rem)]">{f.value}</dd>
-                <dd className="display mt-3 text-[1.125rem]">{f.label}</dd>
+                <dd className="display mt-3 text-[1.125rem] !leading-[1.12]">{f.label}</dd>
                 {f.note ? <dd className="mt-3 text-muted">{f.note}</dd> : null}
               </div>
             ))}
