@@ -1,0 +1,284 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+/* Design tokens — sursa: docs/DESIGN_SYSTEM.md */
+:root {
+  /* Paleta v2 (decizia 0006): soft blue, midnight navy, coral orange, negru */
+  --color-background: #f4f7fb;
+  --color-surface: #ffffff;
+  --color-soft-blue: #dce8f5;
+  --color-text-primary: #0b0b0c;
+  --color-text-secondary: #4b5565;
+  --color-brand-primary: #0f1b33; /* midnight navy */
+  --color-brand-hover: #1a2a4a;
+  --color-accent-coral: #ff6b4a; /* fundal CTA (cu text negru) și accente pe navy */
+  --color-accent-coral-hover: #ff8466;
+  --color-accent-coral-text: #b83c22; /* coral închis pentru text mic pe fundal deschis */
+  --color-on-dark-muted: #a9b8d0;
+  --color-border: #d5deea;
+  /* Contur pentru controale: contrast ≥ 3:1 față de background/surface */
+  --color-control-border: #6b7689;
+  --color-focus: #1d5fd1;
+  --color-on-dark-focus: #ff6b4a;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --container-max: 1240px;
+  --gutter: 20px;
+  --section-space: 56px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 24px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 40px;
+    --section-space: 104px;
+  }
+}
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-ink: var(--color-text-primary);
+  --color-muted: var(--color-text-secondary);
+  --color-brand: var(--color-brand-primary);
+  --color-brand-hover: var(--color-brand-hover);
+  --color-soft: var(--color-soft-blue);
+  --color-coral: var(--color-accent-coral);
+  --color-coral-ink: var(--color-accent-coral-text);
+  --color-on-dark-muted: var(--color-on-dark-muted);
+  --color-line: var(--color-border);
+  --color-control: var(--color-control-border);
+  --color-focus: var(--color-focus);
+  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+  @media (min-width: 1024px) {
+    body {
+      font-size: 1.125rem; /* 18px */
+    }
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-on-dark-focus);
+  }
+  a {
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+  ::selection {
+    background: var(--color-soft-blue);
+    color: var(--color-text-primary);
+  }
+}
+
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: calc(var(--container-max) + 2 * var(--gutter));
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .section {
+    padding-block: var(--section-space);
+  }
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-coral-text);
+  }
+  .on-dark .eyebrow {
+    color: var(--color-accent-coral);
+  }
+  .h-hero {
+    font-size: clamp(2.375rem, 1.6rem + 3.6vw, 5.25rem); /* 38px → 84px */
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+  }
+  /* Titlul principal al homepage-ului: majuscule, ca semnătură editorial-sportivă */
+  .h-display {
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.98;
+  }
+  .h-section {
+    font-size: clamp(1.875rem, 1.5rem + 1.4vw, 2.75rem); /* 30px → 44px */
+    font-weight: 700;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0.75rem 1.375rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      background-color 180ms var(--ease),
+      color 180ms var(--ease),
+      border-color 180ms var(--ease);
+  }
+  .btn-primary {
+    background: var(--color-accent-coral);
+    color: var(--color-text-primary);
+  }
+  .btn-primary:hover {
+    background: var(--color-accent-coral-hover);
+  }
+  .btn-dark {
+    background: var(--color-brand-primary);
+    color: #fff;
+  }
+  .btn-dark:hover {
+    background: var(--color-brand-hover);
+  }
+  .btn-secondary {
+    border: 1.5px solid var(--color-brand-primary);
+    color: var(--color-brand-primary);
+    background: transparent;
+  }
+  .btn-secondary:hover {
+    background: var(--color-brand-primary);
+    color: #fff;
+  }
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-brand-primary);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+    transition: text-decoration-color 180ms var(--ease);
+  }
+  .link-arrow:hover {
+    text-decoration-color: currentColor;
+  }
+  .on-dark .link-arrow {
+    color: #fff;
+  }
+  .field-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+  }
+  .field-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.625rem 0.875rem;
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-control-border);
+    border-radius: var(--radius-sm);
+    font: inherit;
+    color: inherit;
+    transition: border-color 150ms var(--ease);
+  }
+  .field-input:hover {
+    border-color: var(--color-text-primary);
+  }
+  .field-input[aria-invalid='true'] {
+    border-color: var(--color-accent-coral-text);
+  }
+
+  /* Coloana de lectură pentru articole: ~68 de caractere */
+  .prose-article {
+    max-width: 68ch;
+    font-size: 1.125rem;
+    line-height: 1.65;
+  }
+  @media (min-width: 1024px) {
+    .prose-article {
+      font-size: 1.1875rem;
+    }
+  }
+  .prose-article > * + * {
+    margin-top: 1.1em;
+  }
+  .prose-article h2 {
+    font-size: 1.625rem;
+    margin-top: 2em;
+  }
+  .prose-article h3 {
+    font-size: 1.3125rem;
+    margin-top: 1.6em;
+  }
+  .prose-article a {
+    color: var(--color-brand-primary);
+    text-decoration: underline;
+  }
+  .prose-article ul {
+    list-style: disc;
+    padding-left: 1.25em;
+  }
+  .prose-article ol {
+    list-style: decimal;
+    padding-left: 1.25em;
+  }
+  .prose-article li + li {
+    margin-top: 0.4em;
+  }
+  .prose-article blockquote {
+    border-left: 3px solid var(--color-accent-coral);
+    padding-left: 1.1em;
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

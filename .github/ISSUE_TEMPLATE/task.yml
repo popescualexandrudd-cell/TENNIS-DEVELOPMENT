@@ -1,0 +1,32 @@
+name: Task
+description: O sarcină de lucru cu rezultat verificabil
+labels: ['type:task']
+body:
+  - type: textarea
+    id: problem
+    attributes: { label: Problema sau nevoia, description: De ce facem asta? }
+    validations: { required: true }
+  - type: textarea
+    id: outcome
+    attributes: { label: Rezultatul așteptat }
+    validations: { required: true }
+  - type: textarea
+    id: scope
+    attributes: { label: În scope }
+  - type: textarea
+    id: out_of_scope
+    attributes: { label: În afara scope-ului }
+  - type: textarea
+    id: deps
+    attributes: { label: Dependențe, description: Issues, decizii sau informații necesare. }
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Checklist de acceptare
+      value: |
+        - [ ] 
+    validations: { required: true }
+  - type: textarea
+    id: verification
+    attributes: { label: Metoda de verificare, description: 'Ce comenzi/teste/capturi dovedesc rezultatul? (local / staging / producție)' }
+    validations: { required: true }

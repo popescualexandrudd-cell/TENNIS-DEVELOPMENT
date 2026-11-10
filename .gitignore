@@ -147,3 +147,16 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Next.js / Payload
+.next/
+out/
+next-env.d.ts
+media/
+backups/
+playwright-report/
+test-results/
+.env
+.env.local
+.env.*.local
+!.env.example

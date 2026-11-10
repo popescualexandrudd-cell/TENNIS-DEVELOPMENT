@@ -1,0 +1,22 @@
+name: Bug
+description: Ceva nu funcționează cum ar trebui
+labels: ['type:bug']
+body:
+  - type: textarea
+    id: what
+    attributes: { label: Ce s-a întâmplat }
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes: { label: Ce era de așteptat }
+    validations: { required: true }
+  - type: textarea
+    id: steps
+    attributes: { label: Pași de reproducere, value: "1. \n2. \n3. " }
+    validations: { required: true }
+  - type: input
+    id: where
+    attributes: { label: Unde, description: 'URL / mediu (local, staging, producție), browser, dispozitiv' }
+  - type: textarea
+    id: evidence
+    attributes: { label: Dovezi, description: 'Capturi sau loguri FĂRĂ date personale, parole sau tokenuri.' }
