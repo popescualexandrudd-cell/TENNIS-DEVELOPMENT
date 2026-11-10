@@ -11,7 +11,7 @@ test.describe('site public', () => {
   })
 
   test('fără scroll orizontal', async ({ page }) => {
-    for (const path of ['/ro', '/ro/contact', '/ro/antrenamente']) {
+    for (const path of ['/ro', '/ro/contact', '/ro/antrenamente', '/ro/jurnal']) {
       await page.goto(path)
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
       expect(overflow, path).toBeLessThanOrEqual(0)
@@ -19,7 +19,7 @@ test.describe('site public', () => {
   })
 
   test('fără încălcări de accesibilitate serioase (axe)', async ({ page }) => {
-    for (const path of ['/ro', '/ro/contact']) {
+    for (const path of ['/ro', '/ro/contact', '/ro/antrenamente', '/ro/jurnal']) {
       await page.goto(path)
       const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze()
       const serious = results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')
@@ -52,6 +52,8 @@ test.describe('meniu mobil', () => {
     const button = page.getByRole('button', { name: 'Meniu' })
     await button.click()
     await expect(page.getByRole('navigation', { name: 'Meniu' })).toBeVisible()
+    // Linkurile trebuie să fie efectiv pe ecran (nu doar „vizibile” într-un container tăiat).
+    await expect(page.getByRole('navigation', { name: 'Meniu' }).getByRole('link', { name: 'Contact' })).toBeInViewport()
     await page.keyboard.press('Escape')
     await expect(page.getByRole('navigation', { name: 'Meniu' })).toBeHidden()
     await expect(button).toBeFocused()

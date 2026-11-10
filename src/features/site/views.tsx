@@ -34,7 +34,7 @@ export async function pageMetadata(locale: Locale, key: PageKey, fallbackTitle: 
 function PageHeader({ title, intro }: { title: string; intro?: string | null }) {
   return (
     <header className="container-site pt-10 pb-8 lg:pt-20 lg:pb-12">
-      <h1 className="h-hero max-w-[18ch]">{title}</h1>
+      <h1 className="display h-page max-w-[16ch]">{title}</h1>
       {intro ? <p className="mt-6 max-w-[42rem] text-lg text-muted lg:text-xl">{intro}</p> : null}
     </header>
   )
@@ -50,7 +50,7 @@ export async function ContentPageView({ locale, pageKey }: { locale: Locale; pag
       <PageHeader title={page.title} intro={page.intro} />
       {hasPublicImage(page.image) ? (
         <div className="container-site">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-md">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
             <MediaImage media={page.image} fill priority sizes="(min-width: 1240px) 1240px, 100vw" />
           </div>
         </div>
@@ -85,9 +85,9 @@ export async function CoachingView({ locale }: { locale: Locale }) {
       ) : null}
       <section className="container-site section !pt-8">
         {services.length > 0 ? (
-          <div className="grid gap-12 md:grid-cols-3 md:gap-8">
-            {services.map((s) => (
-              <ServiceCard key={s.id} service={s} locale={locale} headingLevel="h2" />
+          <div className="grid gap-4 md:grid-cols-2">
+            {services.map((s, i) => (
+              <ServiceCard key={s.id} service={s} locale={locale} index={i} headingLevel="h2" />
             ))}
           </div>
         ) : (

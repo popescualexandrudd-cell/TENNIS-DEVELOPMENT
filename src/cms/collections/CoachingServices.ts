@@ -28,6 +28,7 @@ export const CoachingServices: CollectionConfig = {
     { name: 'format', label: 'Cum se desfășoară', type: 'textarea', required: true, localized: true },
     { name: 'goals', label: 'Ce urmărește', type: 'textarea', required: true, localized: true },
     { name: 'description', label: 'Descriere suplimentară', type: 'textarea', localized: true },
+    { name: 'image', label: 'Fotografie (opțional)', type: 'upload', relationTo: 'media' },
     {
       name: 'confirmed',
       label: 'Ofertă confirmată de Daniel (apare public)',

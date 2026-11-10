@@ -11,7 +11,7 @@ import { SiteHeader } from './SiteHeader'
 
 export async function SiteLayout({ locale, children }: { locale: Locale; children: ReactNode }) {
   const t = getDictionary(locale)
-  for (const href of ['/fonts/manrope-latin-wght-normal.woff2', '/fonts/source-sans-3-latin-wght-normal.woff2']) {
+  for (const href of ['/fonts/archivo-latin-expanded-normal.woff2', '/fonts/source-sans-3-latin-wght-normal.woff2']) {
     preload(href, { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' })
   }
   const otherLocale: Locale = locale === 'ro' ? 'en' : 'ro'
@@ -31,17 +31,19 @@ export async function SiteLayout({ locale, children }: { locale: Locale; childre
       <body className="flex min-h-dvh flex-col">
         <a
           href="#continut"
-          className="sr-only z-[60] rounded-sm bg-brand px-4 py-3 font-bold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="sr-only z-[60] rounded-sm bg-navy px-4 py-3 font-bold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           {t.skipToContent}
         </a>
         <AlternateProvider>
-          <SiteHeader locale={navLocale} availability={navAvailability} other={other} />
-          <main id="continut" className="flex-1" tabIndex={-1}>
-            {children}
-          </main>
+          <SiteHeader locale={navLocale} availability={navAvailability} other={other} settings={settings} />
+          <div className="content-shell flex flex-1 flex-col">
+            <main id="continut" className="flex-1" tabIndex={-1}>
+              {children}
+            </main>
+            <SiteFooter locale={navLocale} availability={navAvailability} settings={settings} />
+          </div>
         </AlternateProvider>
-        <SiteFooter locale={navLocale} availability={navAvailability} settings={settings} />
         <Analytics />
       </body>
     </html>

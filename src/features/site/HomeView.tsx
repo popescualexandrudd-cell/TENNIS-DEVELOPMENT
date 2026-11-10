@@ -5,10 +5,26 @@ import { pagePath } from '@/lib/i18n/routes'
 import { getAvailability, getConfirmedServices, getPage, getSiteSettings } from '@/lib/content'
 import { getPublishedArticles } from '@/features/journal/queries'
 import { ArticleCard } from '@/features/journal/ArticleCard'
-import { CourtLines } from '@/components/CourtLines'
 import { hasPublicImage, MediaImage } from '@/components/MediaImage'
 import { ContactSection } from './ContactSection'
 import { ServiceCard } from './ServiceCard'
+import { HeroStage } from './HeroStage'
+
+/** Titlu în două tonuri: primul cuvânt subțire, restul îngroșat. */
+function SplitHeading({ text, id, as: H = 'h2', className = '' }: { text: string; id?: string; as?: 'h1' | 'h2'; className?: string }) {
+  const [first, ...rest] = text.split(' ')
+  return (
+    <H id={id} className={`display ${className}`}>
+      {rest.length ? (
+        <>
+          <span className="display-light">{first}</span> {rest.join(' ')}
+        </>
+      ) : (
+        text
+      )}
+    </H>
+  )
+}
 
 export async function HomeView({ locale }: { locale: Locale }) {
   const t = getDictionary(locale)
@@ -20,65 +36,67 @@ export async function HomeView({ locale }: { locale: Locale }) {
     getPublishedArticles(locale, 3),
   ])
   const home = page?.home
-  const heroTitle = page?.title || settings.personName || 'Daniel Popescu'
+  const name = settings.personName || 'Daniel Popescu'
+  const tagline = page?.title
+  const facts = home?.facts ?? []
+  const testimonials = (home?.testimonials ?? []).filter((x) => x.consent && x.quote && x.name)
 
   return (
     <>
-      {/* 1. Hero */}
-      <section className="on-dark bg-brand text-white">
-       <div className="container-site grid items-center gap-8 pt-8 pb-12 lg:grid-cols-[7fr_5fr] lg:gap-16 lg:pt-16 lg:pb-24">
-        <div className="max-w-[42rem]">
-          {settings.personName && page?.title ? <p className="eyebrow">{settings.personName}</p> : null}
-          <h1 className="h-hero h-display mt-4">{heroTitle}</h1>
-          {page?.intro ? <p className="mt-6 max-w-[34rem] text-lg text-on-dark-muted lg:text-xl">{page.intro}</p> : null}
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+      {/* 1. Hero — card mare, cu fotografie reală sau motivul grafic */}
+      <section className="container-site pt-2 lg:pt-8" aria-labelledby="h-hero">
+        <HeroStage image={page?.image}>
+          <h1 id="h-hero" className="display">
+            <span className="h-hero block">{name}</span>
+            {tagline ? <span className="display-light mt-3 block text-[clamp(1.375rem,0.9rem+2.2vw,3rem)]">{tagline}</span> : null}
+          </h1>
+        </HeroStage>
+        <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16">
+          {page?.intro ? <p className="max-w-[40rem] text-lg text-muted lg:text-xl">{page.intro}</p> : <span />}
+          <div className="flex flex-wrap items-center gap-3">
             <Link href={pagePath(locale, 'contact')} className="btn btn-primary plausible-event-name=cta_contact_click">
               {t.cta.primary}
             </Link>
             {availability.about ? (
-              <Link href={pagePath(locale, 'about')} className="link-arrow">
-                {t.cta.aboutLink} <span aria-hidden="true">→</span>
+              <Link href={pagePath(locale, 'about')} className="btn btn-outline">
+                {t.cta.aboutLink}
               </Link>
             ) : null}
           </div>
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-md sm:aspect-[16/10] lg:aspect-[4/5]">
-          {hasPublicImage(page?.image) ? (
-            <MediaImage media={page!.image} fill priority sizes="(min-width: 1024px) 480px, 100vw" />
-          ) : (
-            <CourtLines className="absolute inset-0 h-full w-full" />
-          )}
-        </div>
-       </div>
       </section>
 
       {/* 2. Despre Daniel */}
       {home?.aboutText ? (
-        <section className="section bg-surface" aria-labelledby="h-about">
-          <div className="container-site grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-20">
-            {hasPublicImage(home.aboutImage) ? (
-              <div className="relative aspect-[4/5] overflow-hidden rounded-md">
-                <MediaImage media={home.aboutImage} fill sizes="(min-width: 1024px) 460px, 100vw" />
-              </div>
-            ) : null}
-            <div className={hasPublicImage(home.aboutImage) ? '' : 'lg:col-span-2 lg:max-w-[52rem]'}>
-              <h2 id="h-about" className="h-section">
-                {t.home.about}
-              </h2>
-              <p className="mt-6 text-lg">{home.aboutText}</p>
+        <section className="section container-site" aria-labelledby="h-about">
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="eyebrow">{t.home.about}</p>
+              <SplitHeading id="h-about" text={home.aboutHeading || t.home.about} className="h-section mt-4" />
+              {hasPublicImage(home.aboutImage) ? (
+                <div className="relative mt-10 aspect-[4/5] max-w-md overflow-hidden rounded-lg">
+                  <MediaImage media={home.aboutImage} fill sizes="(min-width: 1024px) 420px, 100vw" />
+                </div>
+              ) : null}
+            </div>
+            <div>
+              <p className="text-xl leading-relaxed lg:text-[1.375rem]">{home.aboutText}</p>
               {home.approach && home.approach.length > 0 ? (
-                <ul className="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-6">
-                  {home.approach.map((item) => (
-                    <li key={item.id ?? item.title} className="border-t border-line pt-4">
-                      <h3 className="text-lg font-bold">{item.title}</h3>
-                      <p className="mt-2 text-muted">{item.text}</p>
+                <ul className="mt-10 grid gap-6">
+                  {home.approach.map((item, i) => (
+                    <li key={item.id ?? item.title} className="grid grid-cols-[auto_1fr] gap-4 border-t border-line pt-5">
+                      <span className="text-sm font-bold text-coral-text">{String(i + 1).padStart(2, '0')}</span>
+                      <div>
+                        <h3 className="text-lg font-[800]">{item.title}</h3>
+                        <p className="mt-1 text-muted">{item.text}</p>
+                      </div>
                     </li>
                   ))}
                 </ul>
               ) : null}
               {availability.about ? (
-                <Link href={pagePath(locale, 'about')} className="link-arrow mt-8">
-                  {t.cta.readStory} <span aria-hidden="true">→</span>
+                <Link href={pagePath(locale, 'about')} className="btn btn-outline mt-10">
+                  {t.cta.readStory}
                 </Link>
               ) : null}
             </div>
@@ -86,70 +104,112 @@ export async function HomeView({ locale }: { locale: Locale }) {
         </section>
       ) : null}
 
+      {/* Cifre — numai fapte confirmate */}
+      {facts.length > 0 ? (
+        <section className="container-site pb-[var(--section-space)]" aria-labelledby="h-facts">
+          <h2 id="h-facts" className="display h-card">
+            {t.home.facts}
+          </h2>
+          <dl className="mt-8 grid gap-1.5 sm:grid-cols-2 xl:grid-cols-3">
+            {facts.map((f) => (
+              <div key={f.id ?? f.label} className="card-navy flex flex-col p-8 sm:p-10">
+                <dt className="sr-only">{f.label}</dt>
+                <dd className="display text-[clamp(3rem,2rem+3vw,5rem)]">{f.value}</dd>
+                <dd className="display mt-3 text-[1.125rem]">{f.label}</dd>
+                {f.note ? <dd className="mt-3 text-muted">{f.note}</dd> : null}
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : null}
+
       {/* 3. Antrenamente — numai oferte confirmate */}
       {services.length > 0 ? (
-        <section className="section" aria-labelledby="h-coaching">
-          <div className="container-site">
-            <h2 id="h-coaching" className="h-section">
-              {t.home.coaching}
-            </h2>
-            <div className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
-              {services.map((s) => (
-                <ServiceCard key={s.id} service={s} locale={locale} />
-              ))}
-            </div>
+        <section className="section container-site border-t border-line" aria-labelledby="h-coaching">
+          <p className="eyebrow">{t.home.workWithMe}</p>
+          <SplitHeading id="h-coaching" text={home?.coachingHeading || t.home.coaching} className="h-section mt-4" />
+          <div className="mt-12 grid gap-4 md:grid-cols-2">
+            {services.map((s, i) => (
+              <ServiceCard key={s.id} service={s} locale={locale} index={i} />
+            ))}
           </div>
         </section>
       ) : null}
 
       {/* 4. Cum lucrez */}
       {home?.method && home.method.length > 0 ? (
-        <section className="section bg-soft" aria-labelledby="h-method">
-          <div className="container-site">
-            <h2 id="h-method" className="h-section">
-              {t.home.method}
-            </h2>
-            <ol className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
-              {home.method.map((step, i) => (
-                <li key={step.id ?? step.title}>
-                  <span className="inline-flex size-11 items-center justify-center rounded-full bg-coral font-display text-lg font-extrabold text-ink" aria-hidden="true">
-                    {i + 1}
-                  </span>
-                  <h3 className="mt-4 text-xl font-bold">{step.title}</h3>
-                  <p className="mt-2 text-muted">{step.text}</p>
-                </li>
-              ))}
-            </ol>
+        <section className="section container-site border-t border-line" aria-labelledby="h-method">
+          <SplitHeading id="h-method" text={t.home.method} className="h-section" />
+          <ol className="mt-12 grid gap-1.5 md:grid-cols-3">
+            {home.method.map((step, i) => (
+              <li key={step.id ?? step.title} className="card-navy flex flex-col p-8 sm:p-10">
+                <span className="display text-sm text-coral-text">
+                  {t.home.step} {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 className="mt-6 text-[1.5rem] leading-tight font-[800]">{step.title}</h3>
+                <p className="mt-3 text-muted">{step.text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+
+      {/* Testimoniale — numai reale, cu acord */}
+      {testimonials.length > 0 ? (
+        <section className="section container-site border-t border-line" aria-labelledby="h-testimonials">
+          <SplitHeading id="h-testimonials" text={t.home.testimonials} className="h-section" />
+          <div className="mt-12 grid gap-4 lg:grid-cols-2">
+            {testimonials.map((x) => {
+              const [first, ...rest] = x.name.split(' ')
+              return (
+                <figure key={x.id ?? x.name} className="on-navy relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden rounded-lg bg-navy-card p-8 sm:p-10">
+                  {hasPublicImage(x.image) ? (
+                    <>
+                      <MediaImage media={x.image} fill sizes="(min-width: 1024px) 50vw, 100vw" className="-z-10" />
+                      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/60 to-black/20" aria-hidden="true" />
+                    </>
+                  ) : null}
+                  <blockquote className="text-[1.375rem] leading-snug font-bold">„{x.quote}”</blockquote>
+                  <figcaption className="mt-6">
+                    <span className="display block text-[1.75rem]">
+                      <span className="display-light">{first}</span> {rest.join(' ')}
+                    </span>
+                    {x.role ? <span className="mt-1 block text-muted">{x.role}</span> : null}
+                  </figcaption>
+                </figure>
+              )
+            })}
           </div>
         </section>
       ) : null}
 
       {/* 5. Din jurnal — numai articole publicate */}
       {articles.length > 0 ? (
-        <section className="section" aria-labelledby="h-journal">
-          <div className="container-site">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <h2 id="h-journal" className="h-section">
-                {t.home.journal}
-              </h2>
-              <Link href={pagePath(locale, 'journal')} className="link-arrow">
-                {t.home.journalAll} <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-            <div className="mt-10 grid gap-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {articles.map((a) => (
-                <ArticleCard key={a.id} article={a} locale={locale} />
-              ))}
-            </div>
+        <section className="section container-site border-t border-line" aria-labelledby="h-journal">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <SplitHeading id="h-journal" text={t.home.journal} className="h-section" />
+            <Link href={pagePath(locale, 'journal')} className="btn btn-outline">
+              {t.home.journalAll}
+            </Link>
+          </div>
+          <div className="mt-12 grid gap-12 sm:grid-cols-2 xl:grid-cols-3 xl:gap-8">
+            {articles.map((a) => (
+              <ArticleCard key={a.id} article={a} locale={locale} />
+            ))}
           </div>
         </section>
       ) : null}
 
       {/* 6. Contact */}
-      <section className="section border-t border-line" aria-labelledby="h-contact">
-        <div className="container-site">
-          <ContactSection locale={locale} settings={settings} availability={availability} heading={t.home.contact} headingId="h-contact" invite={home?.contactInvite} />
-        </div>
+      <section className="section container-site border-t border-line" aria-labelledby="h-contact">
+        <ContactSection
+          locale={locale}
+          settings={settings}
+          availability={availability}
+          heading={t.home.contact}
+          headingId="h-contact"
+          invite={home?.contactInvite}
+        />
       </section>
     </>
   )

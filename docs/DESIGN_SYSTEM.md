@@ -1,60 +1,76 @@
 # Design system
 
-Direcție: editorial sportiv cu contrast puternic — hero navy pe toată lățimea, titlu principal cu majuscule, CTA coral, fotografie reală, tipografie clară.
-Inspirație declarată de Daniel: patrickmouratoglou.com (principii de structură, fără copierea identității; site-ul nu a putut fi deschis din mediul de lucru). **Propunere v2 — așteaptă validarea lui Daniel.**
-Capturi ale propunerii (cu conținut local marcat `[EXEMPLU]`): `docs/design/homepage-desktop.png`, `docs/design/homepage-mobile.png`,
+**Direcția v4** (decizii [0007](decisions/0007-dark-editorial-sport.md) + [0008](decisions/0008-light-3d-hero.md), 10.11.2026):
+editorial-sportiv pe fundal albicios, cu hero 3D din straturi soft blue. Structura pornește de la capturile patrickmouratoglou.com
+trimise de Daniel (bară laterală, titluri late cu majuscule, carduri, butoane pastilă); am preluat principii, nu identitate —
+fără texte, logo, fotografii sau wordmark-ul în două greutăți al referinței. **Propunere — așteaptă validarea lui Daniel** (issue #1).
+
+Capturi (conținut local de seed marcat `[EXEMPLU]`): `docs/design/homepage-desktop.png`, `docs/design/homepage-mobile.png`,
 `docs/design/article-desktop.png`.
 
-## Culori — paleta v2 (decizia [0006](decisions/0006-palette-navy-coral.md), cerută de Daniel la 10.11.2026)
-Sursa tehnică: `src/styles/globals.css` (`:root`). Verificare automată: `node scripts/contrast.mjs` (rulează în CI).
-Paleta inițială din brief (verde/zgură) este păstrată istoric în decizia 0006.
+## Culori
+Sursa tehnică: `src/styles/globals.css`. Verificare automată: `node scripts/contrast.mjs` (CI) + axe în e2e.
+Zonele navy (`.on-navy`, `.card-navy`) redefinesc variabilele text/focus/contur — valorile din coloana „pe navy”.
 
-| Token | Valoare | Utilizare | Contrast verificat |
+| Token | Fundal deschis | Pe navy | Utilizare / contrast |
 |---|---|---|---|
-| `background` | `#F4F7FB` | fundal principal (alb rece) | — |
-| `surface` | `#FFFFFF` | formulare, secțiuni de conținut | — |
-| `soft-blue` | `#DCE8F5` | secțiuni de ritm („Cum lucrez”) | text-secondary 6.1:1, navy 13.8:1 |
-| `text-primary` | `#0B0B0C` (negru) | titluri, text | 18.3:1 pe background |
-| `text-secondary` | `#4B5565` | explicații, metadate | 7.0:1 pe background |
-| `brand-primary` | `#0F1B33` (midnight navy) | header, hero, linkuri, butoane secundare | alb pe navy 17.1:1 |
-| `brand-hover` | `#1A2A4A` | hover pe navy | — |
-| `accent-coral` | `#FF6B4A` | **fundal** CTA (cu text negru 7.0:1), eyebrow și focus pe navy (6.1:1), puncte/numerotare | alb pe coral doar 2.8:1 → interzis |
-| `accent-coral-hover` | `#FF8466` | hover CTA | negru 8.2:1 |
-| `accent-coral-text` | `#B83C22` | coral pentru **text mic** pe fundal deschis (etichete, erori) | 5.3:1 pe background |
-| `on-dark-muted` | `#A9B8D0` | text secundar pe navy/negru | 8.5:1 / 9.8:1 |
-| `border` | `#D5DEEA` | **doar** separatoare decorative (1.3:1) | — |
-| `control-border` | `#6B7689` | contur inputuri | 4.6:1 pe alb |
-| `focus` | `#1D5FD1` | focus pe fundal deschis | 5.4:1; pe navy/negru focusul este coral |
+| `background` | `#F4F7FB` | — | fundal albicios |
+| `panel` | `#FFFFFF` | — | inputuri, mesaje |
+| `soft-blue` 1/2/3 | `#DCE8F5` · `#C9DAEE` · `#B7CCE6` | — | straturile hero, placeholder imagini; negru pe ele ≥ 13.8:1 |
+| `navy` / `navy-card` | `#0F1B33` / `#10264D` | — | footer, carduri cifre, pași, antrenamente, testimoniale |
+| `text-primary` | `#0B0B0C` (18.3:1) | `#F4F7FB` (13.9:1 pe card) | titluri, text |
+| `text-secondary` | `#4B5565` (7.0:1) | `#A9B8D0` (7.4:1) | explicații, metadate |
+| `coral` | `#FF6B4A` | `#FF6B4A` | **fundal** CTA cu text negru (7.0:1); niciodată text alb (2.8:1) |
+| `coral-text` | `#B83C22` (5.3:1) | `#FF6B4A` (5.3:1) | etichete, numerotări, erori; coralul pur ca text pe deschis are doar 2.6:1 |
+| `control-border` | `#6B7689` (4.6:1 pe alb) | `#7D879A` (4.1:1) | contur inputuri și butoane outline |
+| `focus` | `#1D5FD1` (5.4:1) | `#FF6B4A` | inel de focus 3px |
+| `border` | negru 12% | alb 14% | doar separatoare decorative |
 
-Proporție țintă: suprafețe luminoase majoritare; navy pentru header + hero; negru pentru footer; coral ≤ 5% (CTA, puncte, etichete).
+## Hero 3D
+Trei straturi rotite în perspectivă CSS, liniile terenului și mingea coral pe stratul de sus, voal albicios sub titlu pentru lizibilitate,
+plutire de 14 s (oprită la `prefers-reduced-motion`). Fără WebGL, fără JavaScript. Fotografia reală, când există, devine un card plutitor.
 
 ## Tipografie
-- **Manrope** (titluri, 200–800 variabil) și **Source Sans 3** (text, 200–900 variabil, normal + italic). Licență SIL OFL 1.1
-  (fișierele `public/fonts/OFL-*.txt`). Sursa fișierelor: pachetele `@fontsource-variable/*` (5.3.x).
-- Găzduite local în `public/fonts/`, subseturi `latin` + `latin-ext`; diacriticele ă â î ș ț (și majusculele) verificate cu fontTools.
-  Doar fișierele latin normale sunt preîncărcate; latin-ext și italic se descarcă la nevoie (`unicode-range`).
-- Dimensiuni: hero 38 → 84 px (`clamp`), titluri secțiune 30 → 44 px, text 17/18 px, articole 18/19 px cu line-height 1.65,
-  coloană de lectură 68ch.
+- **Archivo Expanded** (titluri, navigație, cifre): Archivo variabil (Omnibus-Type, SIL OFL 1.1, fără Reserved Font Name) instanțiat
+  la lățime 125%, greutăți 500–900, cu fontTools → `public/fonts/archivo-{latin,latin-ext}-expanded-normal.woff2` (~32 KB fiecare).
+- **Source Sans 3** (text, formulare, articole), variabil 200–900, normal + italic (OFL).
+- Diacritice ă â î ș ț și majuscule verificate în fișierele reale. Preîncărcate: doar fișierele `latin` normale.
+- Stiluri: `.display` = majuscule, 850, spațiere -0.035em, line-height 0.92; `.display-light` = 500 (titluri în două tonuri,
+  ex. „CUM **LUCREZ**”). Mărimi: `.h-hero` 36 → 88 px · `.h-page` 24 → 80 px (cuvinte lungi pe mobil) · `.h-section` 32 → 64 px ·
+  `.h-card`. Text 17/18 px; articole 18/19 px, line-height 1.7, culoare `#E3E9F2`, coloană 68ch.
 
 ## Layout
-Container 1240 px; gutter 20/24/40 px; spațiere secțiuni 56 px mobil / 104 px desktop; colțuri 4–8 px; fără umbre decorative;
-zone tactile ≥ 44 × 44 px (butoane 48 px). Header sticky 72 px.
+- Desktop (≥ 1024 px): bară laterală fixă de 320 px, pe fundalul albicios — wordmark sus; navigație mare cu majuscule, CTA, limbă și social jos.
+  Conținutul (`.content-shell`) stă la dreapta, container max 1240 px.
+- Mobil: bară de sus (wordmark + „Meniu” pastilă), meniu pe tot ecranul cu linkuri mari și CTA.
+  Fără `backdrop-filter` pe header: ar limita meniul `fixed` la înălțimea barei (bug găsit și testat în e2e).
+- Spațiere secțiuni 64 px mobil / 112 px desktop; secțiunile sunt separate de linii subțiri.
+- Colțuri: 24 px carduri mari și hero, 14 px imagini, 6 px carduri navy compacte; pastile pentru butoane și inputuri.
+- Zone tactile ≥ 44 × 44 px; butoane și inputuri 48–52 px.
 
 ## Componente
-`btn-primary` (coral, text negru), `btn-dark` (navy, text alb), `btn-secondary` (contur navy), `link-arrow`, `field-input`, `eyebrow`, carduri de serviciu
-(linie navy sus, fără chenar), carduri de articol (imagine opțională, categorie, dată, titlu, rezumat), secțiune soft blue
-(„Cum lucrez”) cu pași numerotați pe coral; header și hero navy (`on-dark`), footer negru.
+Hero 3D (nume uriaș + tagline subțire; introducerea și CTA-urile **sub** scenă) · `btn-primary` (coral, text negru) · `btn-outline` (contur gri-albăstrui) · carduri de antrenament (numerotate, foto opțional,
+2 pe rând) · carduri navy pentru cifre și pași · testimoniale (doar cu acord) · carduri de articol · formular cu inputuri pastilă și
+tipuri de solicitare ca pastile selectabile · comutator de limbă pastilă (apare doar când engleza e publică).
+
+## Conținut condiționat (nimic inventat)
+Secțiunile apar doar cu date reale din CMS: „Pe scurt” (cifre confirmate), „Ce spun jucătorii” (citat + acord bifat), antrenamente
+(`confirmed`), jurnal (articole publicate), „Despre” (text). Logo-urile de parteneri **nu** sunt implementate: se adaugă doar când există
+parteneriate reale și drept de folosire a mărcilor.
 
 ## Imagini
-- Fotografii reale cu Daniel; câmpul `rights` din Media trebuie să fie altul decât „neverificat”, altfel imaginea nu apare public.
-- Fără fotografie: hero-ul afișează un motiv grafic (linii de teren pe navy, minge coral, SVG). Nu este o fotografie și nu reprezintă o persoană.
-- `next/image` cu AVIF/WebP, `sizes` explicite, `priority` doar pentru imaginea LCP.
+- Fotografii reale cu Daniel; câmpul `rights` din Media ≠ „neverificat”, altfel imaginea nu apare public.
+- Fără fotografie: straturile 3D cu liniile terenului (SVG decorativ). Nu este o fotografie și nu reprezintă o persoană.
+- `next/image` cu AVIF/WebP, `sizes` explicite, `priority` doar pentru imaginea hero.
 
 ## Interacțiune
-Tranziții CSS 150–250 ms; hover + focus vizibile; meniu mobil accesibil (Escape, focus restituit); respect pentru
-`prefers-reduced-motion`; nimic ascuns dacă JavaScript eșuează (în afară de trimiterea formularului, care necesită JS).
+Tranziții CSS 150–250 ms; hover și focus vizibile; meniu mobil accesibil (Escape, focus restituit); `prefers-reduced-motion` respectat;
+fără carusel cu JavaScript, fără scroll controlat, fără video automat.
 
 ## Identitate
-- Wordmark tipografic „DANIEL POPESCU” (Manrope 800, spațiere 0.16em; alb pe navy în header) — în cod: `src/components/Wordmark.tsx`.
-- Monogramă DP — propunere secundară: `public/brand/dp-monogram.svg` + variante monocrome (`-mono-dark`, `-mono-light`).
-- `public/brand/wordmark-{navy,dark,light}.svg` folosesc text live; înainte de folosire în afara site-ului trebuie convertite în contururi.
+- Wordmark „DANIEL POPESCU” în Archivo Expanded 800, spațiere 0.08em (`src/components/Wordmark.tsx`).
+- Monogramă DP — propunere: `public/brand/dp-monogram.svg` (+ `-mono-dark`, `-mono-light`). Wordmark SVG: `public/brand/wordmark-*.svg`
+  folosesc text live — trebuie convertite în contururi înainte de folosirea în afara site-ului.
+
+## Istoric
+v1 verde/zgură (brief) → v2 navy/coral pe fundal deschis (0006) → v3 temă închisă (0007) → v4 albicios + hero 3D soft blue (0008).

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   icons: { icon: '/brand/dp-monogram.svg' },
 }
 
-export const viewport: Viewport = { themeColor: '#0F1B33' }
+export const viewport: Viewport = { themeColor: '#F4F7FB' }
 
 export default function Layout({ children }: { children: ReactNode }) {
   return <SiteLayout locale="ro">{children}</SiteLayout>

@@ -153,6 +153,10 @@ export interface Page {
   intro?: string | null;
   image?: (number | null) | Media;
   home?: {
+    /**
+     * Ex. o idee proprie a lui Daniel, în 3–6 cuvinte. Gol = „Despre Daniel”.
+     */
+    aboutHeading?: string | null;
     aboutText?: string | null;
     aboutImage?: (number | null) | Media;
     approach?:
@@ -162,10 +166,35 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    /**
+     * Doar fapte reale, confirmate de Daniel. Secțiunea nu apare dacă lista e goală.
+     */
+    facts?:
+      | {
+          value: string;
+          label: string;
+          note?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    coachingHeading?: string | null;
     method?:
       | {
           title: string;
           text: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Numai citate reale, cu acordul scris al persoanei. Fără acord bifat, testimonialul nu apare.
+     */
+    testimonials?:
+      | {
+          name: string;
+          role?: string | null;
+          quote: string;
+          image?: (number | null) | Media;
+          consent: boolean;
           id?: string | null;
         }[]
       | null;
@@ -261,6 +290,7 @@ export interface CoachingService {
   format: string;
   goals: string;
   description?: string | null;
+  image?: (number | null) | Media;
   confirmed?: boolean | null;
   availability?: ('available' | 'limited' | 'full') | null;
   order?: number | null;
@@ -531,6 +561,7 @@ export interface PagesSelect<T extends boolean = true> {
   home?:
     | T
     | {
+        aboutHeading?: T;
         aboutText?: T;
         aboutImage?: T;
         approach?:
@@ -540,11 +571,30 @@ export interface PagesSelect<T extends boolean = true> {
               text?: T;
               id?: T;
             };
+        facts?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              note?: T;
+              id?: T;
+            };
+        coachingHeading?: T;
         method?:
           | T
           | {
               title?: T;
               text?: T;
+              id?: T;
+            };
+        testimonials?:
+          | T
+          | {
+              name?: T;
+              role?: T;
+              quote?: T;
+              image?: T;
+              consent?: T;
               id?: T;
             };
         contactInvite?: T;
@@ -572,6 +622,7 @@ export interface CoachingServicesSelect<T extends boolean = true> {
   format?: T;
   goals?: T;
   description?: T;
+  image?: T;
   confirmed?: T;
   availability?: T;
   order?: T;

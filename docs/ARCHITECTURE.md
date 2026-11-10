@@ -37,8 +37,8 @@ Browser ──► Next.js (App Router, Node.js)
 |---|---|---|
 | `admin-users` | Conturi de administrare (roluri `admin`, `editor`; primul cont devine admin) | niciunul |
 | `site-settings` (global) | Identitate, contact public, social, `englishEnabled`, SEO implicit | citire |
-| `pages` | Pagini fixe (`home`, `about`, `coaching`, `journal`, `contact`, `privacy`), câmpuri localizate, drafturi | numai `published` |
-| `coaching-services` | Oferte; doar `confirmed` apar | numai `confirmed` |
+| `pages` | Pagini fixe (`home`, `about`, `coaching`, `journal`, `contact`, `privacy`), câmpuri localizate, drafturi; homepage: despre, abordare, cifre, pași, testimoniale (cu acord) | numai `published` |
+| `coaching-services` | Oferte (cu fotografie opțională); doar `confirmed` apar | numai `confirmed` |
 | `articles` | Articole, un document per limbă, `translationGroup`, drafturi + versiuni, `previousSlugs` | numai `published` |
 | `categories` | Denumire + slug localizate | citire |
 | `article-sources` | Surse (URL, titlu, publisher, dată accesare, note) | niciunul (afișate pe server doar pentru articole publicate) |

@@ -61,7 +61,7 @@ export async function ArticleView({ locale, slug }: { locale: Locale; slug: stri
   return (
     <article>
       {preview ? (
-        <div className="bg-coral text-ink">
+        <div className="bg-coral text-on-coral">
           <p className="container-site py-2 text-sm font-semibold">
             Preview privat — {article._status === 'published' ? 'versiune cu posibile modificări nepublicate' : 'draft nepublicat'}.{' '}
             {/* Rută API care șterge cookie-ul de preview; nu e navigare client-side. */}
@@ -89,7 +89,7 @@ export async function ArticleView({ locale, slug }: { locale: Locale; slug: stri
             {category ? <li>{category}</li> : null}
           </ol>
         </nav>
-        <h1 className="mt-5 max-w-[22ch] text-[clamp(2.125rem,1.6rem+2.4vw,3.75rem)] font-bold">{article.title}</h1>
+        <h1 className="mt-5 max-w-[24ch] text-[clamp(2rem,1.4rem+2.4vw,3.5rem)] leading-[1.05] font-[800]">{article.title}</h1>
         <p className="mt-5 max-w-[42rem] text-lg text-muted lg:text-xl">{article.excerpt}</p>
         <p className="mt-6 text-sm text-muted">
           {t.journal.by} {article.authorName}
@@ -103,7 +103,7 @@ export async function ArticleView({ locale, slug }: { locale: Locale; slug: stri
       </header>
       {hasPublicImage(article.coverImage) ? (
         <div className="container-site mt-10">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-md">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
             <MediaImage media={article.coverImage} fill priority sizes="(min-width: 1240px) 1240px, 100vw" />
           </div>
         </div>
@@ -130,7 +130,7 @@ export async function ArticleView({ locale, slug }: { locale: Locale; slug: stri
         ) : null}
 
         {services.length > 0 ? (
-          <aside className="mt-14 max-w-[68ch] rounded-md bg-surface p-6">
+          <aside className="card-navy mt-14 max-w-[68ch] p-6 sm:p-8">
             <p className="font-display text-lg font-bold">{t.journal.relatedCoaching}</p>
             <ul className="mt-2">
               {services.map((s) => (

@@ -10,9 +10,9 @@ se verifică pe site-ul oficial înainte de activare. Nimic plătit nu este acti
 | Payload CMS + `@payloadcms/*` | administrare, API, migrații | MIT | GraphQL dezactivat |
 | PostgreSQL 16 | bază de date | PostgreSQL License | gazduirea se bugetează separat |
 | Tailwind CSS 4, Zod, sharp, nodemailer | stiluri, validare, imagini, email | MIT / Apache-2.0 | |
-| Manrope, Source Sans 3 | fonturi | SIL OFL 1.1 | găzduite local |
+| Archivo (instanță Expanded), Source Sans 3 | fonturi | SIL OFL 1.1 | găzduite local; Archivo instanțiat cu fontTools |
 | Vitest, Playwright, axe-core | teste | MIT / Apache-2.0 / MPL-2.0 | rulare locală și în CI |
-| fontTools (Python) | verificare diacritice în fonturi | MIT | folosit o dată, local |
+| fontTools (Python) | verificare diacritice; instanțierea Archivo la lățime 125% | MIT | folosit local |
 
 ## Servicii (planuri gratuite cu limite)
 | Serviciu | Scop | Date accesate | Cum se dezactivează | Risc de cost |

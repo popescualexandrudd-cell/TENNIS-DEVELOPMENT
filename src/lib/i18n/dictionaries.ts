@@ -24,6 +24,10 @@ const ro = {
     journal: 'Din jurnal',
     journalAll: 'Toate articolele',
     contact: 'Hai să vorbim',
+    facts: 'Pe scurt',
+    testimonials: 'Ce spun jucătorii',
+    step: 'Pasul',
+    workWithMe: 'Lucrează cu mine',
   },
   coaching: {
     audience: 'Cui se adresează',
@@ -94,6 +98,10 @@ const en: Dictionary = {
     journal: 'From the journal',
     journalAll: 'All articles',
     contact: "Let's talk",
+    facts: 'At a glance',
+    testimonials: 'What players say',
+    step: 'Step',
+    workWithMe: 'Work with me',
   },
   coaching: {
     audience: 'Who it is for',

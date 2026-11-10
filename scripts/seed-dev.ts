@@ -45,6 +45,16 @@ async function main() {
     intro:
       'Sunt Daniel Popescu. Abordarea mea pornește de la jucător, obiectivele lui și lucrurile pe care le putem îmbunătăți împreună.',
     home: {
+      aboutHeading: `${EX} Titlu-afirmație scurt`,
+      coachingHeading: 'Antrenamente cu obiective clare',
+      facts: [
+        { value: '00', label: `${EX} Ani de experiență`, note: 'De completat cu date reale' },
+        { value: '00', label: `${EX} Jucători antrenați`, note: 'Doar dacă poate fi verificat' },
+        { value: '00', label: `${EX} Altă cifră reală`, note: 'Sau secțiunea rămâne ascunsă' },
+      ],
+      testimonials: [
+        { name: 'Nume Exemplu', role: `${EX} Context jucător`, quote: `${EX} Aici apare un citat real, publicat doar cu acordul scris al persoanei.`, consent: true },
+      ],
       aboutText: `${EX} Aici vor sta 80–120 de cuvinte scrise sau validate de Daniel: cine este, de unde vine în tenis și ce îl interesează la fiecare jucător cu care lucrează. Textul acesta este doar un substituent pentru layout și nu descrie experiența reală.`,
       approach: [
         { title: `${EX} Jucătorul înainte de metodă`, text: 'Prima idee despre abordare, formulată de Daniel.' },

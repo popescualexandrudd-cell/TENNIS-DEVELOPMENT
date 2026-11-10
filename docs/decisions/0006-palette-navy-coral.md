@@ -1,4 +1,6 @@
-# 0006 — Paleta v2: soft blue, midnight navy, coral orange, negru (acceptată ca propunere de lucru, 10.11.2026)
+# 0006 — Paleta v2: soft blue, midnight navy, coral orange, negru (10.11.2026)
+
+> **Parțial înlocuită de [0007](0007-dark-editorial-sport.md):** paleta rămâne, dar aplicată pe o temă închisă; valorile curente sunt în `docs/DESIGN_SYSTEM.md`.
 
 **Context.** Brief-ul definea o paletă verde/zgură (`background #F7F5F0`, `brand-primary #234638`, `accent-clay #A64B35`,
 `accent-tennis #D6E56B`). În timpul primei sesiuni Daniel a cerut un site „ca patrickmouratoglou.com” și a propus paleta

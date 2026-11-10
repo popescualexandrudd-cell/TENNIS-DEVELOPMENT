@@ -71,6 +71,14 @@ export const Pages: CollectionConfig = {
       type: 'group',
       admin: { condition: forKeys('home') },
       fields: [
+        {
+          name: 'aboutHeading',
+          label: 'Despre — titlu-afirmație (opțional, scurt)',
+          type: 'text',
+          localized: true,
+          maxLength: 60,
+          admin: { description: 'Ex. o idee proprie a lui Daniel, în 3–6 cuvinte. Gol = „Despre Daniel”.' },
+        },
         { name: 'aboutText', label: 'Despre Daniel — 80–120 de cuvinte', type: 'textarea', localized: true },
         { name: 'aboutImage', label: 'Portret', type: 'upload', relationTo: 'media' },
         {
@@ -85,6 +93,20 @@ export const Pages: CollectionConfig = {
           ],
         },
         {
+          name: 'facts',
+          label: 'Cifre verificabile (opțional, max. 4)',
+          type: 'array',
+          localized: true,
+          maxRows: 4,
+          admin: { description: 'Doar fapte reale, confirmate de Daniel. Secțiunea nu apare dacă lista e goală.' },
+          fields: [
+            { name: 'value', label: 'Valoare', type: 'text', required: true, maxLength: 8 },
+            { name: 'label', label: 'Ce reprezintă', type: 'text', required: true, maxLength: 60 },
+            { name: 'note', label: 'Detaliu / sursă', type: 'text', maxLength: 90 },
+          ],
+        },
+        { name: 'coachingHeading', label: 'Antrenamente — titlu-afirmație (opțional)', type: 'text', localized: true, maxLength: 60 },
+        {
           name: 'method',
           label: 'Cum lucrez — pași',
           type: 'array',
@@ -93,6 +115,21 @@ export const Pages: CollectionConfig = {
           fields: [
             { name: 'title', type: 'text', required: true },
             { name: 'text', type: 'textarea', required: true },
+          ],
+        },
+        {
+          name: 'testimonials',
+          label: 'Testimoniale (opțional)',
+          type: 'array',
+          localized: true,
+          maxRows: 6,
+          admin: { description: 'Numai citate reale, cu acordul scris al persoanei. Fără acord bifat, testimonialul nu apare.' },
+          fields: [
+            { name: 'name', label: 'Nume', type: 'text', required: true },
+            { name: 'role', label: 'Context (ex. jucător amator, 2 ani de antrenament)', type: 'text' },
+            { name: 'quote', label: 'Citat', type: 'textarea', required: true, maxLength: 400 },
+            { name: 'image', label: 'Fotografie (cu acord)', type: 'upload', relationTo: 'media' },
+            { name: 'consent', label: 'Am acordul scris pentru publicare', type: 'checkbox', defaultValue: false, required: true },
           ],
         },
         { name: 'contactInvite', label: 'Invitație la contact', type: 'textarea', localized: true },

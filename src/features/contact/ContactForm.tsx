@@ -55,9 +55,9 @@ export function ContactForm({ locale, t, privacyHref }: { locale: Locale; t: Dic
     <form onSubmit={onSubmit} noValidate className="grid gap-5" aria-describedby="contact-status">
       <div ref={statusRef} id="contact-status" tabIndex={-1} role="status" aria-live="polite" className="outline-none empty:hidden">
         {state.kind === 'success' ? (
-          <p className="rounded-md border-l-4 border-brand bg-surface p-4 font-semibold">{t.success}</p>
+          <p className="rounded-md border-l-4 border-navy bg-panel p-4 font-semibold">{t.success}</p>
         ) : state.kind === 'error' ? (
-          <p className="rounded-md border-l-4 border-coral-ink bg-surface p-4 font-semibold">{state.message}</p>
+          <p className="rounded-md border-l-4 border-coral-text bg-panel p-4 font-semibold">{state.message}</p>
         ) : null}
       </div>
 
@@ -67,14 +67,14 @@ export function ContactForm({ locale, t, privacyHref }: { locale: Locale; t: Dic
             {t.name} <span className="text-sm font-normal text-muted">({t.required})</span>
           </label>
           <input id="cf-name" name="name" autoComplete="name" required minLength={2} maxLength={120} className="field-input" aria-invalid={invalid('name')} aria-describedby={describedBy('name')} />
-          {invalid('name') ? <p id="err-name" className="mt-1 text-sm text-coral-ink">{errorMessages.name}</p> : null}
+          {invalid('name') ? <p id="err-name" className="mt-1 text-sm text-coral-text">{errorMessages.name}</p> : null}
         </div>
         <div>
           <label htmlFor="cf-email" className="field-label">
             {t.email} <span className="text-sm font-normal text-muted">({t.required})</span>
           </label>
           <input id="cf-email" name="email" type="email" autoComplete="email" required maxLength={254} className="field-input" aria-invalid={invalid('email')} aria-describedby={describedBy('email')} />
-          {invalid('email') ? <p id="err-email" className="mt-1 text-sm text-coral-ink">{errorMessages.email}</p> : null}
+          {invalid('email') ? <p id="err-email" className="mt-1 text-sm text-coral-text">{errorMessages.email}</p> : null}
         </div>
       </div>
 
@@ -82,15 +82,15 @@ export function ContactForm({ locale, t, privacyHref }: { locale: Locale; t: Dic
         <legend className="field-label">
           {t.type} <span className="text-sm font-normal text-muted">({t.required})</span>
         </legend>
-        <div className="flex flex-wrap gap-x-6 gap-y-1">
+        <div className="flex flex-wrap gap-2">
           {(['coaching', 'collaboration', 'other'] as const).map((value, i) => (
-            <label key={value} className="inline-flex min-h-11 cursor-pointer items-center gap-2">
-              <input type="radio" name="requestType" value={value} defaultChecked={i === 0} required className="size-5 accent-[var(--color-brand-primary)]" />
+            <label key={value} className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-control px-4 has-[:checked]:border-coral-text has-[:checked]:bg-coral/10">
+              <input type="radio" name="requestType" value={value} defaultChecked={i === 0} required className="size-5 accent-[var(--color-coral)]" />
               {t.types[value]}
             </label>
           ))}
         </div>
-        {invalid('requestType') ? <p id="err-requestType" className="mt-1 text-sm text-coral-ink">{errorMessages.requestType}</p> : null}
+        {invalid('requestType') ? <p id="err-requestType" className="mt-1 text-sm text-coral-text">{errorMessages.requestType}</p> : null}
       </fieldset>
 
       <div>
@@ -98,7 +98,7 @@ export function ContactForm({ locale, t, privacyHref }: { locale: Locale; t: Dic
           {t.message} <span className="text-sm font-normal text-muted">({t.required})</span>
         </label>
         <textarea id="cf-message" name="message" required minLength={10} maxLength={4000} rows={6} className="field-input" aria-invalid={invalid('message')} aria-describedby={describedBy('message')} />
-        {invalid('message') ? <p id="err-message" className="mt-1 text-sm text-coral-ink">{errorMessages.message}</p> : null}
+        {invalid('message') ? <p id="err-message" className="mt-1 text-sm text-coral-text">{errorMessages.message}</p> : null}
       </div>
 
       {/* Honeypot: ascuns vizual și pentru tehnologii asistive */}
@@ -120,7 +120,7 @@ export function ContactForm({ locale, t, privacyHref }: { locale: Locale; t: Dic
       </p>
 
       <div>
-        <button type="submit" className="btn btn-primary" disabled={state.kind === 'sending'}>
+        <button type="submit" className="btn btn-primary w-full sm:w-auto sm:min-w-64" disabled={state.kind === 'sending'}>
           {state.kind === 'sending' ? t.sending : t.submit}
         </button>
       </div>

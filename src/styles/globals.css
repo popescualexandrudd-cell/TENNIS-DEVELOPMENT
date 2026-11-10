@@ -1,32 +1,49 @@
 @import 'tailwindcss';
 @import './fonts.css';
 
-/* Design tokens — sursa: docs/DESIGN_SYSTEM.md */
+/*
+ * Design tokens — sursa: docs/DESIGN_SYSTEM.md (decizia 0008: fundal albicios + hero 3D soft blue în straturi).
+ * Paleta: alb-albăstrui, soft blue, midnight navy, coral orange, negru.
+ * Zonele navy (`.on-navy`, `.card-navy`) redefinesc aceleași variabile, ca utilitarele să rămână lizibile.
+ */
 :root {
-  /* Paleta v2 (decizia 0006): soft blue, midnight navy, coral orange, negru */
-  --color-background: #f4f7fb;
-  --color-surface: #ffffff;
+  --color-background: #f4f7fb; /* albicios */
+  --color-panel: #ffffff;
+  --color-navy: #0f1b33; /* midnight navy */
+  --color-navy-card: #10264d;
   --color-soft-blue: #dce8f5;
-  --color-text-primary: #0b0b0c;
+  --color-soft-blue-2: #c9daee;
+  --color-soft-blue-3: #b7cce6;
+  --color-text-primary: #0b0b0c; /* negru */
   --color-text-secondary: #4b5565;
-  --color-brand-primary: #0f1b33; /* midnight navy */
-  --color-brand-hover: #1a2a4a;
-  --color-accent-coral: #ff6b4a; /* fundal CTA (cu text negru) și accente pe navy */
-  --color-accent-coral-hover: #ff8466;
-  --color-accent-coral-text: #b83c22; /* coral închis pentru text mic pe fundal deschis */
-  --color-on-dark-muted: #a9b8d0;
-  --color-border: #d5deea;
-  /* Contur pentru controale: contrast ≥ 3:1 față de background/surface */
+  --color-coral: #ff6b4a; /* fundal CTA, cu text negru */
+  --color-coral-hover: #ff8466;
+  --color-coral-text: #b83c22; /* coral pentru text și contururi pe fundal deschis */
+  --color-on-coral: #0b0b0c;
+  --color-border: rgb(11 11 12 / 0.12); /* doar decorativ */
   --color-control-border: #6b7689;
   --color-focus: #1d5fd1;
-  --color-on-dark-focus: #ff6b4a;
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
   --container-max: 1240px;
   --gutter: 20px;
-  --section-space: 56px;
+  --section-space: 64px;
+  --sidebar-w: 0px;
   --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.on-navy,
+.card-navy {
+  --color-text-primary: #f4f7fb;
+  --color-text-secondary: #a9b8d0;
+  --color-coral-text: #ff6b4a;
+  --color-border: rgb(255 255 255 / 0.14);
+  --color-control-border: #7d879a;
+  --color-focus: #ff6b4a;
+  color: var(--color-text-primary);
 }
 
 @media (min-width: 640px) {
@@ -37,34 +54,37 @@
 @media (min-width: 1024px) {
   :root {
     --gutter: 40px;
-    --section-space: 104px;
+    --section-space: 112px;
+    --sidebar-w: 320px;
   }
 }
 
 @theme inline {
   --color-background: var(--color-background);
-  --color-surface: var(--color-surface);
+  --color-panel: var(--color-panel);
+  --color-navy: var(--color-navy);
+  --color-navy-card: var(--color-navy-card);
+  --color-soft: var(--color-soft-blue);
+  --color-soft-2: var(--color-soft-blue-2);
+  --color-coral-text: var(--color-coral-text);
   --color-ink: var(--color-text-primary);
   --color-muted: var(--color-text-secondary);
-  --color-brand: var(--color-brand-primary);
-  --color-brand-hover: var(--color-brand-hover);
-  --color-soft: var(--color-soft-blue);
-  --color-coral: var(--color-accent-coral);
-  --color-coral-ink: var(--color-accent-coral-text);
-  --color-on-dark-muted: var(--color-on-dark-muted);
+  --color-coral: var(--color-coral);
+  --color-on-coral: var(--color-on-coral);
   --color-line: var(--color-border);
   --color-control: var(--color-control-border);
-  --color-focus: var(--color-focus);
-  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Archivo Expanded', 'Arial Black', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
 }
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
-    text-rendering: optimizeLegibility;
+    color-scheme: light;
+    background: var(--color-background);
   }
   body {
     background: var(--color-background);
@@ -84,8 +104,9 @@
   h3,
   h4 {
     font-family: var(--font-display);
+    font-weight: 800;
     letter-spacing: -0.02em;
-    line-height: 1.12;
+    line-height: 1.02;
     text-wrap: balance;
   }
   p {
@@ -94,22 +115,23 @@
   :focus-visible {
     outline: 3px solid var(--color-focus);
     outline-offset: 3px;
-    border-radius: 2px;
-  }
-  .on-dark :focus-visible {
-    outline-color: var(--color-on-dark-focus);
+    border-radius: 4px;
   }
   a {
     text-underline-offset: 0.18em;
     text-decoration-thickness: 1px;
   }
   ::selection {
-    background: var(--color-soft-blue);
+    background: var(--color-soft-blue-2);
     color: var(--color-text-primary);
   }
 }
 
 @layer components {
+  /* Conținutul stă la dreapta barei laterale pe desktop. */
+  .content-shell {
+    padding-left: var(--sidebar-w);
+  }
   .container-site {
     width: 100%;
     max-width: calc(var(--container-max) + 2 * var(--gutter));
@@ -120,31 +142,41 @@
     padding-block: var(--section-space);
   }
   .eyebrow {
-    font-family: var(--font-display);
-    font-size: 0.8125rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-accent-coral-text);
+    color: var(--color-text-secondary);
   }
-  .on-dark .eyebrow {
-    color: var(--color-accent-coral);
+  .eyebrow-coral {
+    color: var(--color-coral-text);
+  }
+  /* Titluri display: majuscule, late, foarte compacte */
+  .display {
+    hyphens: manual;
+    font-family: var(--font-display);
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
+  }
+  .display-light {
+    font-weight: 500;
   }
   .h-hero {
-    font-size: clamp(2.375rem, 1.6rem + 3.6vw, 5.25rem); /* 38px → 84px */
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.02;
+    font-size: clamp(2.25rem, 1.2rem + 4.6vw, 5.5rem); /* 36px → 88px */
   }
-  /* Titlul principal al homepage-ului: majuscule, ca semnătură editorial-sportivă */
-  .h-display {
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    line-height: 0.98;
+  /* Titluri de pagină: pot fi cuvinte lungi („CONFIDENȚIALITATE”), deci minim mai mic pe mobil */
+  .h-page {
+    font-size: clamp(1.5rem, 0.4rem + 5.4vw, 5rem);
+    overflow-wrap: break-word;
   }
   .h-section {
-    font-size: clamp(1.875rem, 1.5rem + 1.4vw, 2.75rem); /* 30px → 44px */
-    font-weight: 700;
+    font-size: clamp(2rem, 1.3rem + 2.8vw, 4rem); /* 32px → 64px */
+  }
+  .h-card {
+    font-size: clamp(1.5rem, 1.15rem + 1.2vw, 2.25rem);
   }
   .btn {
     display: inline-flex;
@@ -152,9 +184,9 @@
     justify-content: center;
     gap: 0.5rem;
     min-height: 48px;
-    padding: 0.75rem 1.375rem;
-    border-radius: var(--radius-sm);
-    font-family: var(--font-display);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
     font-weight: 700;
     font-size: 1rem;
     line-height: 1.2;
@@ -165,45 +197,102 @@
       border-color 180ms var(--ease);
   }
   .btn-primary {
-    background: var(--color-accent-coral);
-    color: var(--color-text-primary);
+    background: var(--color-coral);
+    color: var(--color-on-coral);
   }
   .btn-primary:hover {
-    background: var(--color-accent-coral-hover);
+    background: var(--color-coral-hover);
   }
-  .btn-dark {
-    background: var(--color-brand-primary);
-    color: #fff;
-  }
-  .btn-dark:hover {
-    background: var(--color-brand-hover);
-  }
-  .btn-secondary {
-    border: 1.5px solid var(--color-brand-primary);
-    color: var(--color-brand-primary);
+  .btn-outline {
+    border: 1.5px solid var(--color-control-border);
+    color: var(--color-text-primary);
     background: transparent;
   }
-  .btn-secondary:hover {
-    background: var(--color-brand-primary);
-    color: #fff;
+  .btn-outline:hover {
+    border-color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+  }
+  .btn[disabled] {
+    opacity: 0.7;
+    cursor: progress;
   }
   .link-arrow {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     min-height: 44px;
-    font-family: var(--font-display);
     font-weight: 700;
-    color: var(--color-brand-primary);
+    color: var(--color-text-primary);
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
     transition: text-decoration-color 180ms var(--ease);
   }
   .link-arrow:hover {
     text-decoration-color: currentColor;
   }
-  .on-dark .link-arrow {
-    color: #fff;
+  .card-navy {
+    background: var(--color-navy-card);
+    border-radius: var(--radius-sm);
+  }
+
+  /* —— Hero 3D: straturi soft blue în perspectivă, pe fundal albicios (doar CSS, fără WebGL) —— */
+  .hero-stage {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: radial-gradient(120% 90% at 75% 5%, #ffffff 0%, #fafcfe 40%, #eef3f9 100%);
+    perspective: 1600px;
+  }
+  .hero-layers {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    transform-style: preserve-3d;
+    pointer-events: none;
+  }
+  .hero-layer {
+    position: absolute;
+    left: 38%;
+    top: 4%;
+    width: 78%;
+    height: 96%;
+    border-radius: 36px;
+    transform-origin: 50% 60%;
+    transform: rotateX(52deg) rotateZ(-32deg) translateZ(var(--z, 0px));
+    box-shadow:
+      0 50px 80px -30px rgb(15 27 51 / 0.28),
+      inset 0 1px 0 rgb(255 255 255 / 0.7);
+  }
+  .hero-layer-1 {
+    --z: -140px;
+    background: linear-gradient(140deg, var(--color-soft-blue-3), #a9c1e0);
+  }
+  .hero-layer-2 {
+    --z: -40px;
+    background: linear-gradient(140deg, var(--color-soft-blue-2), var(--color-soft-blue-3));
+  }
+  .hero-layer-3 {
+    --z: 70px;
+    background: linear-gradient(140deg, #e8f0fa 0%, var(--color-soft-blue) 55%, #cfdff1 100%);
+    border: 1px solid rgb(255 255 255 / 0.9);
+    animation: hero-float 14s var(--ease) infinite alternate;
+  }
+  @keyframes hero-float {
+    from {
+      transform: rotateX(52deg) rotateZ(-32deg) translateZ(70px);
+    }
+    to {
+      transform: rotateX(50deg) rotateZ(-30deg) translateZ(90px);
+    }
+  }
+  @media (max-width: 1023px) {
+    .hero-layer {
+      left: 10%;
+      top: 34%;
+      width: 120%;
+      height: 80%;
+    }
   }
   .field-label {
     display: block;
@@ -212,27 +301,35 @@
   }
   .field-input {
     width: 100%;
-    min-height: 48px;
-    padding: 0.625rem 0.875rem;
-    background: var(--color-surface);
+    min-height: 52px;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-panel);
     border: 1.5px solid var(--color-control-border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-pill);
     font: inherit;
     color: inherit;
     transition: border-color 150ms var(--ease);
+  }
+  textarea.field-input {
+    border-radius: var(--radius-lg);
+    min-height: 160px;
+  }
+  .field-input::placeholder {
+    color: #8a94a6;
   }
   .field-input:hover {
     border-color: var(--color-text-primary);
   }
   .field-input[aria-invalid='true'] {
-    border-color: var(--color-accent-coral-text);
+    border-color: var(--color-coral-text);
   }
 
   /* Coloana de lectură pentru articole: ~68 de caractere */
   .prose-article {
     max-width: 68ch;
     font-size: 1.125rem;
-    line-height: 1.65;
+    line-height: 1.7;
+    color: #1f2530;
   }
   @media (min-width: 1024px) {
     .prose-article {
@@ -243,15 +340,17 @@
     margin-top: 1.1em;
   }
   .prose-article h2 {
-    font-size: 1.625rem;
+    font-size: 1.5rem;
     margin-top: 2em;
+    color: var(--color-text-primary);
   }
   .prose-article h3 {
-    font-size: 1.3125rem;
+    font-size: 1.25rem;
     margin-top: 1.6em;
+    color: var(--color-text-primary);
   }
   .prose-article a {
-    color: var(--color-brand-primary);
+    color: var(--color-navy);
     text-decoration: underline;
   }
   .prose-article ul {
@@ -266,7 +365,7 @@
     margin-top: 0.4em;
   }
   .prose-article blockquote {
-    border-left: 3px solid var(--color-accent-coral);
+    border-left: 3px solid var(--color-coral);
     padding-left: 1.1em;
     color: var(--color-text-secondary);
     font-style: italic;
@@ -274,6 +373,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-layer-3 {
+    animation: none;
+  }
   *,
   *::before,
   *::after {

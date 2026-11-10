@@ -3,18 +3,22 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export function NavLinks({ items }: { items: { href: string; label: string }[] }) {
+/** Navigația principală a barei laterale: linkuri mari, cu majuscule. */
+export function NavLinks({ items, onNavigate, size = 'lg' }: { items: { href: string; label: string }[]; onNavigate?: () => void; size?: 'lg' | 'xl' }) {
   const pathname = usePathname()
   return (
-    <ul className="flex items-center gap-1">
+    <ul className="flex flex-col gap-1">
       {items.map((item) => {
         const current = pathname === item.href || pathname.startsWith(item.href + '/')
         return (
           <li key={item.href}>
             <Link
               href={item.href}
+              onClick={onNavigate}
               aria-current={current ? 'page' : undefined}
-              className="inline-flex min-h-11 items-center rounded-sm px-3 font-display text-[0.95rem] font-semibold text-white underline-offset-8 hover:underline aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:decoration-coral"
+              className={`display inline-flex min-h-11 items-center text-ink no-underline transition-colors duration-200 hover:text-soft aria-[current=page]:text-coral-text ${
+                size === 'xl' ? 'text-[clamp(1.5rem,7.5vw,2.75rem)]' : 'text-[1.375rem] xl:text-[1.5rem]'
+              }`}
             >
               {item.label}
             </Link>
