@@ -40,6 +40,10 @@ o listă de afirmații factuale cu sursa fiecăreia, și o listă „DE CONFIRMA
 Nu inventa nimic din ce nu apare în contribuție sau surse.
 ```
 
+## Articole programate
+Scrie articolul, lasă-l ca draft și completează **Publicare programată** (bara laterală). La ora aleasă se publică singur
+(sarcina automată rulează la 15 minute). Pentru a anula, golește câmpul.
+
 ## Păreri de la sportivi (moderare)
 Admin → Solicitări → **Păreri sportivi**. Fiecare părere nouă e „În așteptare” (și vine pe email, dacă SMTP e configurat).
 Citește-o; poți corecta greșeli de tastare, dar nu schimba sensul. Status „Aprobată” → apare pe homepage; „Respinsă” → rămâne doar în admin.

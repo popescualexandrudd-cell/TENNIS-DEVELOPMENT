@@ -371,6 +371,10 @@ export interface Article {
   category?: (number | null) | Category;
   authorName: string;
   /**
+   * Salvează articolul ca draft și alege data: se publică singur (sarcina automată rulează la 15 minute). Gol = publicare manuală.
+   */
+  scheduledAt?: string | null;
+  /**
    * Se completează automat la prima publicare.
    */
   publishedAt?: string | null;
@@ -430,6 +434,8 @@ export interface ContactRequest {
   status: 'new' | 'in_progress' | 'answered' | 'archived';
   notificationStatus?: ('pending' | 'sent' | 'failed') | null;
   notificationError?: string | null;
+  autoReply?: ('sent' | 'failed') | null;
+  reminderSentAt?: string | null;
   resendNotification?: boolean | null;
   ipHash?: string | null;
   updatedAt: string;
@@ -703,6 +709,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   workflow?: T;
   category?: T;
   authorName?: T;
+  scheduledAt?: T;
   publishedAt?: T;
   translationGroup?: T;
   previousSlugs?:
@@ -810,6 +817,8 @@ export interface ContactRequestsSelect<T extends boolean = true> {
   status?: T;
   notificationStatus?: T;
   notificationError?: T;
+  autoReply?: T;
+  reminderSentAt?: T;
   resendNotification?: T;
   ipHash?: T;
   updatedAt?: T;
@@ -962,6 +971,16 @@ export interface SiteSetting {
     feedbackRetentionMonths: number;
     updatedOn?: string | null;
   };
+  automation: {
+    autoReply?: boolean | null;
+    reminders?: boolean | null;
+    reminderHours: number;
+    weeklyDigest?: boolean | null;
+    lastRunAt?: string | null;
+    lastDailyRunOn?: string | null;
+    lastDigestOn?: string | null;
+    lastResult?: string | null;
+  };
   defaultTitle?: string | null;
   defaultDescription?: string | null;
   defaultImage?: (number | null) | Media;
@@ -1005,6 +1024,18 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         contactRetentionMonths?: T;
         feedbackRetentionMonths?: T;
         updatedOn?: T;
+      };
+  automation?:
+    | T
+    | {
+        autoReply?: T;
+        reminders?: T;
+        reminderHours?: T;
+        weeklyDigest?: T;
+        lastRunAt?: T;
+        lastDailyRunOn?: T;
+        lastDigestOn?: T;
+        lastResult?: T;
       };
   defaultTitle?: T;
   defaultDescription?: T;

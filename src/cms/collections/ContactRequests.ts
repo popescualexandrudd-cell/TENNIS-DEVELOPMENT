@@ -92,6 +92,17 @@ export const ContactRequests: CollectionConfig = {
     },
     { name: 'notificationError', label: 'Eroare notificare', type: 'text', admin: { position: 'sidebar', readOnly: true } },
     {
+      name: 'autoReply',
+      label: 'Confirmare trimisă vizitatorului',
+      type: 'select',
+      options: [
+        { label: 'Trimisă', value: 'sent' },
+        { label: 'Netrimisă (fără email configurat sau eroare)', value: 'failed' },
+      ],
+      admin: { position: 'sidebar', readOnly: true },
+    },
+    { name: 'reminderSentAt', label: 'Reminder „fără răspuns” trimis la', type: 'date', admin: { position: 'sidebar', readOnly: true } },
+    {
       name: 'resendNotification',
       label: 'Retrimite notificarea la salvare',
       type: 'checkbox',

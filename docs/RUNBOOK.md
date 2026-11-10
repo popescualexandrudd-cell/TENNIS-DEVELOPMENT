@@ -35,7 +35,10 @@ Staging: aceeași configurație, protejat (autentificare la proxy), `SITE_ENV` d
 
 ### Înainte de lansare — legal, securitate, SEO (deciziile 0013–0015)
 - [ ] Setări site → **Date legale** completate (paginile legale nu apar în producție fără ele); textele verificate de un specialist.
-- [ ] `pnpm retention` programat zilnic în cron (șterge datele la termenele din politică): `15 3 * * * cd /srv/app && pnpm retention`.
+- [ ] **Automatizări** (decizia 0017): `CRON_SECRET` setat și cron la 15 minute — publică articolele programate, iar o dată pe zi aplică
+  retenția, trimite remindere și, lunea, rezumatul săptămânal:
+  `*/15 * * * * curl -fsS -X POST -H "Authorization: Bearer $CRON_SECRET" https://DOMENIU/api/cron > /dev/null`
+  (rezervă fără HTTP: `pnpm retention` zilnic). Starea ultimei rulări: Setări site → Automatizări.
 - [ ] TLS la reverse proxy; `NEXT_PUBLIC_SITE_URL=https://…` (activează HSTS și `upgrade-insecure-requests`).
 - [ ] Firewall: doar 80/443 public, SSH cu cheie; PostgreSQL ascultă doar local; backup criptat în altă locație.
 - [ ] `pnpm audit --prod` fără vulnerabilități high/critical; apoi lunar.

@@ -153,6 +153,27 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: 'Automatizări',
+          description: 'Rulează automat prin POST /api/cron (vezi docs/RUNBOOK.md). Emailurile pleacă doar cu SMTP configurat.',
+          fields: [
+            {
+              name: 'automation',
+              type: 'group',
+              label: false,
+              fields: [
+                { name: 'autoReply', label: 'Confirmare automată pe email pentru cine trimite un mesaj sau o părere', type: 'checkbox', defaultValue: true },
+                { name: 'reminders', label: 'Reminder pentru solicitările fără răspuns', type: 'checkbox', defaultValue: true },
+                { name: 'reminderHours', label: 'După câte ore fără răspuns', type: 'number', min: 6, max: 240, defaultValue: 48, required: true },
+                { name: 'weeklyDigest', label: 'Rezumat săptămânal pe email (luni dimineața)', type: 'checkbox', defaultValue: true },
+                { name: 'lastRunAt', label: 'Ultima rulare', type: 'date', admin: { readOnly: true, date: { pickerAppearance: 'dayAndTime' } } },
+                { name: 'lastDailyRunOn', label: 'Ultima rulare zilnică (zi)', type: 'text', admin: { readOnly: true } },
+                { name: 'lastDigestOn', label: 'Ultimul rezumat (zi)', type: 'text', admin: { readOnly: true } },
+                { name: 'lastResult', label: 'Rezultatul ultimei rulări', type: 'textarea', admin: { readOnly: true } },
+              ],
+            },
+          ],
+        },
+        {
           label: 'SEO implicit',
           fields: [
             { name: 'defaultTitle', label: 'Titlu implicit', type: 'text', localized: true },
