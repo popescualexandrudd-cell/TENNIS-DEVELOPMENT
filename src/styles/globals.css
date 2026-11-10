@@ -200,6 +200,14 @@
   .btn-primary:hover {
     background: var(--color-coral-hover);
   }
+  /* WhatsApp: verdele mărcii cu text negru (contrast 9.9:1) */
+  .btn-whatsapp {
+    background: #25d366;
+    color: #0b0b0c;
+  }
+  .btn-whatsapp:hover {
+    background: #3be07a;
+  }
   .btn-outline {
     border: 1.5px solid var(--color-control-border);
     color: var(--color-text-primary);

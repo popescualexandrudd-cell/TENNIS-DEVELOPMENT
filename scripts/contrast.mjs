@@ -16,6 +16,8 @@ const pairs = [
   ['coral-text pe panel', '#B4441D', '#FFFFFF', 4.5],
   ['negru pe portocaliu (CTA)', '#0B0B0C', '#F26A3D', 4.5],
   ['negru pe portocaliu hover', '#0B0B0C', '#F4844F', 4.5],
+  ['negru pe verde WhatsApp (buton)', '#0B0B0C', '#25D366', 4.5],
+  ['negru pe verde WhatsApp hover', '#0B0B0C', '#3BE07A', 4.5],
   ['focus pe background (non-text 3:1)', '#1D5FD1', '#F4F7FB', 3],
   ['focus pe albastru prăfuit', '#1D5FD1', '#D5E0EB', 3],
   ['control-border pe panel (non-text 3:1)', '#6B7689', '#FFFFFF', 3],

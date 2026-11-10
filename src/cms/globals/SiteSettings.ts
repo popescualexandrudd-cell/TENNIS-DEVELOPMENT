@@ -37,6 +37,17 @@ export const SiteSettings: GlobalConfig = {
           fields: [
             { name: 'email', label: 'Email public', type: 'email' },
             { name: 'phone', label: 'Telefon public (opțional)', type: 'text' },
+            {
+              name: 'whatsapp',
+              label: 'WhatsApp (număr pentru butonul „Scrie-mi pe WhatsApp”)',
+              type: 'text',
+              admin: { description: 'Ex. 0726 409 988 sau +40 726 409 988. Gol = butonul nu apare.' },
+              validate: (value: unknown) => {
+                if (!value) return true
+                const digits = String(value).replace(/\D/g, '')
+                return digits.length >= 9 && digits.length <= 15 ? true : 'Număr de telefon invalid.'
+              },
+            },
             { name: 'location', label: 'Zona de activitate confirmată', type: 'text', localized: true },
             {
               name: 'acceptTestimonials',

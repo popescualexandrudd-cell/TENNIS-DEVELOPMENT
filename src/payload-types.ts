@@ -902,6 +902,10 @@ export interface SiteSetting {
   englishEnabled?: boolean | null;
   email?: string | null;
   phone?: string | null;
+  /**
+   * Ex. 0726 409 988 sau +40 726 409 988. Gol = butonul nu apare.
+   */
+  whatsapp?: string | null;
   location?: string | null;
   /**
    * Afișează formularul „Lasă o părere” la „Ce spun jucătorii”. Părerile apar doar după aprobare.
@@ -964,6 +968,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   englishEnabled?: T;
   email?: T;
   phone?: T;
+  whatsapp?: T;
   location?: T;
   acceptTestimonials?: T;
   social?:

@@ -36,7 +36,8 @@ async function main() {
     slug: 'site-settings',
     locale: 'ro',
     context: ctx,
-    data: { personName: 'Daniel Popescu', signature: 'Beyond the Game', englishEnabled: false, email: 'contact@example.test' },
+    // WhatsApp: numărul real, dat de Daniel pentru butonul de pe site (10.11.2026).
+    data: { personName: 'Daniel Popescu', signature: 'Beyond the Game', englishEnabled: false, email: 'contact@example.test', whatsapp: '0726409988' },
   })
 
   const pages = await payload.find({ collection: 'pages', where: { key: { equals: 'home' } }, limit: 1 })

@@ -109,6 +109,17 @@ export function PrivacyRo({ settings, analyticsEnabled }: Props) {
         </ul>
       </Section>
 
+      {settings.whatsapp ? (
+        <Section id="whatsapp" title="3a. Mesaje pe WhatsApp">
+          <p>
+            Butonul „Scrie-mi pe WhatsApp” este doar un link: site-ul nu încarcă nimic de la WhatsApp și nu transmite nicio dată. Dacă alegi
+            să-mi scrii acolo, conversația are loc în aplicația WhatsApp, operată de WhatsApp Ireland Limited (Meta), conform propriei politici
+            de confidențialitate. Eu văd numărul tău de telefon, numele din profil și mesajele, pe care le folosesc doar ca să-ți răspund
+            (temei: demersuri la cererea ta / interes legitim, ca la formularul de contact).
+          </p>
+        </Section>
+      ) : null}
+
       <Section id="technical" title="4. Date tehnice și protecția împotriva abuzurilor">
         <p>
           Ca să limitez mesajele trimise automat (spam), la fiecare trimitere de formular calculez din adresa ta IP un cod ireversibil (hash

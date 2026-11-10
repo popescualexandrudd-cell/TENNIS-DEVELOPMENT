@@ -115,6 +115,17 @@ test.describe('părerile sportivilor', () => {
   })
 })
 
+test.describe('WhatsApp', () => {
+  test('butonul din „Hai să vorbim” deschide conversația cu numărul configurat', async ({ page }) => {
+    await page.goto('/ro')
+    const link = page.locator('#h-contact').locator('xpath=ancestor::section').getByRole('link', { name: 'Scrie-mi pe WhatsApp' })
+    test.skip((await link.count()) === 0, 'fără număr WhatsApp în Setări site')
+    await expect(link).toHaveAttribute('href', /^https:\/\/wa\.me\/40\d{9}\?text=/)
+    await expect(link).toHaveAttribute('target', '_blank')
+    await expect(link).toHaveAttribute('rel', /noopener/)
+  })
+})
+
 test.describe('formular de contact', () => {
   test('validare în interfață și trimitere reușită', async ({ page }) => {
     await page.goto('/ro/contact')

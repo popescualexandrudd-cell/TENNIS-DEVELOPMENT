@@ -64,6 +64,9 @@ const ro = {
     privacyNote: 'Folosesc datele trimise doar pentru a-ți răspunde. Detalii în',
     privacyLink: 'politica de confidențialitate',
     directChannels: 'Sau direct',
+    whatsapp: 'Scrie-mi pe WhatsApp',
+    whatsappMessage: 'Bună, Daniel! Am văzut site-ul și aș vrea să aflu mai multe despre antrenamente.',
+    whatsappNote: 'Se deschide WhatsApp; mesajul îl trimiți tu.',
     required: 'obligatoriu',
     fieldErrors: {
       name: 'Scrie numele tău (2–120 de caractere).',
@@ -179,6 +182,9 @@ const en: Dictionary = {
     privacyNote: 'I only use the data you send to reply to you. Details in the',
     privacyLink: 'privacy policy',
     directChannels: 'Or directly',
+    whatsapp: 'Message me on WhatsApp',
+    whatsappMessage: 'Hi Daniel! I saw your website and would like to know more about coaching.',
+    whatsappNote: 'Opens WhatsApp; you send the message yourself.',
     required: 'required',
     fieldErrors: {
       name: 'Enter your name (2–120 characters).',
