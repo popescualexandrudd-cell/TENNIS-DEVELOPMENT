@@ -45,8 +45,7 @@ test.describe('site public', () => {
   })
 })
 
-test.describe('meniu mobil', () => {
-  test.skip(({ isMobile }) => !isMobile, 'doar pe mobil')
+test.describe('meniu (telefon: ecran complet, laptop: dropdown)', () => {
   test('se deschide, se închide cu Escape și redă focusul', async ({ page }) => {
     await page.goto('/ro')
     const button = page.getByRole('button', { name: 'Meniu' })
@@ -57,6 +56,14 @@ test.describe('meniu mobil', () => {
     await page.keyboard.press('Escape')
     await expect(page.getByRole('navigation', { name: 'Meniu' })).toBeHidden()
     await expect(button).toBeFocused()
+  })
+  test('se închide la clic în afara meniului', async ({ page }) => {
+    await page.goto('/ro')
+    await page.getByRole('button', { name: 'Meniu' }).click()
+    const nav = page.getByRole('navigation', { name: 'Meniu' })
+    await expect(nav).toBeVisible()
+    await page.mouse.click(5, 5)
+    await expect(nav).toBeHidden()
   })
 })
 

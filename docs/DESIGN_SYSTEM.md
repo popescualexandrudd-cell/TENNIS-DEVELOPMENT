@@ -2,7 +2,7 @@
 
 **Direcția v5** (decizii [0007](decisions/0007-dark-editorial-sport.md) + [0008](decisions/0008-light-3d-hero.md) + [0009](decisions/0009-sunset-court-palette.md), 10.11.2026):
 editorial-sportiv pe fundal albicios, cu hero 3D din straturi; paleta „apus pe teren” (portocaliu, ardezie, albastru prăfuit) după imaginea de referință trimisă de Daniel. Structura pornește de la capturile patrickmouratoglou.com
-trimise de Daniel (bară laterală, titluri late cu majuscule, carduri, butoane pastilă); am preluat principii, nu identitate —
+trimise de Daniel (titluri late cu majuscule, carduri, butoane pastilă); am preluat principii, nu identitate —
 fără texte, logo, fotografii sau wordmark-ul în două greutăți al referinței. **Propunere — așteaptă validarea lui Daniel** (issue #1).
 
 Capturi (conținut local de seed marcat `[EXEMPLU]`): `docs/design/homepage-desktop.png`, `docs/design/homepage-mobile.png`,
@@ -41,10 +41,11 @@ plutire de 14 s (oprită la `prefers-reduced-motion`). Fără WebGL, fără Java
   `.h-card`. Text 17/18 px; articole 18/19 px, line-height 1.7, culoare `#1F2530`, coloană 68ch.
 
 ## Layout
-- Desktop (≥ 1024 px): bară laterală fixă de 320 px, pe fundalul albicios — wordmark sus; navigație mare cu majuscule, CTA, limbă și social jos.
-  Conținutul (`.content-shell`) stă la dreapta, container max 1240 px.
-- Mobil: bară de sus (wordmark + „Meniu” pastilă), meniu pe tot ecranul cu linkuri mari și CTA.
-  Fără `backdrop-filter` pe header: ar limita meniul `fixed` la înălțimea barei (bug găsit și testat în e2e).
+- Toate ecranele: bară de sus lipicioasă (wordmark + buton pastilă „Meniu”), container max 1240 px (cerut de Daniel: meniul de pe
+  laptop la fel ca pe telefon). `src/components/SiteMenu.tsx`.
+- Telefon / tabletă (< 1024 px): meniul se deschide pe tot ecranul, cu linkuri mari, CTA, limbă și social; derularea paginii e blocată.
+- Laptop (≥ 1024 px): același meniu, ca dropdown (card alb de 420 px ancorat sub buton); se închide cu Escape, clic în afară sau la navigare.
+  Fără `backdrop-filter` pe header: ar limita panoul `fixed` de pe telefon la înălțimea barei (bug găsit și testat în e2e).
 - Spațiere secțiuni 64 px mobil / 112 px desktop; secțiunile sunt separate de linii subțiri.
 - Colțuri: 24 px carduri mari și hero, 14 px imagini, 6 px carduri navy compacte; pastile pentru butoane și inputuri.
 - Zone tactile ≥ 44 × 44 px; butoane și inputuri 48–52 px.
@@ -65,7 +66,7 @@ parteneriate reale și drept de folosire a mărcilor.
 - `next/image` cu AVIF/WebP, `sizes` explicite, `priority` doar pentru imaginea hero.
 
 ## Interacțiune
-Tranziții CSS 150–250 ms; hover și focus vizibile; meniu mobil accesibil (Escape, focus restituit); `prefers-reduced-motion` respectat;
+Tranziții CSS 150–250 ms; hover și focus vizibile; meniu accesibil pe toate ecranele (Escape, clic în afară, focus restituit); `prefers-reduced-motion` respectat;
 fără carusel cu JavaScript, fără scroll controlat, fără video automat.
 
 ## Identitate

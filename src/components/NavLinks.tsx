@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-/** Navigația principală a barei laterale: linkuri mari, cu majuscule. */
+/** Navigația principală din meniu: linkuri mari, cu majuscule. */
 export function NavLinks({ items, onNavigate, size = 'lg' }: { items: { href: string; label: string }[]; onNavigate?: () => void; size?: 'lg' | 'xl' }) {
   const pathname = usePathname()
   return (
@@ -16,8 +16,8 @@ export function NavLinks({ items, onNavigate, size = 'lg' }: { items: { href: st
               href={item.href}
               onClick={onNavigate}
               aria-current={current ? 'page' : undefined}
-              className={`display inline-flex min-h-11 items-center text-ink no-underline transition-colors duration-200 hover:text-soft aria-[current=page]:text-coral-text ${
-                size === 'xl' ? 'text-[clamp(1.5rem,7.5vw,2.75rem)]' : 'text-[1.375rem] xl:text-[1.5rem]'
+              className={`display inline-flex min-h-11 items-center text-ink no-underline transition-colors duration-200 hover:text-coral-text aria-[current=page]:text-coral-text ${
+                size === 'xl' ? 'text-[clamp(1.5rem,7.5vw,2.75rem)] lg:text-[2rem]' : 'text-[1.375rem] xl:text-[1.5rem]'
               }`}
             >
               {item.label}

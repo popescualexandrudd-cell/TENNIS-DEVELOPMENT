@@ -5,7 +5,7 @@
 **Modificări locale necomise:** niciuna după commitul acestui fișier.
 
 ## Finalizat (cu dovezi)
-Verificările de mai jos au rulat **local** pe `11052f8` și din nou pe design v5 (lint, typecheck, contrast, unit 14/14, int 14/14, build, e2e 16 trecute + 2 omise intenționat) (Ubuntu 24.04, Node 22.23.4, PostgreSQL 16.15). CI pe GitHub: încă nerulat.
+Verificările de mai jos au rulat **local** pe `11052f8` și din nou pe design v5 (lint, typecheck, contrast, unit 14/14, int 14/14, build, e2e 16 trecute + 2 omise intenționat; după meniul unificat: e2e 19 trecute + 1 omis intenționat) (Ubuntu 24.04, Node 22.23.4, PostgreSQL 16.15). CI pe GitHub: verde pe `a905303` (paleta v5).
 
 - [x] Fundație tehnică: Next.js 16.3.8 + Payload 3.92.0 + PostgreSQL; migrația inițială rulează pe o bază curată (`pnpm migrate`).
 - [x] Pagini RO: homepage (6 secțiuni, afișate doar cu conținut real), despre, antrenamente, jurnal, articol, contact, confidențialitate.

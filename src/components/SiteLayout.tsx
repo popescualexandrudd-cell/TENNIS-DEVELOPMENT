@@ -37,7 +37,7 @@ export async function SiteLayout({ locale, children }: { locale: Locale; childre
         </a>
         <AlternateProvider>
           <SiteHeader locale={navLocale} availability={navAvailability} other={other} settings={settings} />
-          <div className="content-shell flex flex-1 flex-col">
+          <div className="flex flex-1 flex-col">
             <main id="continut" className="flex-1" tabIndex={-1}>
               {children}
             </main>

@@ -31,7 +31,6 @@
   --container-max: 1240px;
   --gutter: 20px;
   --section-space: 64px;
-  --sidebar-w: 0px;
   --ease: cubic-bezier(0.2, 0, 0, 1);
 }
 
@@ -55,7 +54,6 @@
   :root {
     --gutter: 40px;
     --section-space: 112px;
-    --sidebar-w: 320px;
   }
 }
 
@@ -128,10 +126,6 @@
 }
 
 @layer components {
-  /* Conținutul stă la dreapta barei laterale pe desktop. */
-  .content-shell {
-    padding-left: var(--sidebar-w);
-  }
   .container-site {
     width: 100%;
     max-width: calc(var(--container-max) + 2 * var(--gutter));
