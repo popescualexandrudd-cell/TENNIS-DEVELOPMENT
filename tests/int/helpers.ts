@@ -13,7 +13,7 @@ export async function testPayload(): Promise<Payload> {
   return instance
 }
 
-const tables = ['articles', 'article_sources', 'contact_requests', 'pages', 'coaching_services', 'categories', 'admin_users']
+const tables = ['articles', 'article_sources', 'contact_requests', 'testimonials', 'pages', 'coaching_services', 'categories', 'admin_users']
 
 export async function resetDb(payload: Payload) {
   const db = payload.db as unknown as { drizzle: { execute: (q: string) => Promise<unknown> } }

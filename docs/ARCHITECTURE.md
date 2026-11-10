@@ -44,6 +44,7 @@ Browser ──► Next.js (App Router, Node.js)
 | `article-sources` | Surse (URL, titlu, publisher, dată accesare, note) | niciunul (afișate pe server doar pentru articole publicate) |
 | `media` | Fișiere cu alt text localizat, credit, drepturi | citire (imaginile cu drepturi „neverificat” nu se afișează) |
 | `contact-requests` | Solicitări (fără IP brut; doar hash HMAC) | niciunul; create doar prin `/api/contact` |
+| `testimonials` | Păreri trimise de sportivi: nume, context, părere, acord + textul lui, email opțional, status `pending`/`approved`/`rejected`, hash IP | numai `approved`, fără email/hash/textul acordului; create doar prin `/api/feedback` ([0012](decisions/0012-testimonial-submissions.md)) |
 
 Unicitate: `articles(language, slug)`; `pages(key)`. Status editorial: `docs/decisions/0003-editorial-status.md`.
 

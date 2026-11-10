@@ -4,6 +4,8 @@ import { getDictionary } from '@/lib/i18n/dictionaries'
 import { pagePath } from '@/lib/i18n/routes'
 import { getAvailability, getConfirmedServices, getPage, getSiteSettings } from '@/lib/content'
 import { getPublishedArticles } from '@/features/journal/queries'
+import { getApprovedTestimonials } from '@/features/testimonials/queries'
+import { TestimonialForm } from '@/features/testimonials/TestimonialForm'
 import { ArticleCard } from '@/features/journal/ArticleCard'
 import { hasPublicMedia, SectionMedia } from '@/components/SectionMedia'
 import { ContactSection } from './ContactSection'
@@ -28,12 +30,13 @@ function SplitHeading({ text, id, as: H = 'h2', className = '' }: { text: string
 
 export async function HomeView({ locale }: { locale: Locale }) {
   const t = getDictionary(locale)
-  const [page, settings, availability, services, articles] = await Promise.all([
+  const [page, settings, availability, services, articles, submitted] = await Promise.all([
     getPage('home', locale),
     getSiteSettings(locale),
     getAvailability(locale),
     getConfirmedServices(locale),
     getPublishedArticles(locale, 3),
+    getApprovedTestimonials(locale),
   ])
   const home = page?.home
   const name = settings.personName || 'Daniel Popescu'
@@ -42,7 +45,13 @@ export async function HomeView({ locale }: { locale: Locale }) {
   const nameHead = nameWords.join(' ')
   const tagline = page?.title
   const facts = home?.facts ?? []
-  const testimonials = (home?.testimonials ?? []).filter((x) => x.consent && x.quote && x.name)
+  // Testimoniale: cele introduse de Daniel în CMS (cu acord), apoi părerile trimise de sportivi și aprobate (decizia 0012).
+  const curated = (home?.testimonials ?? [])
+    .filter((x) => x.consent && x.quote && x.name)
+    .map((x) => ({ id: `cms-${x.id ?? x.name}`, name: x.name, role: x.role, quote: x.quote, image: x.image }))
+  const testimonials = [...curated, ...submitted.map((x) => ({ ...x, image: null }))].slice(0, 6)
+  const acceptTestimonials = settings.acceptTestimonials !== false
+  const privacyHref = availability.privacy ? pagePath(locale, 'privacy') : null
 
   return (
     <>
@@ -167,32 +176,44 @@ export async function HomeView({ locale }: { locale: Locale }) {
         </section>
       ) : null}
 
-      {/* Testimoniale — numai reale, cu acord */}
-      {testimonials.length > 0 ? (
+      {/* Testimoniale — numai reale, cu acord; sportivii pot trimite o părere (apare după aprobare) */}
+      {testimonials.length > 0 || acceptTestimonials ? (
         <section className="section container-site border-t border-line" aria-labelledby="h-testimonials">
           <SplitHeading id="h-testimonials" text={t.home.testimonials} className="h-section" />
-          <div className="mt-12 grid gap-4 lg:grid-cols-2">
-            {testimonials.map((x) => {
-              const [first, ...rest] = x.name.split(' ')
-              return (
-                <figure key={x.id ?? x.name} className="on-navy relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden rounded-lg bg-navy-card p-8 sm:p-10">
-                  {hasPublicMedia(x.image) ? (
-                    <>
-                      <SectionMedia media={x.image} locale={locale} sizes="(min-width: 1024px) 50vw, 100vw" className="-z-10" />
-                      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/60 to-black/20" aria-hidden="true" />
-                    </>
-                  ) : null}
-                  <blockquote className="text-[1.375rem] leading-snug font-bold">„{x.quote}”</blockquote>
-                  <figcaption className="mt-6">
-                    <span className="display block text-[1.75rem]">
-                      <span className="display-light">{first}</span> {rest.join(' ')}
-                    </span>
-                    {x.role ? <span className="mt-1 block text-muted">{x.role}</span> : null}
-                  </figcaption>
-                </figure>
-              )
-            })}
-          </div>
+          {testimonials.length > 0 ? (
+            <div className="mt-12 grid gap-4 lg:grid-cols-2">
+              {testimonials.map((x) => {
+                const [first, ...rest] = x.name.split(' ')
+                return (
+                  <figure key={x.id} className="on-navy relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden rounded-lg bg-navy-card p-8 sm:p-10">
+                    {hasPublicMedia(x.image) ? (
+                      <>
+                        <SectionMedia media={x.image} locale={locale} sizes="(min-width: 1024px) 50vw, 100vw" className="-z-10" />
+                        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/60 to-black/20" aria-hidden="true" />
+                      </>
+                    ) : null}
+                    <blockquote className="text-[1.375rem] leading-snug font-bold">„{x.quote}”</blockquote>
+                    <figcaption className="mt-6">
+                      <span className="display block text-[1.75rem]">
+                        <span className="display-light">{first}</span> {rest.join(' ')}
+                      </span>
+                      {x.role ? <span className="mt-1 block text-muted">{x.role}</span> : null}
+                    </figcaption>
+                  </figure>
+                )
+              })}
+            </div>
+          ) : null}
+          {acceptTestimonials ? (
+            <details className="group mt-10 rounded-lg border border-transparent open:border-line open:bg-panel open:p-6 sm:open:p-10">
+              <summary className="btn btn-outline cursor-pointer list-none group-open:mb-8 [&::-webkit-details-marker]:hidden">
+                {t.testimonialForm.open}
+              </summary>
+              <h3 className="display h-card">{t.testimonialForm.heading}</h3>
+              <p className="mt-3 mb-8 max-w-[40rem] text-muted">{t.testimonialForm.intro}</p>
+              <TestimonialForm locale={locale} t={t.testimonialForm} privacyHref={privacyHref} />
+            </details>
+          ) : null}
         </section>
       ) : null}
 

@@ -94,6 +94,27 @@ test.describe('media de secțiune', () => {
   })
 })
 
+test.describe('părerile sportivilor', () => {
+  test('formularul „Lasă o părere” trimite o părere care așteaptă aprobare', async ({ page }) => {
+    // IP aleator pe test, ca limita de 2 păreri/oră să nu afecteze rulările repetate.
+    await page.setExtraHTTPHeaders({ 'x-forwarded-for': `198.51.100.${Math.floor(Math.random() * 250) + 1}` })
+    await page.goto('/ro')
+    await page.getByText('Lasă o părere').click()
+    await page.getByRole('button', { name: 'Trimite părerea' }).click()
+    await expect(page.locator('#testimonial-status')).toContainText('Verifică câmpurile marcate')
+    await expect(page.getByLabel(/^Nume \(așa cum vrei/)).toHaveAttribute('aria-invalid', 'true')
+
+    await page.getByLabel(/^Nume \(așa cum vrei/).fill('Test E2E')
+    await page.getByLabel(/^Părerea ta/).fill('Părere trimisă de testul automat end-to-end, nu e reală.')
+    await page.getByLabel(/^Sunt de acord/).check()
+    await page.getByRole('button', { name: 'Trimite părerea' }).click()
+    await expect(page.locator('#testimonial-status')).toContainText('o public pe site după ce o citesc')
+    // Nu apare imediat pe site.
+    await page.reload()
+    await expect(page.getByText('Părere trimisă de testul automat')).toHaveCount(0)
+  })
+})
+
 test.describe('formular de contact', () => {
   test('validare în interfață și trimitere reușită', async ({ page }) => {
     await page.goto('/ro/contact')

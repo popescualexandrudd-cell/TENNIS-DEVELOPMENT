@@ -13,6 +13,7 @@ import { ArticleSources } from './cms/collections/ArticleSources'
 import { Categories } from './cms/collections/Categories'
 import { CoachingServices } from './cms/collections/CoachingServices'
 import { ContactRequests } from './cms/collections/ContactRequests'
+import { Testimonials } from './cms/collections/Testimonials'
 import { Media } from './cms/collections/Media'
 import { Pages } from './cms/collections/Pages'
 import { SiteSettings } from './cms/globals/SiteSettings'
@@ -43,7 +44,7 @@ export default buildConfig({
     defaultLocale: 'ro',
     fallback: false,
   },
-  collections: [Pages, CoachingServices, Articles, Categories, ArticleSources, Media, ContactRequests, AdminUsers],
+  collections: [Pages, CoachingServices, Articles, Categories, ArticleSources, Media, ContactRequests, Testimonials, AdminUsers],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   email: emailAdapter(),

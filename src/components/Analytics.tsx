@@ -12,7 +12,7 @@ export function Analytics() {
 }
 
 /** Trimite un eveniment custom, dacă scriptul este încărcat. Nu transmite niciodată date personale. */
-export function track(event: 'contact_submit_success' | 'cta_contact_click', props?: Record<string, string>) {
+export function track(event: 'contact_submit_success' | 'cta_contact_click' | 'testimonial_submit_success', props?: Record<string, string>) {
   if (typeof window === 'undefined') return
   const w = window as unknown as { plausible?: (e: string, o?: { props?: Record<string, string> }) => void }
   w.plausible?.(event, props ? { props } : undefined)

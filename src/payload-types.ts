@@ -74,6 +74,7 @@ export interface Config {
     'article-sources': ArticleSource;
     media: Media;
     'contact-requests': ContactRequest;
+    testimonials: Testimonial;
     'admin-users': AdminUser;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -93,6 +94,7 @@ export interface Config {
     'article-sources': ArticleSourcesSelect<false> | ArticleSourcesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'contact-requests': ContactRequestsSelect<false> | ContactRequestsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'admin-users': AdminUsersSelect<false> | AdminUsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -427,6 +429,33 @@ export interface ContactRequest {
   createdAt: string;
 }
 /**
+ * Părerile trimise de pe site. Citește, eventual corectează greșelile de tastare, apoi schimbă statusul în „Aprobată”.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  name: string;
+  role?: string | null;
+  quote: string;
+  /**
+   * Bifat de sportiv la trimitere. Fără acord, părerea nu se poate trimite.
+   */
+  consent: boolean;
+  consentText?: string | null;
+  /**
+   * Doar pentru verificare sau dacă sportivul cere retragerea părerii.
+   */
+  email?: string | null;
+  status: 'pending' | 'approved' | 'rejected';
+  language?: ('ro' | 'en') | null;
+  approvedAt?: string | null;
+  ipHash?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "admin-users".
  */
@@ -505,6 +534,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-requests';
         value: number | ContactRequest;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
       } | null)
     | ({
         relationTo: 'admin-users';
@@ -773,6 +806,24 @@ export interface ContactRequestsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  quote?: T;
+  consent?: T;
+  consentText?: T;
+  email?: T;
+  status?: T;
+  language?: T;
+  approvedAt?: T;
+  ipHash?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "admin-users_select".
  */
 export interface AdminUsersSelect<T extends boolean = true> {
@@ -852,6 +903,10 @@ export interface SiteSetting {
   email?: string | null;
   phone?: string | null;
   location?: string | null;
+  /**
+   * Afișează formularul „Lasă o părere” la „Ce spun jucătorii”. Părerile apar doar după aprobare.
+   */
+  acceptTestimonials?: boolean | null;
   social?:
     | {
         platform: 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'linkedin' | 'x';
@@ -877,6 +932,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   email?: T;
   phone?: T;
   location?: T;
+  acceptTestimonials?: T;
   social?:
     | T
     | {

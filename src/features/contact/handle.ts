@@ -2,6 +2,7 @@ import type { Payload } from 'payload'
 import { contactSchema, fieldErrors, MAX_BODY_BYTES, type ContactField } from './schema'
 import { clientIp, hashIp, isRateLimited } from './rate-limit'
 import { sendContactNotification } from './notify'
+import { readJsonBody } from '@/lib/http'
 
 export type ContactResult =
   | { status: 201; body: { ok: true; id: string | number; notification: 'sent' | 'failed' } }
@@ -10,35 +11,11 @@ export type ContactResult =
   | { status: 429; body: { ok: false; error: 'rate_limited' } }
   | { status: 500; body: { ok: false; error: 'server' } }
 
-function sameOrigin(request: Request): boolean {
-  const origin = request.headers.get('origin')
-  if (!origin) return true // cereri fără Origin (ex. unele clienți) — protejate oricum de lipsa sesiunii
-  const allowed = process.env.NEXT_PUBLIC_SITE_URL
-  try {
-    const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host')
-    return origin === allowed || (host !== null && new URL(origin).host === host)
-  } catch {
-    return false
-  }
-}
-
 /** Fluxul complet: validare → antispam → limitare → salvare → notificare. Succes = solicitare salvată. */
 export async function handleContactRequest(payload: Payload, request: Request): Promise<ContactResult> {
-  if (!sameOrigin(request)) return { status: 403, body: { ok: false, error: 'forbidden' } }
-  if (!(request.headers.get('content-type') ?? '').includes('application/json')) {
-    return { status: 415, body: { ok: false, error: 'unsupported' } }
-  }
-  const declared = Number(request.headers.get('content-length') ?? 0)
-  if (declared > MAX_BODY_BYTES) return { status: 413, body: { ok: false, error: 'too_large' } }
-
-  let raw: unknown
-  try {
-    const text = await request.text()
-    if (Buffer.byteLength(text) > MAX_BODY_BYTES) return { status: 413, body: { ok: false, error: 'too_large' } }
-    raw = JSON.parse(text)
-  } catch {
-    return { status: 400, body: { ok: false, error: 'bad_request' } }
-  }
+  const body = await readJsonBody(request, MAX_BODY_BYTES)
+  if (!body.ok) return { status: body.status, body: { ok: false, error: body.error } }
+  const raw = body.data
 
   const parsed = contactSchema.safeParse(raw)
   if (!parsed.success) {

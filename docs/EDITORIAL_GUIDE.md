@@ -40,6 +40,11 @@ o listă de afirmații factuale cu sursa fiecăreia, și o listă „DE CONFIRMA
 Nu inventa nimic din ce nu apare în contribuție sau surse.
 ```
 
+## Păreri de la sportivi (moderare)
+Admin → Solicitări → **Păreri sportivi**. Fiecare părere nouă e „În așteptare” (și vine pe email, dacă SMTP e configurat).
+Citește-o; poți corecta greșeli de tastare, dar nu schimba sensul. Status „Aprobată” → apare pe homepage; „Respinsă” → rămâne doar în admin.
+Dacă cineva cere retragerea: schimbă statusul în „Respinsă” sau șterge părerea. Formularul se poate opri din Setări site.
+
 ## Categorii inițiale
 Tehnică și tactică · Pregătire și progres · Analize și observații despre tenis · Echipament și tehnologie (doar cu material relevant).
 

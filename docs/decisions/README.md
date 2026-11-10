@@ -16,3 +16,4 @@ Deciziile înlocuite nu se rescriu; se marchează și se leagă de cea nouă.
 | 0009 | [Paleta „apus pe teren”: portocaliu, ardezie, albastru prăfuit](0009-sunset-court-palette.md) | acceptată ca propunere de lucru (cerută de Daniel) |
 | 0010 | [Fotografii și bucle video în secțiuni](0010-section-media-video-loops.md) | acceptată (cerută de Daniel; modifică „fără video automat” din brief) |
 | 0011 | [Hero pe panou ardezie și titluri italic](0011-dark-hero-italic-display.md) | acceptată (cerută de Daniel) |
+| 0012 | [Păreri trimise de sportivi, cu aprobare](0012-testimonial-submissions.md) | acceptată (cerută de Daniel) |

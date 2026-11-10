@@ -5,7 +5,7 @@
 **Modificări locale necomise:** niciuna după commitul acestui fișier.
 
 ## Finalizat (cu dovezi)
-Verificările de mai jos au rulat **local** pe `11052f8` și din nou pe design v5 (lint, typecheck, contrast, unit 14/14, int 14/14, build, e2e 16 trecute + 2 omise intenționat; după meniul unificat: e2e 19 trecute + 1 omis intenționat; după media/video (0010): unit 20/20, int 14/14, e2e 23 trecute + 1 omis intenționat) (Ubuntu 24.04, Node 22.23.4, PostgreSQL 16.15). CI pe GitHub: verde pe `a905303` (paleta v5).
+Verificările de mai jos au rulat **local** pe `11052f8` și din nou pe design v5 (lint, typecheck, contrast, unit 14/14, int 14/14, build, e2e 16 trecute + 2 omise intenționat; după meniul unificat: e2e 19 trecute + 1 omis intenționat; după media/video (0010): unit 20/20, int 14/14, e2e 23 trecute + 1 omis intenționat; după păreri (0012): int 21/21, e2e 25 trecute + 1 omis intenționat) (Ubuntu 24.04, Node 22.23.4, PostgreSQL 16.15). CI pe GitHub: verde pe `a905303` (paleta v5).
 
 - [x] Fundație tehnică: Next.js 16.3.8 + Payload 3.92.0 + PostgreSQL; migrația inițială rulează pe o bază curată (`pnpm migrate`).
 - [x] Pagini RO: homepage (6 secțiuni, afișate doar cu conținut real), despre, antrenamente, jurnal, articol, contact, confidențialitate.
@@ -17,6 +17,7 @@ Verificările de mai jos au rulat **local** pe `11052f8` și din nou pe design v
 - [x] Design v5 (decizii 0007 + 0008 + 0009 — paleta „apus pe teren”: portocaliu `#F26A3D`, ardezie `#1C2633`, albastru prăfuit, după imaginea de referință a lui Daniel): structură editorial-sportivă după capturile trimise de Daniel, fundal albicios, hero 3D din CSS; contrast verificat (`scripts/contrast.mjs`), fonturi locale (Archivo Expanded, Source Sans 3) cu diacritice verificate.
 - [x] Meniu unificat (bară de sus pe toate ecranele; dropdown pe laptop, ecran complet pe telefon) și media de secțiune: fotografie sau buclă video fără sunet cu poster și pauză (decizia 0010); media demonstrative Mixkit doar în seed-ul local, creditate vizibil (fără media în hero, la cererea lui Daniel). Hero pe panou ardezie + titluri Archivo Italic (decizia 0011).
 - [x] Conținut confirmat de Daniel (10.11.2026), în seed-ul local și de introdus în CMS la lansare: „Pe scurt” — 12 ani ca jucător, 5 ani de antrenorat, 200+ sportivi la inițiere, 20+ jucători de competiție antrenați.
+- [x] Păreri de la sportivi (decizia 0012): formular public „Lasă o părere” → colecția `testimonials` în așteptare → aprobare în admin → homepage; acord obligatoriu, limită 2/oră/IP, fără IP brut — `tests/int/testimonials.test.ts`, e2e.
 - [x] CMS homepage: cifre confirmate, testimoniale doar cu acord, titluri-afirmație; antrenamente cu fotografie opțională (migrația `20261110_103117`).
 - [x] SEO tehnic: metadata per pagină, canonical, sitemap, robots (`Disallow: /` în afara producției), Open Graph, JSON-LD.
 - [x] Backup + restaurare testate local (`docs/RUNBOOK.md`).

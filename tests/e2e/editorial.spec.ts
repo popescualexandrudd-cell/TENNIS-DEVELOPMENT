@@ -66,3 +66,36 @@ test.describe('publicare și retragere', () => {
     }
   })
 })
+
+test.describe('moderarea părerilor', () => {
+  test.skip(!email || !password, 'lipsesc credențialele de seed')
+  test.skip(({ isMobile }) => isMobile, 'flux API, o singură rulare')
+
+  test('părerea trimisă nu e publică; aprobată apare pe homepage; ștearsă dispare', async ({ request, playwright, baseURL }) => {
+    const quote = `Părere E2E ${Date.now()} — verificarea fluxului de aprobare.`
+    const anon = await playwright.request.newContext({ baseURL })
+    const sent = await anon.post('/api/feedback', {
+      headers: { origin: baseURL!, 'x-forwarded-for': `192.0.2.${Math.floor(Math.random() * 250) + 1}` },
+      data: { name: 'Test Moderare', quote, consent: true, locale: 'ro' },
+    })
+    expect(sent.status(), await sent.text()).toBe(201)
+
+    const pub = async () => ((await (await anon.get('/api/testimonials?limit=100')).json()) as { docs: { quote: string }[] }).docs
+    expect((await pub()).some((d) => d.quote === quote)).toBe(false)
+
+    const token = await login(request)
+    const auth = { Authorization: `JWT ${token}` }
+    const found = (await (await request.get(`/api/testimonials?where[quote][equals]=${encodeURIComponent(quote)}`, { headers: auth })).json()) as { docs: { id: number; email?: string }[] }
+    const id = found.docs[0]!.id
+    expect((await request.patch(`/api/testimonials/${id}`, { headers: auth, data: { status: 'approved' } })).ok()).toBeTruthy()
+
+    const publicDoc = (await pub()).find((d) => d.quote === quote) as Record<string, unknown> | undefined
+    expect(publicDoc).toBeTruthy()
+    expect(publicDoc).not.toHaveProperty('email')
+    await expect.poll(async () => (await (await anon.get('/ro')).text()).includes(quote)).toBe(true)
+
+    expect((await request.delete(`/api/testimonials/${id}`, { headers: auth })).ok()).toBeTruthy()
+    await expect.poll(async () => (await (await anon.get('/ro')).text()).includes(quote)).toBe(false)
+    await anon.dispose()
+  })
+})

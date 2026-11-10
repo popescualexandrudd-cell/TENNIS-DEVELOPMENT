@@ -39,6 +39,13 @@ export const SiteSettings: GlobalConfig = {
             { name: 'phone', label: 'Telefon public (opțional)', type: 'text' },
             { name: 'location', label: 'Zona de activitate confirmată', type: 'text', localized: true },
             {
+              name: 'acceptTestimonials',
+              label: 'Sportivii pot trimite păreri de pe site',
+              type: 'checkbox',
+              defaultValue: true,
+              admin: { description: 'Afișează formularul „Lasă o părere” la „Ce spun jucătorii”. Părerile apar doar după aprobare.' },
+            },
+            {
               name: 'social',
               label: 'Social media verificate',
               type: 'array',

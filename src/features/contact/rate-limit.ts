@@ -15,15 +15,20 @@ export function clientIp(headers: Headers): string {
 }
 
 /**
- * Limitare în stocarea comună (PostgreSQL): numără solicitările recente cu același hash IP.
+ * Limitare în stocarea comună (PostgreSQL): numără trimiterile recente cu același hash IP (contact sau păreri).
  * Funcționează consecvent și cu mai multe instanțe ale aplicației.
  */
-export async function isRateLimited(payload: Payload, ipHash: string, now = new Date()): Promise<boolean> {
-  const since = new Date(now.getTime() - RATE_LIMIT.windowMs).toISOString()
+export async function isRateLimited(
+  payload: Payload,
+  ipHash: string,
+  now = new Date(),
+  { collection = 'contact-requests', windowMs = RATE_LIMIT.windowMs, max = RATE_LIMIT.max }: { collection?: 'contact-requests' | 'testimonials'; windowMs?: number; max?: number } = {},
+): Promise<boolean> {
+  const since = new Date(now.getTime() - windowMs).toISOString()
   const { totalDocs } = await payload.count({
-    collection: 'contact-requests',
+    collection,
     overrideAccess: true,
     where: { and: [{ ipHash: { equals: ipHash } }, { createdAt: { greater_than: since } }] },
   })
-  return totalDocs >= RATE_LIMIT.max
+  return totalDocs >= max
 }
