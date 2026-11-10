@@ -1,4 +1,5 @@
 import 'server-only'
+import { legalPagesVisible } from '@/features/legal/operator'
 import { cache } from 'react'
 import type { CoachingService, Page, SiteSetting } from '@/payload-types'
 import type { Locale, PageKey } from '@/lib/i18n/config'
@@ -53,20 +54,24 @@ export const getConfirmedServices = cache(async (locale: Locale): Promise<Coachi
 /** Ce pagini există public într-o limbă — folosit pentru navigație, sitemap și selectorul de limbă. */
 export const getAvailability = cache(async (locale: Locale): Promise<Record<PageKey, boolean>> => {
   const enabled = await isLocaleEnabled(locale)
-  if (!enabled) return { home: false, about: false, coaching: false, journal: false, contact: false, privacy: false }
-  const [about, coaching, privacy, services, articles] = await Promise.all([
+  if (!enabled) return { home: false, about: false, coaching: false, journal: false, contact: false, privacy: false, cookies: false, terms: false }
+  const [about, coaching, services, articles, settings] = await Promise.all([
     getPage('about', locale),
     getPage('coaching', locale),
-    getPage('privacy', locale),
     getConfirmedServices(locale),
     countPublishedArticles(locale),
+    getSiteSettings(locale),
   ])
+  // Paginile legale: generate din cod, deocamdată doar în română; în producție doar cu date legale complete (decizia 0013).
+  const legal = locale === 'ro' && legalPagesVisible(settings.legal)
   return {
     home: true,
     about: Boolean(about),
     coaching: Boolean(coaching) || services.length > 0,
     journal: articles > 0,
     contact: true,
-    privacy: Boolean(privacy),
+    privacy: legal,
+    cookies: legal,
+    terms: legal,
   }
 })

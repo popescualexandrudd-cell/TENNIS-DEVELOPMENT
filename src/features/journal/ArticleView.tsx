@@ -41,6 +41,7 @@ export async function articleMetadata(locale: Locale, slug: string): Promise<Met
     type: 'article',
     publishedTime: article.publishedAt,
     modifiedTime: article.updatedAt,
+    fallbackImage: preview ? undefined : `/og/${locale}/article/${article.slug}`,
   })
 }
 

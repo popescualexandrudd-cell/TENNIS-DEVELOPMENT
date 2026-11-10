@@ -28,6 +28,7 @@ export async function pageMetadata(locale: Locale, key: PageKey, fallbackTitle: 
     alternates,
     noindex: page?.seo?.noindex,
     siteName: settings.personName,
+    fallbackImage: `/og/${locale}/page/${key}`,
   })
 }
 
@@ -40,8 +41,8 @@ function PageHeader({ title, intro }: { title: string; intro?: string | null }) 
   )
 }
 
-/** Despre / Confidențialitate: pagini editoriale simple. 404 dacă nu sunt publicate în limba cerută. */
-export async function ContentPageView({ locale, pageKey }: { locale: Locale; pageKey: 'about' | 'privacy' }) {
+/** Despre: pagină editorială simplă. 404 dacă nu este publicată în limba cerută. (Paginile legale: features/legal.) */
+export async function ContentPageView({ locale, pageKey }: { locale: Locale; pageKey: 'about' }) {
   const [page, settings] = await Promise.all([getPage(pageKey, locale), getSiteSettings(locale)])
   if (!page) notFound()
   const t = getDictionary(locale)

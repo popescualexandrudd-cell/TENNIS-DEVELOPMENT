@@ -17,3 +17,6 @@ Deciziile înlocuite nu se rescriu; se marchează și se leagă de cea nouă.
 | 0010 | [Fotografii și bucle video în secțiuni](0010-section-media-video-loops.md) | acceptată (cerută de Daniel; modifică „fără video automat” din brief) |
 | 0011 | [Hero pe panou ardezie și titluri italic](0011-dark-hero-italic-display.md) | acceptată (cerută de Daniel) |
 | 0012 | [Păreri trimise de sportivi, cu aprobare](0012-testimonial-submissions.md) | acceptată (cerută de Daniel) |
+| 0013 | [Pagini legale generate din cod + Setări site](0013-legal-pages-from-code.md) | acceptată (cerută de Daniel); de verificat juridic |
+| 0014 | [Întărirea securității](0014-security-hardening.md) | acceptată (cerută de Daniel) |
+| 0015 | [SEO tehnic](0015-technical-seo.md) | acceptată (cerută de Daniel) |

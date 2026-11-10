@@ -41,13 +41,15 @@ export function SiteFooter({ locale, availability, settings }: { locale: Locale;
                 </a>
               </li>
             ) : null}
-            {availability.privacy ? (
-              <li>
-                <Link href={pagePath(locale, 'privacy')} className="inline-flex min-h-11 items-center text-ink hover:underline">
-                  {t.footer.privacy}
-                </Link>
-              </li>
-            ) : null}
+            {(['privacy', 'cookies', 'terms'] as const)
+              .filter((k) => availability[k])
+              .map((k) => (
+                <li key={k}>
+                  <Link href={pagePath(locale, k)} className="inline-flex min-h-11 items-center text-ink hover:underline">
+                    {t.legal.titles[k]}
+                  </Link>
+                </li>
+              ))}
           </ul>
         </div>
       </div>

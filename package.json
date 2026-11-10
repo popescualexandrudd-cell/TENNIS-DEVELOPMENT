@@ -19,7 +19,8 @@
     "test": "pnpm test:unit && pnpm test:int",
     "test:unit": "vitest run --project unit",
     "test:int": "vitest run --project int",
-    "test:e2e": "playwright test --trace off"
+    "test:e2e": "playwright test --trace off",
+    "retention": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/retention.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.92.0",
@@ -30,13 +31,13 @@
     "@payloadcms/ui": "3.92.0",
     "cross-env": "7.0.3",
     "graphql": "16.11.0",
-    "next": "16.3.8",
+    "next": "16.4.6",
     "payload": "3.92.0",
     "react": "19.2.9",
     "react-dom": "19.2.9",
     "server-only": "0.0.1",
-    "sharp": "0.35.4",
-    "zod": "4.3.3"
+    "sharp": "0.35.5",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.11.0",
@@ -47,7 +48,7 @@
     "@types/react-dom": "19.2.3",
     "dotenv": "16.4.7",
     "eslint": "9.39.1",
-    "eslint-config-next": "16.3.8",
+    "eslint-config-next": "16.4.6",
     "tailwindcss": "4.3.3",
     "tsx": "4.23.15",
     "typescript": "5.9.3",
@@ -63,6 +64,11 @@
       "sharp",
       "esbuild",
       "unrs-resolver"
-    ]
+    ],
+    "overrides": {
+      "dompurify": "3.4.17",
+      "happy-dom": "21.0.4",
+      "esbuild@<0.25.0": "0.25.12"
+    }
   }
 }

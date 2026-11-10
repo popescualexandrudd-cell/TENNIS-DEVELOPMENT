@@ -11,7 +11,7 @@ test.describe('site public', () => {
   })
 
   test('fără scroll orizontal', async ({ page }) => {
-    for (const path of ['/ro', '/ro/contact', '/ro/antrenamente', '/ro/jurnal']) {
+    for (const path of ['/ro', '/ro/contact', '/ro/antrenamente', '/ro/jurnal', '/ro/confidentialitate', '/ro/cookies', '/ro/termeni']) {
       await page.goto(path)
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
       expect(overflow, path).toBeLessThanOrEqual(0)
@@ -19,7 +19,7 @@ test.describe('site public', () => {
   })
 
   test('fără încălcări de accesibilitate serioase (axe)', async ({ page }) => {
-    for (const path of ['/ro', '/ro/contact', '/ro/antrenamente', '/ro/jurnal']) {
+    for (const path of ['/ro', '/ro/contact', '/ro/antrenamente', '/ro/jurnal', '/ro/confidentialitate', '/ro/cookies', '/ro/termeni']) {
       await page.goto(path)
       const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze()
       const serious = results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')

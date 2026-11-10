@@ -99,3 +99,28 @@ describe('moderare și acces public', () => {
     ).rejects.toThrow()
   })
 })
+
+describe('păstrare limitată (politica de confidențialitate)', () => {
+  it('șterge solicitările și părerile neaprobate vechi; păstrează părerile aprobate și datele recente', async () => {
+    const { applyRetention, monthsAgo } = await import('@/features/legal/retention')
+    const db = payload.db as unknown as { drizzle: { execute: (q: string) => Promise<unknown> } }
+    const mk = (status: 'pending' | 'approved' | 'rejected', name: string) =>
+      payload.create({ collection: 'testimonials', overrideAccess: true, context: ctx, data: { name, quote: 'Text suficient de lung pentru test.', consent: true, status } })
+    const oldPending = await mk('pending', 'Vechi asteptare')
+    const oldApproved = await mk('approved', 'Vechi aprobat')
+    const freshPending = await mk('pending', 'Nou asteptare')
+    const oldContact = await payload.create({
+      collection: 'contact-requests',
+      overrideAccess: true,
+      data: { name: 'Vechi', email: 'vechi@example.com', requestType: 'other', message: 'Mesaj vechi de test.', status: 'new' },
+    })
+    const old = monthsAgo(13).toISOString()
+    await db.drizzle.execute(`UPDATE testimonials SET updated_at = '${old}' WHERE id IN (${oldPending.id}, ${oldApproved.id})`)
+    await db.drizzle.execute(`UPDATE contact_requests SET updated_at = '${old}' WHERE id = ${oldContact.id}`)
+
+    const result = await applyRetention(payload)
+    expect(result).toMatchObject({ contactRequests: 1, testimonials: 1 })
+    const left = (await payload.find({ collection: 'testimonials', overrideAccess: true })).docs.map((d) => d.id).sort()
+    expect(left).toEqual([oldApproved.id, freshPending.id].sort())
+  })
+})

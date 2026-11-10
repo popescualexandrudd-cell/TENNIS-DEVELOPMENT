@@ -33,6 +33,15 @@ Cerințe: HTTPS (reverse proxy cu TLS și HSTS), PostgreSQL cu backup separat de
 procesul Node rulat de un supervizor (systemd sau Docker), `SITE_ENV=production`.
 Staging: aceeași configurație, protejat (autentificare la proxy), `SITE_ENV` diferit de `production` (robots `Disallow: /`).
 
+### Înainte de lansare — legal, securitate, SEO (deciziile 0013–0015)
+- [ ] Setări site → **Date legale** completate (paginile legale nu apar în producție fără ele); textele verificate de un specialist.
+- [ ] `pnpm retention` programat zilnic în cron (șterge datele la termenele din politică): `15 3 * * * cd /srv/app && pnpm retention`.
+- [ ] TLS la reverse proxy; `NEXT_PUBLIC_SITE_URL=https://…` (activează HSTS și `upgrade-insecure-requests`).
+- [ ] Firewall: doar 80/443 public, SSH cu cheie; PostgreSQL ascultă doar local; backup criptat în altă locație.
+- [ ] `pnpm audit --prod` fără vulnerabilități high/critical; apoi lunar.
+- [ ] Email în Setări site (pentru `/.well-known/security.txt`) și SMTP (#4).
+- [ ] Google Search Console: verificare domeniu, trimitere `sitemap.xml`; test imagine OG cu un link distribuit.
+
 ### Docker (fișiere pregătite, **neverificate** — mediul inițial nu avea daemon Docker)
 ```bash
 # 1. pornește baza

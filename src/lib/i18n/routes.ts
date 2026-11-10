@@ -8,6 +8,8 @@ const segments: Record<Locale, Record<PageKey, string>> = {
     journal: 'jurnal',
     contact: 'contact',
     privacy: 'confidentialitate',
+    cookies: 'cookies',
+    terms: 'termeni',
   },
   en: {
     home: '',
@@ -16,6 +18,8 @@ const segments: Record<Locale, Record<PageKey, string>> = {
     journal: 'journal',
     contact: 'contact',
     privacy: 'privacy',
+    cookies: 'cookies',
+    terms: 'terms',
   },
 }
 

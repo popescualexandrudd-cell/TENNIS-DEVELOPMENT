@@ -48,7 +48,7 @@ export const Pages: CollectionConfig = {
             { label: 'Antrenamente', value: 'coaching' },
             { label: 'Jurnal (introducere)', value: 'journal' },
             { label: 'Contact', value: 'contact' },
-            { label: 'Confidențialitate', value: 'privacy' },
+            { label: 'Confidențialitate — note suplimentare (textul principal e generat din Setări site → Date legale)', value: 'privacy' },
           ],
         },
         { name: 'internalTitle', label: 'Titlu intern', type: 'text', required: true },

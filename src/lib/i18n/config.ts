@@ -7,5 +7,8 @@ export function isLocale(value: string): value is Locale {
 }
 
 /** Cheile paginilor publice. Slugurile sunt localizate în `routes.ts`. */
-export const pageKeys = ['home', 'about', 'coaching', 'journal', 'contact', 'privacy'] as const
+export const pageKeys = ['home', 'about', 'coaching', 'journal', 'contact', 'privacy', 'cookies', 'terms'] as const
+/** Paginile legale sunt generate din cod + Setări site → Date legale (decizia 0013), nu din colecția Pages. */
+export const legalPageKeys = ['privacy', 'cookies', 'terms'] as const
+export type LegalPageKey = (typeof legalPageKeys)[number]
 export type PageKey = (typeof pageKeys)[number]

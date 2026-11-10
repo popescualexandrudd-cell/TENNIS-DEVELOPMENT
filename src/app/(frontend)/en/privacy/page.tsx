@@ -1,14 +1,13 @@
-import { ContentPageView } from '@/features/site/views'
-import { pageMetadata } from '@/features/site/views'
+import { LegalPageView, legalPageMetadata } from '@/features/legal/LegalPageView'
 import { ensureLocale } from '@/lib/locale-guard'
 
 export const revalidate = 3600
 
 export async function generateMetadata() {
-  return pageMetadata('en', 'privacy', 'Privacy')
+  return legalPageMetadata('en', 'privacy')
 }
 
 export default async function Page() {
   await ensureLocale('en')
-  return <ContentPageView locale="en" pageKey="privacy" />
+  return <LegalPageView locale="en" pageKey="privacy" />
 }

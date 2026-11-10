@@ -17,6 +17,8 @@ type Input = {
   publishedTime?: string | null
   modifiedTime?: string | null
   siteName?: string
+  /** Imagine OG generată (`/og/...`) folosită când pagina nu are fotografie proprie. */
+  fallbackImage?: string
 }
 
 export function buildMetadata(input: Input): Metadata {
@@ -41,10 +43,16 @@ export function buildMetadata(input: Input): Metadata {
       description: input.description ?? undefined,
       siteName: input.siteName ?? 'Daniel Popescu',
       locale: input.locale === 'ro' ? 'ro_RO' : 'en_GB',
-      images: image ? [{ url: absoluteUrl(image.sizes?.large?.url ?? image.url!), alt: image.alt ?? '' }] : undefined,
+      images: image
+        ? [{ url: absoluteUrl(image.sizes?.large?.url ?? image.url!), alt: image.alt ?? '' }]
+        : input.fallbackImage
+          ? [{ url: absoluteUrl(input.fallbackImage), width: 1200, height: 630, alt: input.title }]
+          : undefined,
       ...(input.type === 'article'
         ? { publishedTime: input.publishedTime ?? undefined, modifiedTime: input.modifiedTime ?? undefined }
         : {}),
     },
+    // Rețelele care citesc Twitter Cards (X, Slack, Discord) folosesc aceleași titlu, descriere și imagine.
+    twitter: { card: 'summary_large_image', title: input.title, description: input.description ?? undefined },
   }
 }

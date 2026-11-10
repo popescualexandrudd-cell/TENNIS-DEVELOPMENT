@@ -9,6 +9,9 @@ import { TestimonialForm } from '@/features/testimonials/TestimonialForm'
 import { ArticleCard } from '@/features/journal/ArticleCard'
 import { hasPublicMedia, SectionMedia } from '@/components/SectionMedia'
 import { ContactSection } from './ContactSection'
+import { JsonLd } from '@/components/JsonLd'
+import { personSchema, websiteSchema } from '@/lib/seo/structured-data'
+import { stillImage } from '@/lib/media'
 import { ServiceCard } from './ServiceCard'
 import { HeroStage } from './HeroStage'
 
@@ -53,8 +56,15 @@ export async function HomeView({ locale }: { locale: Locale }) {
   const acceptTestimonials = settings.acceptTestimonials !== false
   const privacyHref = availability.privacy ? pagePath(locale, 'privacy') : null
 
+  const aboutStill = stillImage(home?.aboutImage)
   return (
     <>
+      <JsonLd
+        data={[
+          websiteSchema(settings, locale),
+          personSchema(settings, locale, { description: page?.intro, image: aboutStill?.sizes?.large?.url ?? aboutStill?.url }),
+        ]}
+      />
       {/* 1. Hero — card mare, cu fotografie reală sau motivul grafic */}
       <section className="container-site pt-2 lg:pt-8" aria-labelledby="h-hero">
         <HeroStage image={page?.image} locale={locale}>

@@ -1,3 +1,6 @@
+> **Înlocuit** de paginile generate din cod (decizia 0013): `src/features/legal/content-ro.tsx` + Setări site → Date legale.
+> Păstrat doar ca istoric al primei schițe.
+
 # Informare de confidențialitate — DRAFT INTERN (nepublicat)
 
 > De verificat pe situația reală (ideal cu un specialist) înainte de publicare. Nu declara că site-ul este „conform GDPR”.

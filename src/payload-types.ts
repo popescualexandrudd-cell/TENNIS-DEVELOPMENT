@@ -914,6 +914,39 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  legal: {
+    entityType: 'individual' | 'pfa' | 'company';
+    /**
+     * Ex. „Daniel Popescu”, „Popescu Daniel PFA” sau „Exemplu Tenis SRL”.
+     */
+    legalName?: string | null;
+    taxId?: string | null;
+    tradeRegister?: string | null;
+    /**
+     * Pentru persoană fizică este opțională: emailul de mai jos e suficient ca date de contact.
+     */
+    address?: string | null;
+    privacyEmail?: string | null;
+    /**
+     * Ex. „Hetzner Online GmbH (Germania)”. Verifică unde sunt serverele și backup-urile.
+     */
+    hostingProvider?: string | null;
+    /**
+     * Ex. „Brevo (Franța)”. Gol = nu se trimit emailuri.
+     */
+    emailProvider?: string | null;
+    /**
+     * Bifează dacă găzduirea, emailul sau backup-urile sunt în afara Spațiului Economic European (ex. SUA).
+     */
+    outsideEEA?: boolean | null;
+    /**
+     * Ex. „Clauze contractuale standard ale Comisiei Europene” sau „EU-US Data Privacy Framework”.
+     */
+    transferSafeguards?: string | null;
+    contactRetentionMonths: number;
+    feedbackRetentionMonths: number;
+    updatedOn?: string | null;
+  };
   defaultTitle?: string | null;
   defaultDescription?: string | null;
   defaultImage?: (number | null) | Media;
@@ -939,6 +972,23 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         platform?: T;
         url?: T;
         id?: T;
+      };
+  legal?:
+    | T
+    | {
+        entityType?: T;
+        legalName?: T;
+        taxId?: T;
+        tradeRegister?: T;
+        address?: T;
+        privacyEmail?: T;
+        hostingProvider?: T;
+        emailProvider?: T;
+        outsideEEA?: T;
+        transferSafeguards?: T;
+        contactRetentionMonths?: T;
+        feedbackRetentionMonths?: T;
+        updatedOn?: T;
       };
   defaultTitle?: T;
   defaultDescription?: T;

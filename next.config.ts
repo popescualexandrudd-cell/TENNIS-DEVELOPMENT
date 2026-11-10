@@ -2,19 +2,17 @@ import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { buildSecurityHeaders } from './src/lib/security-headers'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const securityHeaders = [
-  { key: 'X-Content-Type-Options', value: 'nosniff' },
-  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-  { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
-]
+const securityHeaders = buildSecurityHeaders()
 
 const nextConfig: NextConfig = {
   output: 'standalone',
   poweredByHeader: false,
+  // Fonturile TTF pentru imaginile Open Graph trebuie incluse în build-ul standalone.
+  outputFileTracingIncludes: { '/og/[...slug]': ['./src/assets/og/**'] },
   images: {
     localPatterns: [{ pathname: '/api/media/file/**' }],
     formats: ['image/avif', 'image/webp'],
@@ -25,7 +23,10 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
-      { source: '/:path*', headers: securityHeaders },
+      // Site public + API: CSP strictă. Administrarea Payload: CSP proprie (decizia 0014).
+      { source: '/((?!admin).*)', headers: securityHeaders.site },
+      { source: '/admin/:path*', headers: securityHeaders.admin },
+      { source: '/admin', headers: securityHeaders.admin },
       {
         source: '/fonts/:file*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],

@@ -85,7 +85,7 @@ const ro = {
     optional: 'opțional',
     required: 'obligatoriu',
     consent:
-      'Sunt de acord ca numele, contextul și părerea mea să fie publicate pe acest site. Pot cere oricând retragerea lor, prin adresa de contact a site-ului.',
+      'Sunt de acord ca numele, contextul și părerea mea să fie publicate pe acest site. Am cel puțin 16 ani sau trimit cu acordul părintelui ori al tutorelui. Pot cere oricând retragerea lor, prin adresa de contact a site-ului.',
     submit: 'Trimite părerea',
     sending: 'Se trimite…',
     success: 'Mulțumesc! Am primit părerea ta și o public pe site după ce o citesc.',
@@ -101,6 +101,16 @@ const ro = {
       email: 'Adresa de email nu pare validă.',
       consent: 'Fără acordul de publicare nu putem afișa părerea.',
     },
+  },
+  legal: {
+    titles: { privacy: 'Confidențialitate', cookies: 'Cookie-uri', terms: 'Termeni și condiții' },
+    descriptions: {
+      privacy: 'Ce date personale se prelucrează prin site, de ce, cât timp și ce drepturi ai.',
+      cookies: 'Site-ul public nu folosește cookie-uri. Ce cookie-uri apar doar în administrare.',
+      terms: 'Condițiile de folosire a site-ului, drepturile de autor și informațiile legale despre operator.',
+    },
+    draftNotice: 'Previzualizare: unele date legale nu sunt încă completate (marcate mai jos). În producție pagina apare doar completă.',
+    extra: 'Informații suplimentare',
   },
   footer: { navigation: 'Navigație', social: 'Social media', legal: 'Informații', privacy: 'Confidențialitate' },
   notFound: { title: 'Pagina nu există', body: 'Pagina căutată nu există sau a fost mutată.', back: 'Înapoi la pagina principală' },
@@ -190,7 +200,7 @@ const en: Dictionary = {
     optional: 'optional',
     required: 'required',
     consent:
-      'I agree that my name, context and feedback may be published on this website. I can ask for them to be removed at any time via the site’s contact address.',
+      'I agree that my name, context and feedback may be published on this website. I am at least 16 years old or I am sending this with a parent’s or guardian’s consent. I can ask for them to be removed at any time via the site’s contact address.',
     submit: 'Send feedback',
     sending: 'Sending…',
     success: 'Thank you! I received your feedback and will publish it on the site once I have read it.',
@@ -206,6 +216,16 @@ const en: Dictionary = {
       email: 'That email address does not look valid.',
       consent: 'We cannot show your feedback without your consent to publish it.',
     },
+  },
+  legal: {
+    titles: { privacy: 'Privacy', cookies: 'Cookies', terms: 'Terms and conditions' },
+    descriptions: {
+      privacy: 'What personal data the site processes, why, for how long and what your rights are.',
+      cookies: 'The public site uses no cookies. Which cookies appear only in the admin area.',
+      terms: 'Terms of use, copyright and legal information about the operator.',
+    },
+    draftNotice: 'Preview: some legal details are not filled in yet (marked below). In production the page only appears when complete.',
+    extra: 'Additional information',
   },
   footer: { navigation: 'Navigation', social: 'Social media', legal: 'Information', privacy: 'Privacy' },
   notFound: { title: 'Page not found', body: 'The page you are looking for does not exist or has moved.', back: 'Back to the homepage' },

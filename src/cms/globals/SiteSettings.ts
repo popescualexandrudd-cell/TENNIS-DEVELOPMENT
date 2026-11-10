@@ -62,6 +62,86 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: 'Date legale',
+          description:
+            'Folosite automat în Confidențialitate, Cookies și Termeni (decizia 0013). Până nu sunt completate câmpurile obligatorii, paginile legale nu apar în producție.',
+          fields: [
+            {
+              name: 'legal',
+              type: 'group',
+              label: false,
+              fields: [
+                {
+                  name: 'entityType',
+                  label: 'Formă juridică a operatorului',
+                  type: 'select',
+                  defaultValue: 'individual',
+                  required: true,
+                  options: [
+                    { label: 'Persoană fizică', value: 'individual' },
+                    { label: 'PFA / Întreprindere individuală', value: 'pfa' },
+                    { label: 'Societate (SRL etc.)', value: 'company' },
+                  ],
+                },
+                { name: 'legalName', label: 'Denumire / nume complet (obligatoriu)', type: 'text', admin: { description: 'Ex. „Daniel Popescu”, „Popescu Daniel PFA” sau „Exemplu Tenis SRL”.' } },
+                {
+                  name: 'taxId',
+                  label: 'CUI / CIF (obligatoriu pentru PFA și societate)',
+                  type: 'text',
+                  admin: { condition: (_, s) => s?.entityType !== 'individual' },
+                },
+                {
+                  name: 'tradeRegister',
+                  label: 'Nr. Registrul Comerțului (ex. F40/1234/2026, J40/…)',
+                  type: 'text',
+                  admin: { condition: (_, s) => s?.entityType !== 'individual' },
+                },
+                {
+                  name: 'address',
+                  label: 'Sediu / adresă de corespondență (obligatoriu pentru PFA și societate)',
+                  type: 'textarea',
+                  admin: { description: 'Pentru persoană fizică este opțională: emailul de mai jos e suficient ca date de contact.' },
+                },
+                { name: 'privacyEmail', label: 'Email pentru date personale și cereri (obligatoriu)', type: 'email' },
+                {
+                  name: 'hostingProvider',
+                  label: 'Furnizor de găzduire (obligatoriu, denumire + țară)',
+                  type: 'text',
+                  admin: { description: 'Ex. „Hetzner Online GmbH (Germania)”. Verifică unde sunt serverele și backup-urile.' },
+                },
+                { name: 'emailProvider', label: 'Furnizor de email (SMTP)', type: 'text', admin: { description: 'Ex. „Brevo (Franța)”. Gol = nu se trimit emailuri.' } },
+                {
+                  name: 'outsideEEA',
+                  label: 'Unele date se stochează sau se transmit în afara SEE',
+                  type: 'checkbox',
+                  defaultValue: false,
+                  admin: { description: 'Bifează dacă găzduirea, emailul sau backup-urile sunt în afara Spațiului Economic European (ex. SUA).' },
+                },
+                {
+                  name: 'transferSafeguards',
+                  label: 'Garanții pentru transferul în afara SEE',
+                  type: 'textarea',
+                  admin: {
+                    condition: (_, s) => Boolean(s?.outsideEEA),
+                    description: 'Ex. „Clauze contractuale standard ale Comisiei Europene” sau „EU-US Data Privacy Framework”.',
+                  },
+                },
+                { name: 'contactRetentionMonths', label: 'Păstrare solicitări de contact (luni)', type: 'number', min: 1, max: 60, defaultValue: 12, required: true },
+                {
+                  name: 'feedbackRetentionMonths',
+                  label: 'Păstrare păreri neaprobate / respinse (luni)',
+                  type: 'number',
+                  min: 1,
+                  max: 36,
+                  defaultValue: 6,
+                  required: true,
+                },
+                { name: 'updatedOn', label: 'Data ultimei actualizări a documentelor legale', type: 'date', admin: { date: { pickerAppearance: 'dayOnly' } } },
+              ],
+            },
+          ],
+        },
+        {
           label: 'SEO implicit',
           fields: [
             { name: 'defaultTitle', label: 'Titlu implicit', type: 'text', localized: true },

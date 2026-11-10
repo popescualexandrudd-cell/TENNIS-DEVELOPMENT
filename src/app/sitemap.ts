@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next'
 import { locales, type Locale, type PageKey } from '@/lib/i18n/config'
 import { articlePath, pagePath } from '@/lib/i18n/routes'
-import { getAvailability, isLocaleEnabled } from '@/lib/content'
+import { getAvailability, getPage, isLocaleEnabled } from '@/lib/content'
+import { legalPageKeys } from '@/lib/i18n/config'
 import { getPublishedArticles, getPublishedTranslation } from '@/features/journal/queries'
 import { absoluteUrl } from '@/lib/seo/site'
 
@@ -20,7 +21,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const key of Object.keys(availability[locale]) as PageKey[]) {
       if (!availability[locale][key]) continue
       const languages = availability[other][key] ? { [locale]: absoluteUrl(pagePath(locale, key)), [other]: absoluteUrl(pagePath(other, key)) } : undefined
-      entries.push({ url: absoluteUrl(pagePath(locale, key)), alternates: languages ? { languages } : undefined })
+      // Data ultimei modificări: din CMS pentru paginile editoriale (paginile legale sunt generate din cod).
+      const page = (legalPageKeys as readonly string[]).includes(key) || key === 'contact' ? null : await getPage(key, locale)
+      entries.push({ url: absoluteUrl(pagePath(locale, key)), lastModified: page?.updatedAt, alternates: languages ? { languages } : undefined })
     }
     for (const article of await getPublishedArticles(locale, 1000)) {
       if (!article.slug || article.seo?.noindex) continue

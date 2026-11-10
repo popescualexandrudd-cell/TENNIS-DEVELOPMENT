@@ -32,6 +32,8 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || 'dev-only-insecure-secret',
   admin: {
     user: AdminUsers.slug,
+    // Fără Gravatar: altfel administrarea trimite un hash al emailului către gravatar.com (decizia 0014).
+    avatar: 'default',
     meta: { titleSuffix: ' — Daniel Popescu', robots: 'noindex, nofollow' },
     importMap: { baseDir: path.resolve(dirname) },
   },
