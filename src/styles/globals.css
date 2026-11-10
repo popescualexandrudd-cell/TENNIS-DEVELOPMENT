@@ -1,0 +1,423 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+/*
+ * Design tokens — sursa: docs/DESIGN_SYSTEM.md (decizia 0009: paleta „apus pe teren” — portocaliu, ardezie, albastru prăfuit).
+ * Paleta: alb-albăstrui, albastru oțel prăfuit, ardezie închisă, portocaliu apus, negru.
+ * Zonele navy (`.on-navy`, `.card-navy`) redefinesc aceleași variabile, ca utilitarele să rămână lizibile.
+ */
+:root {
+  --color-background: #f4f7fb; /* albicios */
+  --color-panel: #ffffff;
+  --color-navy: #1c2633; /* ardezie închisă (fost midnight navy) */
+  --color-navy-card: #2a3646;
+  --color-soft-blue: #d5e0eb; /* albastru prăfuit */
+  --color-soft-blue-2: #b9c8d9;
+  --color-soft-blue-3: #9aaec4; /* albastru oțel */
+  --color-text-primary: #0b0b0c; /* negru */
+  --color-text-secondary: #4b5565;
+  --color-coral: #f26a3d; /* portocaliu apus — fundal CTA, cu text negru */
+  --color-coral-hover: #f4844f;
+  --color-coral-text: #b4441d; /* portocaliu pentru text și contururi pe fundal deschis */
+  --color-on-coral: #0b0b0c;
+  --color-border: rgb(11 11 12 / 0.12); /* doar decorativ */
+  --color-control-border: #6b7689;
+  --color-focus: #1d5fd1;
+
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --container-max: 1240px;
+  --gutter: 20px;
+  --section-space: 64px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.on-navy,
+.card-navy {
+  --color-text-primary: #f4f7fb;
+  --color-text-secondary: #aebbcb;
+  --color-coral-text: #f28a5e;
+  --color-border: rgb(255 255 255 / 0.14);
+  --color-control-border: #8794a6;
+  --color-focus: #f28a5e;
+  color: var(--color-text-primary);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 24px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 40px;
+    --section-space: 112px;
+  }
+}
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-panel: var(--color-panel);
+  --color-navy: var(--color-navy);
+  --color-navy-card: var(--color-navy-card);
+  --color-soft: var(--color-soft-blue);
+  --color-soft-2: var(--color-soft-blue-2);
+  --color-coral-text: var(--color-coral-text);
+  --color-ink: var(--color-text-primary);
+  --color-muted: var(--color-text-secondary);
+  --color-coral: var(--color-coral);
+  --color-on-coral: var(--color-on-coral);
+  --color-line: var(--color-border);
+  --color-control: var(--color-control-border);
+  --font-display: 'Archivo Expanded', 'Arial Black', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    color-scheme: light;
+    background: var(--color-background);
+  }
+  body {
+    background: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+  @media (min-width: 1024px) {
+    body {
+      font-size: 1.125rem; /* 18px */
+    }
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  a {
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+  ::selection {
+    background: var(--color-soft-blue-2);
+    color: var(--color-text-primary);
+  }
+}
+
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: calc(var(--container-max) + 2 * var(--gutter));
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .section {
+    padding-block: var(--section-space);
+  }
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .eyebrow-coral {
+    color: var(--color-coral-text);
+  }
+  /* Titluri display: majuscule, late, foarte compacte */
+  /* Titluri display: italic adevărat (Archivo Italic, nu înclinare sintetică), ca în afișul de referință — decizia 0011 */
+  .display {
+    hyphens: manual;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-synthesis: none;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
+  }
+  .display-light {
+    font-weight: 500;
+  }
+  .h-hero {
+    font-size: clamp(2.25rem, 1.2rem + 4.6vw, 5.5rem); /* 36px → 88px */
+  }
+  /* Titluri de pagină: pot fi cuvinte lungi („CONFIDENȚIALITATE”), deci minim mai mic pe mobil */
+  .h-page {
+    font-size: clamp(1.5rem, 0.4rem + 5.4vw, 5rem);
+    overflow-wrap: break-word;
+  }
+  .h-section {
+    font-size: clamp(2rem, 1.3rem + 2.8vw, 4rem); /* 32px → 64px */
+  }
+  .h-card {
+    font-size: clamp(1.5rem, 1.15rem + 1.2vw, 2.25rem);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      background-color 180ms var(--ease),
+      color 180ms var(--ease),
+      border-color 180ms var(--ease);
+  }
+  .btn-primary {
+    background: var(--color-coral);
+    color: var(--color-on-coral);
+  }
+  .btn-primary:hover {
+    background: var(--color-coral-hover);
+  }
+  .btn-outline {
+    border: 1.5px solid var(--color-control-border);
+    color: var(--color-text-primary);
+    background: transparent;
+  }
+  .btn-outline:hover {
+    border-color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+  }
+  .btn[disabled] {
+    opacity: 0.7;
+    cursor: progress;
+  }
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+    transition: text-decoration-color 180ms var(--ease);
+  }
+  .link-arrow:hover {
+    text-decoration-color: currentColor;
+  }
+  .card-navy {
+    background: var(--color-navy-card);
+    border-radius: var(--radius-sm);
+  }
+
+  /* —— Hero 3D: straturi în perspectivă (ardezie, albastru oțel, portocaliu cu „mișcare”), pe fundal albicios (doar CSS) —— */
+  /* Scena hero e un panou ardezie închis (ca afișul de referință), pe fundalul albicios al paginii — decizia 0011 */
+  .hero-stage {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: radial-gradient(120% 90% at 75% 5%, #3d4c60 0%, #2a3646 45%, var(--color-navy) 100%);
+    perspective: 1600px;
+  }
+  .hero-layers {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    transform-style: preserve-3d;
+    pointer-events: none;
+  }
+  .hero-layer {
+    position: absolute;
+    left: 38%;
+    top: 4%;
+    width: 78%;
+    height: 96%;
+    border-radius: 36px;
+    transform-origin: 50% 60%;
+    transform: rotateX(52deg) rotateZ(-32deg) translateZ(var(--z, 0px));
+    box-shadow:
+      0 50px 80px -30px rgb(0 0 0 / 0.55),
+      inset 0 1px 0 rgb(255 255 255 / 0.7);
+  }
+  .hero-layer-1 {
+    --z: -140px;
+    background: linear-gradient(140deg, #5d7088, #46566c 70%);
+  }
+  .hero-layer-2 {
+    --z: -40px;
+    background: linear-gradient(140deg, var(--color-soft-blue-3), #7f94ad);
+  }
+  .hero-layer-3 {
+    --z: 70px;
+    overflow: hidden;
+    background: linear-gradient(115deg, #e4572e 0%, #f07a4a 38%, #f6a985 68%, #d5e0eb 100%);
+    border: 1px solid rgb(255 255 255 / 0.6);
+    animation: hero-float 14s var(--ease) infinite alternate;
+  }
+  /* Dâre de „mișcare” (motion blur) peste stratul portocaliu — decorativ */
+  .hero-layer-3::after {
+    content: '';
+    position: absolute;
+    inset: -10%;
+    background: repeating-linear-gradient(
+      172deg,
+      transparent 0 34px,
+      rgb(255 255 255 / 0.16) 34px 40px,
+      transparent 40px 78px,
+      rgb(28 38 51 / 0.08) 78px 82px
+    );
+    filter: blur(5px);
+  }
+  @keyframes hero-float {
+    from {
+      transform: rotateX(52deg) rotateZ(-32deg) translateZ(70px);
+    }
+    to {
+      transform: rotateX(50deg) rotateZ(-30deg) translateZ(90px);
+    }
+  }
+  @media (max-width: 1023px) {
+    /* Pe telefon terenul stă în partea de sus, iar titlul pe ardezie, dedesubt */
+    .hero-layer {
+      left: 8%;
+      top: -6%;
+      width: 120%;
+      height: 66%;
+    }
+  }
+  .field-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+  }
+  .field-input {
+    width: 100%;
+    min-height: 52px;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-panel);
+    border: 1.5px solid var(--color-control-border);
+    border-radius: var(--radius-pill);
+    font: inherit;
+    color: inherit;
+    transition: border-color 150ms var(--ease);
+  }
+  textarea.field-input {
+    border-radius: var(--radius-lg);
+    min-height: 160px;
+  }
+  .field-input::placeholder {
+    color: #8a94a6;
+  }
+  .field-input:hover {
+    border-color: var(--color-text-primary);
+  }
+  .field-input[aria-invalid='true'] {
+    border-color: var(--color-coral-text);
+  }
+
+  /* Coloana de lectură pentru articole: ~68 de caractere */
+  .prose-article {
+    max-width: 68ch;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #1f2530;
+  }
+  @media (min-width: 1024px) {
+    .prose-article {
+      font-size: 1.1875rem;
+    }
+  }
+  .prose-article > * + * {
+    margin-top: 1.1em;
+  }
+  .prose-article h2 {
+    font-size: 1.5rem;
+    margin-top: 2em;
+    color: var(--color-text-primary);
+  }
+  .prose-article h3 {
+    font-size: 1.25rem;
+    margin-top: 1.6em;
+    color: var(--color-text-primary);
+  }
+  .prose-article a {
+    color: var(--color-navy);
+    text-decoration: underline;
+  }
+  .prose-article ul {
+    list-style: disc;
+    padding-left: 1.25em;
+  }
+  .prose-article ol {
+    list-style: decimal;
+    padding-left: 1.25em;
+  }
+  .prose-article li + li {
+    margin-top: 0.4em;
+  }
+  /* Pagini legale: tabele lizibile, marcaje pentru date lipsă */
+  .prose-legal h2 {
+    font-size: 1.375rem;
+  }
+  .prose-legal table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+  .prose-legal th,
+  .prose-legal td {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.6rem 0.75rem 0.6rem 0;
+    text-align: left;
+    vertical-align: top;
+  }
+  .prose-legal th {
+    font-weight: 700;
+  }
+  .prose-legal code {
+    font-size: 0.9em;
+    overflow-wrap: anywhere;
+  }
+  .prose-article blockquote {
+    border-left: 3px solid var(--color-coral);
+    padding-left: 1.1em;
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-layer-3 {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

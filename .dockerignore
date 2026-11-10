@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+media
+backups
+.env
+.env.*
+!.env.example
+playwright-report
+test-results
+docs/design/*.png
