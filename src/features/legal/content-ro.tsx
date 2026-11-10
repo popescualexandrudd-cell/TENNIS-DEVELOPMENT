@@ -66,10 +66,11 @@ export function PrivacyRo({ settings, analyticsEnabled }: Props) {
       <Section id="contact-form" title="2. Formularul de contact">
         <ul>
           <li>
-            <strong>Date:</strong> nume, adresă de email, tipul solicitării, mesajul și limba formularului; data trimiterii.
+            <strong>Date:</strong> nume, adresă de email, telefon (opțional, dacă vrei să te sun), tipul solicitării, mesajul și limba formularului; data trimiterii.
           </li>
           <li>
-            <strong>Scop:</strong> să îți răspund și să discutăm despre antrenamente, o colaborare sau întrebarea ta.
+            <strong>Scop:</strong> să îți răspund și să discutăm despre antrenamente, o colaborare sau întrebarea ta. Primești automat un
+            email de confirmare că mesajul a ajuns, iar eu primesc o notificare (și un reminder dacă nu am răspuns în câteva zile).
           </li>
           <li>
             <strong>Temei:</strong> demersuri făcute la cererea ta înainte de o eventuală înțelegere (art. 6 alin. (1) lit. b GDPR) și interesul
@@ -92,8 +93,8 @@ export function PrivacyRo({ settings, analyticsEnabled }: Props) {
             de publicare și textul exact al acordului, limba formularului și data.
           </li>
           <li>
-            <strong>Scop:</strong> să public pe site părerea ta despre antrenamente, după ce o citesc. Emailul îl folosesc doar dacă trebuie să
-            te contactez în legătură cu părerea.
+            <strong>Scop:</strong> să public pe site părerea ta despre antrenamente, după ce o citesc. Dacă îți lași emailul, primești automat
+            o confirmare și îl folosesc doar ca să te contactez în legătură cu părerea.
           </li>
           <li>
             <strong>Temei:</strong> consimțământul tău (art. 6 alin. (1) lit. a GDPR), dat prin bifa din formular. Îl poți retrage oricând
@@ -108,6 +109,17 @@ export function PrivacyRo({ settings, analyticsEnabled }: Props) {
           </li>
         </ul>
       </Section>
+
+      {settings.whatsapp ? (
+        <Section id="whatsapp" title="3a. Mesaje pe WhatsApp">
+          <p>
+            Butonul „Scrie-mi pe WhatsApp” este doar un link: site-ul nu încarcă nimic de la WhatsApp și nu transmite nicio dată. Dacă alegi
+            să-mi scrii acolo, conversația are loc în aplicația WhatsApp, operată de WhatsApp Ireland Limited (Meta), conform propriei politici
+            de confidențialitate. Eu văd numărul tău de telefon, numele din profil și mesajele, pe care le folosesc doar ca să-ți răspund
+            (temei: demersuri la cererea ta / interes legitim, ca la formularul de contact).
+          </p>
+        </Section>
+      ) : null}
 
       <Section id="technical" title="4. Date tehnice și protecția împotriva abuzurilor">
         <p>

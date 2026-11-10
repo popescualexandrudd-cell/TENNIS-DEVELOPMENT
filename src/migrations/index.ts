@@ -3,6 +3,9 @@ import * as migration_20261110_103117_home_facts_testimonials_service_image from
 import * as migration_20261110_133409_media_video_poster_method_media from './20261110_133409_media_video_poster_method_media';
 import * as migration_20261110_142643_testimonials_submissions from './20261110_142643_testimonials_submissions';
 import * as migration_20261110_152821_legal_settings from './20261110_152821_legal_settings';
+import * as migration_20261110_194357_whatsapp_setting from './20261110_194357_whatsapp_setting';
+import * as migration_20261110_195331_sections_footer_phone from './20261110_195331_sections_footer_phone';
+import * as migration_20261110_195910_automation from './20261110_195910_automation';
 
 export const migrations = [
   {
@@ -28,6 +31,21 @@ export const migrations = [
   {
     up: migration_20261110_152821_legal_settings.up,
     down: migration_20261110_152821_legal_settings.down,
-    name: '20261110_152821_legal_settings'
+    name: '20261110_152821_legal_settings',
+  },
+  {
+    up: migration_20261110_194357_whatsapp_setting.up,
+    down: migration_20261110_194357_whatsapp_setting.down,
+    name: '20261110_194357_whatsapp_setting',
+  },
+  {
+    up: migration_20261110_195331_sections_footer_phone.up,
+    down: migration_20261110_195331_sections_footer_phone.down,
+    name: '20261110_195331_sections_footer_phone',
+  },
+  {
+    up: migration_20261110_195910_automation.up,
+    down: migration_20261110_195910_automation.down,
+    name: '20261110_195910_automation'
   },
 ];

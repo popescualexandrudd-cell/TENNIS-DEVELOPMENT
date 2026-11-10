@@ -41,6 +41,7 @@ export const ContactRequests: CollectionConfig = {
   fields: [
     { name: 'name', label: 'Nume', type: 'text', required: true, maxLength: 120 },
     { name: 'email', label: 'Email', type: 'email', required: true },
+    { name: 'phone', label: 'Telefon (opțional)', type: 'text', maxLength: 24 },
     {
       name: 'requestType',
       label: 'Tip solicitare',
@@ -90,6 +91,17 @@ export const ContactRequests: CollectionConfig = {
       admin: { position: 'sidebar', readOnly: true },
     },
     { name: 'notificationError', label: 'Eroare notificare', type: 'text', admin: { position: 'sidebar', readOnly: true } },
+    {
+      name: 'autoReply',
+      label: 'Confirmare trimisă vizitatorului',
+      type: 'select',
+      options: [
+        { label: 'Trimisă', value: 'sent' },
+        { label: 'Netrimisă (fără email configurat sau eroare)', value: 'failed' },
+      ],
+      admin: { position: 'sidebar', readOnly: true },
+    },
+    { name: 'reminderSentAt', label: 'Reminder „fără răspuns” trimis la', type: 'date', admin: { position: 'sidebar', readOnly: true } },
     {
       name: 'resendNotification',
       label: 'Retrimite notificarea la salvare',

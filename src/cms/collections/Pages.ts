@@ -72,6 +72,15 @@ export const Pages: CollectionConfig = {
       admin: { condition: forKeys('home') },
       fields: [
         {
+          name: 'manifestoHeading',
+          label: 'Manifest — o frază scurtă, mare (sub hero)',
+          type: 'text',
+          localized: true,
+          maxLength: 70,
+          admin: { description: 'O idee proprie, în 3–7 cuvinte. Gol = secțiunea nu apare.' },
+        },
+        { name: 'manifestoText', label: 'Manifest — 1–3 fraze', type: 'textarea', localized: true },
+        {
           name: 'aboutHeading',
           label: 'Despre — titlu-afirmație (opțional, scurt)',
           type: 'text',
@@ -79,6 +88,7 @@ export const Pages: CollectionConfig = {
           maxLength: 60,
           admin: { description: 'Ex. o idee proprie a lui Daniel, în 3–6 cuvinte. Gol = „Despre Daniel”.' },
         },
+        { name: 'aboutLead', label: 'Despre — frază de deschidere (îngroșată)', type: 'text', localized: true, maxLength: 120 },
         { name: 'aboutText', label: 'Despre Daniel — 80–120 de cuvinte', type: 'textarea', localized: true },
         { name: 'aboutImage', label: 'Portret sau video', type: 'upload', relationTo: 'media' },
         {

@@ -156,9 +156,15 @@ export interface Page {
   image?: (number | null) | Media;
   home?: {
     /**
+     * O idee proprie, în 3–7 cuvinte. Gol = secțiunea nu apare.
+     */
+    manifestoHeading?: string | null;
+    manifestoText?: string | null;
+    /**
      * Ex. o idee proprie a lui Daniel, în 3–6 cuvinte. Gol = „Despre Daniel”.
      */
     aboutHeading?: string | null;
+    aboutLead?: string | null;
     aboutText?: string | null;
     aboutImage?: (number | null) | Media;
     approach?:
@@ -365,6 +371,10 @@ export interface Article {
   category?: (number | null) | Category;
   authorName: string;
   /**
+   * Salvează articolul ca draft și alege data: se publică singur (sarcina automată rulează la 15 minute). Gol = publicare manuală.
+   */
+  scheduledAt?: string | null;
+  /**
    * Se completează automat la prima publicare.
    */
   publishedAt?: string | null;
@@ -417,12 +427,15 @@ export interface ContactRequest {
   id: number;
   name: string;
   email: string;
+  phone?: string | null;
   requestType: 'coaching' | 'collaboration' | 'other';
   message: string;
   locale?: ('ro' | 'en') | null;
   status: 'new' | 'in_progress' | 'answered' | 'archived';
   notificationStatus?: ('pending' | 'sent' | 'failed') | null;
   notificationError?: string | null;
+  autoReply?: ('sent' | 'failed') | null;
+  reminderSentAt?: string | null;
   resendNotification?: boolean | null;
   ipHash?: string | null;
   updatedAt: string;
@@ -599,7 +612,10 @@ export interface PagesSelect<T extends boolean = true> {
   home?:
     | T
     | {
+        manifestoHeading?: T;
+        manifestoText?: T;
         aboutHeading?: T;
+        aboutLead?: T;
         aboutText?: T;
         aboutImage?: T;
         approach?:
@@ -693,6 +709,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   workflow?: T;
   category?: T;
   authorName?: T;
+  scheduledAt?: T;
   publishedAt?: T;
   translationGroup?: T;
   previousSlugs?:
@@ -793,12 +810,15 @@ export interface MediaSelect<T extends boolean = true> {
 export interface ContactRequestsSelect<T extends boolean = true> {
   name?: T;
   email?: T;
+  phone?: T;
   requestType?: T;
   message?: T;
   locale?: T;
   status?: T;
   notificationStatus?: T;
   notificationError?: T;
+  autoReply?: T;
+  reminderSentAt?: T;
   resendNotification?: T;
   ipHash?: T;
   updatedAt?: T;
@@ -902,6 +922,10 @@ export interface SiteSetting {
   englishEnabled?: boolean | null;
   email?: string | null;
   phone?: string | null;
+  /**
+   * Ex. 0726 409 988 sau +40 726 409 988. Gol = butonul nu apare.
+   */
+  whatsapp?: string | null;
   location?: string | null;
   /**
    * Afișează formularul „Lasă o părere” la „Ce spun jucătorii”. Părerile apar doar după aprobare.
@@ -947,6 +971,16 @@ export interface SiteSetting {
     feedbackRetentionMonths: number;
     updatedOn?: string | null;
   };
+  automation: {
+    autoReply?: boolean | null;
+    reminders?: boolean | null;
+    reminderHours: number;
+    weeklyDigest?: boolean | null;
+    lastRunAt?: string | null;
+    lastDailyRunOn?: string | null;
+    lastDigestOn?: string | null;
+    lastResult?: string | null;
+  };
   defaultTitle?: string | null;
   defaultDescription?: string | null;
   defaultImage?: (number | null) | Media;
@@ -964,6 +998,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   englishEnabled?: T;
   email?: T;
   phone?: T;
+  whatsapp?: T;
   location?: T;
   acceptTestimonials?: T;
   social?:
@@ -989,6 +1024,18 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         contactRetentionMonths?: T;
         feedbackRetentionMonths?: T;
         updatedOn?: T;
+      };
+  automation?:
+    | T
+    | {
+        autoReply?: T;
+        reminders?: T;
+        reminderHours?: T;
+        weeklyDigest?: T;
+        lastRunAt?: T;
+        lastDailyRunOn?: T;
+        lastDigestOn?: T;
+        lastResult?: T;
       };
   defaultTitle?: T;
   defaultDescription?: T;

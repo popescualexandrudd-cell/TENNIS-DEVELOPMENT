@@ -72,7 +72,7 @@ parteneriate reale și drept de folosire a mărcilor.
 
 ## Interacțiune
 Tranziții CSS 150–250 ms; hover și focus vizibile; meniu accesibil pe toate ecranele (Escape, clic în afară, focus restituit); `prefers-reduced-motion` respectat;
-fără carusel cu JavaScript, fără scroll controlat; video doar ca buclă scurtă fără sunet, cu pauză (vezi Imagini și video).
+slider 3D accesibil pentru antrenamente și testimoniale (decizia 0016: scroll nativ + snap, efect coverflow oprit la reducere mișcare), fără scroll controlat al paginii; video doar ca buclă scurtă fără sunet, cu pauză (vezi Imagini și video).
 
 ## Identitate
 - Wordmark „DANIEL POPESCU” în Archivo Expanded 800, spațiere 0.08em (`src/components/Wordmark.tsx`).

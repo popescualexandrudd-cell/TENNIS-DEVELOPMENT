@@ -165,6 +165,16 @@ export const Articles: CollectionConfig = {
     { name: 'category', label: 'Categorie', type: 'relationship', relationTo: 'categories', admin: { position: 'sidebar' } },
     { name: 'authorName', label: 'Autor', type: 'text', defaultValue: 'Daniel Popescu', required: true, admin: { position: 'sidebar' } },
     {
+      name: 'scheduledAt',
+      label: 'Publicare programată',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+        date: { pickerAppearance: 'dayAndTime' },
+        description: 'Salvează articolul ca draft și alege data: se publică singur (sarcina automată rulează la 15 minute). Gol = publicare manuală.',
+      },
+    },
+    {
       name: 'publishedAt',
       label: 'Data publicării',
       type: 'date',

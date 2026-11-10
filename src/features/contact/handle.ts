@@ -1,8 +1,10 @@
 import type { Payload } from 'payload'
 import { contactSchema, fieldErrors, MAX_BODY_BYTES, type ContactField } from './schema'
+import { normalizePhone } from './phone'
 import { clientIp, hashIp, isRateLimited } from './rate-limit'
 import { sendContactNotification } from './notify'
 import { readJsonBody } from '@/lib/http'
+import { contactAutoReply, sendEmailSafe } from '@/features/automation/email'
 
 export type ContactResult =
   | { status: 201; body: { ok: true; id: string | number; notification: 'sent' | 'failed' } }
@@ -31,11 +33,11 @@ export async function handleContactRequest(payload: Payload, request: Request): 
   try {
     if (await isRateLimited(payload, ipHash)) return { status: 429, body: { ok: false, error: 'rate_limited' } }
 
-    const { website: _honeypot, ...data } = parsed.data
+    const { website: _honeypot, phone, phoneCountry, ...data } = parsed.data
     const doc = await payload.create({
       collection: 'contact-requests',
       overrideAccess: true,
-      data: { ...data, ipHash, status: 'new', notificationStatus: 'pending' },
+      data: { ...data, phone: normalizePhone(phoneCountry, phone), ipHash, status: 'new', notificationStatus: 'pending' },
     })
 
     // Solicitarea este salvată: de aici înainte răspunsul este succes, chiar dacă emailul eșuează.
@@ -52,6 +54,17 @@ export async function handleContactRequest(payload: Payload, request: Request): 
       })
     } catch (error) {
       payload.logger.error({ msg: 'contact notification bookkeeping failed', requestId: doc.id, error: String(error) })
+    }
+    // Confirmare automată către vizitator (decizia 0017). Eșecul ei nu schimbă rezultatul: solicitarea e salvată.
+    try {
+      const settings = await payload.findGlobal({ slug: 'site-settings', depth: 0 })
+      if (settings.automation?.autoReply !== false) {
+        const reply = contactAutoReply(data.locale, data.name, settings.personName || 'Daniel Popescu')
+        const sent = await sendEmailSafe(payload, { to: data.email, replyTo: process.env.CONTACT_NOTIFY_TO || undefined, ...reply })
+        await payload.update({ collection: 'contact-requests', id: doc.id, overrideAccess: true, context: { skipResend: true }, data: { autoReply: sent ? 'sent' : 'failed' } })
+      }
+    } catch (error) {
+      payload.logger.error({ msg: 'contact auto-reply failed', requestId: doc.id, error: String(error) })
     }
     return { status: 201, body: { ok: true, id: doc.id, notification } }
   } catch (error) {

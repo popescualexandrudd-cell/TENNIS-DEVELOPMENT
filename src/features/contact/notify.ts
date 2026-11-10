@@ -1,6 +1,6 @@
 import type { Payload } from 'payload'
 
-type ContactDoc = { id: number | string; name: string; email: string; requestType: string; message: string; createdAt?: string }
+type ContactDoc = { id: number | string; name: string; email: string; phone?: string | null; requestType: string; message: string; createdAt?: string }
 
 const typeLabels: Record<string, string> = { coaching: 'Antrenamente', collaboration: 'Colaborare', other: 'Altceva' }
 
@@ -22,8 +22,8 @@ export async function sendContactNotification(payload: Payload, doc: ContactDoc)
       to,
       replyTo: doc.email,
       subject: `Solicitare nouă (${typeLabels[doc.requestType] ?? doc.requestType}) — ${doc.name}`,
-      text: `${doc.name} <${doc.email}>\nTip: ${typeLabels[doc.requestType] ?? doc.requestType}\n\n${doc.message}\n\n${adminUrl}`,
-      html: `<p><strong>${escapeHtml(doc.name)}</strong> &lt;${escapeHtml(doc.email)}&gt;<br>Tip: ${escapeHtml(
+      text: `${doc.name} <${doc.email}>${doc.phone ? `\nTelefon: ${doc.phone}` : ''}\nTip: ${typeLabels[doc.requestType] ?? doc.requestType}\n\n${doc.message}\n\n${adminUrl}`,
+      html: `<p><strong>${escapeHtml(doc.name)}</strong> &lt;${escapeHtml(doc.email)}&gt;${doc.phone ? `<br>Telefon: ${escapeHtml(doc.phone)}` : ''}<br>Tip: ${escapeHtml(
         typeLabels[doc.requestType] ?? doc.requestType,
       )}</p><p style="white-space:pre-wrap">${escapeHtml(doc.message)}</p><p><a href="${escapeHtml(adminUrl)}">Deschide în administrare</a></p>`,
     })

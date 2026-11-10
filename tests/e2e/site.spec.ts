@@ -115,15 +115,58 @@ test.describe('părerile sportivilor', () => {
   })
 })
 
+test.describe('slider 3D', () => {
+  test('butoanele și săgețile schimbă slide-ul; anunțul pentru cititoare de ecran se actualizează', async ({ page }) => {
+    await page.goto('/ro', { waitUntil: 'networkidle' })
+    const region = page.locator('[aria-roledescription="carusel"]').first()
+    test.skip((await region.count()) === 0, 'fără antrenamente confirmate')
+    await region.scrollIntoViewIfNeeded()
+    const live = region.locator('[aria-live="polite"]')
+    await expect(live).toHaveText(/^1 din \d+$/)
+    await region.getByRole('button', { name: 'Slide-ul următor' }).click()
+    await expect(live).toHaveText(/^2 din \d+$/)
+    await region.getByRole('button', { name: 'Slide-ul anterior' }).focus()
+    await page.keyboard.press('ArrowLeft')
+    await expect(live).toHaveText(/^1 din \d+$/)
+    await expect(region.getByRole('button', { name: 'Slide-ul anterior' })).toBeDisabled()
+  })
+
+  test('cu „reducere mișcare” slide-urile nu au transformări 3D', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('/ro', { waitUntil: 'networkidle' })
+    const slides = page.locator('.slider3d-slide')
+    test.skip((await slides.count()) === 0, 'fără slider pe pagină')
+    await page.waitForTimeout(200)
+    expect(await slides.evaluateAll((els) => els.map((e) => (e as HTMLElement).style.transform).filter(Boolean))).toEqual([])
+  })
+})
+
+test.describe('WhatsApp', () => {
+  test('butonul din „Hai să vorbim” deschide conversația cu numărul configurat', async ({ page }) => {
+    await page.goto('/ro')
+    const link = page.locator('#h-contact').locator('xpath=ancestor::section').getByRole('link', { name: 'Scrie-mi pe WhatsApp' })
+    test.skip((await link.count()) === 0, 'fără număr WhatsApp în Setări site')
+    await expect(link).toHaveAttribute('href', /^https:\/\/wa\.me\/40\d{9}\?text=/)
+    await expect(link).toHaveAttribute('target', '_blank')
+    await expect(link).toHaveAttribute('rel', /noopener/)
+  })
+})
+
 test.describe('formular de contact', () => {
   test('validare în interfață și trimitere reușită', async ({ page }) => {
     await page.goto('/ro/contact')
-    await page.getByRole('button', { name: 'Trimite mesajul' }).click()
+    // Pasul 1: datele de contact (telefonul e opțional)
+    await page.getByRole('button', { name: /Continuă/ }).click()
     await expect(page.getByRole('status')).toContainText('Verifică câmpurile marcate')
     await expect(page.getByLabel(/^Nume/)).toHaveAttribute('aria-invalid', 'true')
+    await expect(page.getByLabel(/^Mesaj/)).toBeHidden()
 
     await page.getByLabel(/^Nume/).fill('Test E2E')
     await page.getByLabel(/^Email/).fill(`e2e-${Date.now()}@example.test`)
+    await page.locator('#cf-phone').fill('0726 000 000')
+    await page.getByRole('button', { name: /Continuă/ }).click()
+    // Pasul 2: tipul cererii și mesajul
+    await expect(page.getByLabel(/^Mesaj/)).toBeVisible()
     await page.getByLabel('Colaborare').check()
     await page.getByLabel(/^Mesaj/).fill('Mesaj trimis de testul automat end-to-end.')
     await page.getByRole('button', { name: 'Trimite mesajul' }).click()
