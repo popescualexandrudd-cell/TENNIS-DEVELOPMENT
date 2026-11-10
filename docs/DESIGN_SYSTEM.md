@@ -60,14 +60,17 @@ Secțiunile apar doar cu date reale din CMS: „Pe scurt” (cifre confirmate), 
 (`confirmed`), jurnal (articole publicate), „Despre” (text). Logo-urile de parteneri **nu** sunt implementate: se adaugă doar când există
 parteneriate reale și drept de folosire a mărcilor.
 
-## Imagini
+## Imagini și video ([0010](decisions/0010-section-media-video-loops.md))
 - Fotografii reale cu Daniel; câmpul `rights` din Media ≠ „neverificat”, altfel imaginea nu apare public.
+- Hero, antrenamente, pașii „Cum lucrez” și testimoniale acceptă fotografie **sau** buclă video (MP4/WebM, 5–10 s, fără sunet) cu
+  imagine de previzualizare obligatorie. Peste media: degrade negru → text alb; creditul (`credit`) apare în colțul din dreapta sus.
+- Clipul rulează doar pe ecrane ≥ 768 px, vizibil, fără „reducere mișcare”; are buton de pauză. Pe telefon rămâne posterul.
 - Fără fotografie: straturile 3D cu liniile terenului (SVG decorativ). Nu este o fotografie și nu reprezintă o persoană.
 - `next/image` cu AVIF/WebP, `sizes` explicite, `priority` doar pentru imaginea hero.
 
 ## Interacțiune
 Tranziții CSS 150–250 ms; hover și focus vizibile; meniu accesibil pe toate ecranele (Escape, clic în afară, focus restituit); `prefers-reduced-motion` respectat;
-fără carusel cu JavaScript, fără scroll controlat, fără video automat.
+fără carusel cu JavaScript, fără scroll controlat; video doar ca buclă scurtă fără sunet, cu pauză (vezi Imagini și video).
 
 ## Identitate
 - Wordmark „DANIEL POPESCU” în Archivo Expanded 800, spațiere 0.08em (`src/components/Wordmark.tsx`).

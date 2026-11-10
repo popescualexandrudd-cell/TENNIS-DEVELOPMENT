@@ -182,6 +182,7 @@ export interface Page {
       | {
           title: string;
           text: string;
+          media?: (number | null) | Media;
           id?: string | null;
         }[]
       | null;
@@ -238,6 +239,10 @@ export interface Media {
    * Descrie ce se vede, pentru cititorii de ecran. Ex: „Daniel explică priza la forehand pe zgură”.
    */
   alt: string;
+  /**
+   * Un cadru reprezentativ din clip. Se afișează pe telefon și când vizitatorul a cerut mai puțină mișcare.
+   */
+  poster?: (number | null) | Media;
   credit?: string | null;
   rights: 'unverified' | 'own' | 'licensed' | 'consent';
   rightsNote?: string | null;
@@ -585,6 +590,7 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               title?: T;
               text?: T;
+              media?: T;
               id?: T;
             };
         testimonials?:
@@ -697,6 +703,7 @@ export interface ArticleSourcesSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  poster?: T;
   credit?: T;
   rights?: T;
   rightsNote?: T;

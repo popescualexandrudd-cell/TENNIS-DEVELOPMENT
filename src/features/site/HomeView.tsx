@@ -5,7 +5,7 @@ import { pagePath } from '@/lib/i18n/routes'
 import { getAvailability, getConfirmedServices, getPage, getSiteSettings } from '@/lib/content'
 import { getPublishedArticles } from '@/features/journal/queries'
 import { ArticleCard } from '@/features/journal/ArticleCard'
-import { hasPublicImage, MediaImage } from '@/components/MediaImage'
+import { hasPublicMedia, SectionMedia } from '@/components/SectionMedia'
 import { ContactSection } from './ContactSection'
 import { ServiceCard } from './ServiceCard'
 import { HeroStage } from './HeroStage'
@@ -45,7 +45,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
     <>
       {/* 1. Hero — card mare, cu fotografie reală sau motivul grafic */}
       <section className="container-site pt-2 lg:pt-8" aria-labelledby="h-hero">
-        <HeroStage image={page?.image}>
+        <HeroStage image={page?.image} locale={locale}>
           <h1 id="h-hero" className="display">
             <span className="h-hero block">{name}</span>
             {tagline ? <span className="display-light mt-3 block text-[clamp(1.375rem,0.9rem+2.2vw,3rem)]">{tagline}</span> : null}
@@ -73,9 +73,9 @@ export async function HomeView({ locale }: { locale: Locale }) {
             <div>
               <p className="eyebrow">{t.home.about}</p>
               <SplitHeading id="h-about" text={home.aboutHeading || t.home.about} className="h-section mt-4" />
-              {hasPublicImage(home.aboutImage) ? (
+              {hasPublicMedia(home.aboutImage) ? (
                 <div className="relative mt-10 aspect-[4/5] max-w-md overflow-hidden rounded-lg">
-                  <MediaImage media={home.aboutImage} fill sizes="(min-width: 1024px) 420px, 100vw" />
+                  <SectionMedia media={home.aboutImage} locale={locale} sizes="(min-width: 1024px) 420px, 100vw" />
                 </div>
               ) : null}
             </div>
@@ -142,11 +142,17 @@ export async function HomeView({ locale }: { locale: Locale }) {
           <SplitHeading id="h-method" text={t.home.method} className="h-section" />
           <ol className="mt-12 grid gap-1.5 md:grid-cols-3">
             {home.method.map((step, i) => (
-              <li key={step.id ?? step.title} className="card-navy flex flex-col p-8 sm:p-10">
+              <li key={step.id ?? step.title} className="card-navy relative isolate flex min-h-[320px] flex-col overflow-hidden p-8 sm:p-10">
+                {hasPublicMedia(step.media) ? (
+                  <>
+                    <SectionMedia media={step.media} locale={locale} sizes="(min-width: 768px) 33vw, 100vw" className="-z-10" />
+                    <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/60 to-black/25" aria-hidden="true" />
+                  </>
+                ) : null}
                 <span className="display text-sm text-coral-text">
                   {t.home.step} {String(i + 1).padStart(2, '0')}
                 </span>
-                <h3 className="mt-6 text-[1.5rem] leading-tight font-[800]">{step.title}</h3>
+                <h3 className="mt-auto pt-10 text-[1.5rem] leading-tight font-[800]">{step.title}</h3>
                 <p className="mt-3 text-muted">{step.text}</p>
               </li>
             ))}
@@ -163,9 +169,9 @@ export async function HomeView({ locale }: { locale: Locale }) {
               const [first, ...rest] = x.name.split(' ')
               return (
                 <figure key={x.id ?? x.name} className="on-navy relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden rounded-lg bg-navy-card p-8 sm:p-10">
-                  {hasPublicImage(x.image) ? (
+                  {hasPublicMedia(x.image) ? (
                     <>
-                      <MediaImage media={x.image} fill sizes="(min-width: 1024px) 50vw, 100vw" className="-z-10" />
+                      <SectionMedia media={x.image} locale={locale} sizes="(min-width: 1024px) 50vw, 100vw" className="-z-10" />
                       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/60 to-black/20" aria-hidden="true" />
                     </>
                   ) : null}

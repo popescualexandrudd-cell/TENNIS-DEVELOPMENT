@@ -14,3 +14,4 @@ Deciziile înlocuite nu se rescriu; se marchează și se leagă de cea nouă.
 | 0007 | [Temă închisă editorial-sportivă, Archivo Expanded](0007-dark-editorial-sport.md) | structura și tipografia rămân; fundalul negru înlocuit de 0008 |
 | 0008 | [Fundal albicios + hero 3D soft blue (CSS)](0008-light-3d-hero.md) | acceptată ca propunere de lucru (cerută de Daniel); culorile înlocuite de 0009 |
 | 0009 | [Paleta „apus pe teren”: portocaliu, ardezie, albastru prăfuit](0009-sunset-court-palette.md) | acceptată ca propunere de lucru (cerută de Daniel) |
+| 0010 | [Fotografii și bucle video în secțiuni](0010-section-media-video-loops.md) | acceptată (cerută de Daniel; modifică „fără video automat” din brief) |

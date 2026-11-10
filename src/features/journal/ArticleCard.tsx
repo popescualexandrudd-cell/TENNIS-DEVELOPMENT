@@ -3,6 +3,7 @@ import type { Article } from '@/payload-types'
 import type { Locale } from '@/lib/i18n/config'
 import { articlePath } from '@/lib/i18n/routes'
 import { hasPublicImage, MediaImage } from '@/components/MediaImage'
+import { MediaCredit } from '@/components/SectionMedia'
 import { formatDate } from '@/lib/format'
 
 export function ArticleCard({ article, locale, headingLevel = 'h3' }: { article: Article; locale: Locale; headingLevel?: 'h2' | 'h3' }) {
@@ -18,6 +19,9 @@ export function ArticleCard({ article, locale, headingLevel = 'h3' }: { article:
             sizes="(min-width: 1280px) 400px, (min-width: 640px) 50vw, 100vw"
             className="transition-transform duration-[250ms] group-hover:scale-[1.03]"
           />
+        ) : null}
+        {hasPublicImage(article.coverImage) ? (
+          <MediaCredit credit={article.coverImage.credit} />
         ) : (
           // Monogramă decorativă (SVG, nu text) când articolul nu are încă imagine
           <svg viewBox="0 0 64 64" className="absolute bottom-4 left-4 h-16 w-16 opacity-20" aria-hidden="true" focusable="false">

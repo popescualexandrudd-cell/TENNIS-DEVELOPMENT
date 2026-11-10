@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import type { Media } from '@/payload-types'
 import type { Locale } from '@/lib/i18n/config'
+import { stillImage } from '@/lib/media'
 import { absoluteUrl } from './site'
 
 type Input = {
@@ -26,7 +27,8 @@ export function buildMetadata(input: Input): Metadata {
     for (const [lang, path] of Object.entries(alternates)) if (path) languages[lang] = absoluteUrl(path)
     if (alternates.ro) languages['x-default'] = absoluteUrl(alternates.ro)
   }
-  const image = input.image && typeof input.image === 'object' && input.image.url && input.image.rights !== 'unverified' ? input.image : null
+  // Open Graph: fotografia, sau imaginea de previzualizare dacă media principală e un clip video.
+  const image = stillImage(input.image)
   return {
     title: input.title,
     description: input.description ?? undefined,

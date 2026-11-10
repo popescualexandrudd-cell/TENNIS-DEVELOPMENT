@@ -1,5 +1,6 @@
 import * as migration_20261110_100459_initial from './20261110_100459_initial';
 import * as migration_20261110_103117_home_facts_testimonials_service_image from './20261110_103117_home_facts_testimonials_service_image';
+import * as migration_20261110_133409_media_video_poster_method_media from './20261110_133409_media_video_poster_method_media';
 
 export const migrations = [
   {
@@ -10,6 +11,11 @@ export const migrations = [
   {
     up: migration_20261110_103117_home_facts_testimonials_service_image.up,
     down: migration_20261110_103117_home_facts_testimonials_service_image.down,
-    name: '20261110_103117_home_facts_testimonials_service_image'
+    name: '20261110_103117_home_facts_testimonials_service_image',
+  },
+  {
+    up: migration_20261110_133409_media_video_poster_method_media.up,
+    down: migration_20261110_133409_media_video_poster_method_media.down,
+    name: '20261110_133409_media_video_poster_method_media'
   },
 ];

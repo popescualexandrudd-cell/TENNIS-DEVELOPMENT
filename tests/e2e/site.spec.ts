@@ -67,6 +67,33 @@ test.describe('meniu (telefon: ecran complet, laptop: dropdown)', () => {
   })
 })
 
+test.describe('media de secțiune', () => {
+  test('buclele video rulează doar pe ecrane mari, fără sunet, cu buton de pauză', async ({ page, isMobile }) => {
+    // Clipurile apar după hidratare (decizia se ia în browser, după ecran și preferințe).
+    await page.goto('/ro', { waitUntil: 'networkidle' })
+    const videos = page.locator('video')
+    if (isMobile) {
+      // Pe telefon rămâne doar imaginea de previzualizare.
+      await expect(videos).toHaveCount(0)
+      return
+    }
+    test.skip((await videos.count()) === 0, 'fără clipuri în CMS (seed fără media demonstrative)')
+    const first = videos.first()
+    await first.scrollIntoViewIfNeeded()
+    await expect.poll(() => first.evaluate((v: HTMLVideoElement) => !v.paused && v.muted)).toBe(true)
+    const pause = page.getByRole('button', { name: 'Oprește clipul' }).first()
+    await pause.click()
+    await expect.poll(() => first.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true)
+    await expect(page.getByRole('button', { name: 'Pornește clipul' }).first()).toBeVisible()
+  })
+
+  test('cu „reducere mișcare” nu apare niciun clip', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('/ro', { waitUntil: 'networkidle' })
+    await expect(page.locator('video')).toHaveCount(0)
+  })
+})
+
 test.describe('formular de contact', () => {
   test('validare în interfață și trimitere reușită', async ({ page }) => {
     await page.goto('/ro/contact')

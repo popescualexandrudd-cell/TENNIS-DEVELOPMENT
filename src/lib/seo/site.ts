@@ -3,5 +3,7 @@ export function siteUrl(): string {
 }
 
 export function absoluteUrl(path: string): string {
+  // Payload întoarce deja URL-uri absolute pentru media: nu le prefixăm a doua oară.
+  if (/^https?:\/\//i.test(path)) return path
   return `${siteUrl()}${path.startsWith('/') ? path : `/${path}`}`
 }

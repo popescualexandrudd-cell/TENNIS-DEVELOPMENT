@@ -3,9 +3,9 @@ import type { CoachingService } from '@/payload-types'
 import type { Locale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n/dictionaries'
 import { pagePath } from '@/lib/i18n/routes'
-import { hasPublicImage, MediaImage } from '@/components/MediaImage'
+import { hasPublicMedia, SectionMedia } from '@/components/SectionMedia'
 
-/** Card mare de antrenament: fotografie (dacă există) sau navy, numerotat, cu CTA. */
+/** Card mare de antrenament: fotografie / video (dacă există) sau ardezie, numerotat, cu CTA. */
 export function ServiceCard({
   service,
   locale,
@@ -19,12 +19,12 @@ export function ServiceCard({
 }) {
   const t = getDictionary(locale).coaching
   const H = headingLevel
-  const withImage = hasPublicImage(service.image)
+  const withImage = hasPublicMedia(service.image)
   return (
     <article className="on-navy relative flex min-h-[520px] flex-col overflow-hidden rounded-lg bg-navy-card">
       {withImage ? (
         <>
-          <MediaImage media={service.image} fill sizes="(min-width: 1280px) 440px, (min-width: 768px) 50vw, 100vw" />
+          <SectionMedia media={service.image} locale={locale} sizes="(min-width: 1280px) 440px, (min-width: 768px) 50vw, 100vw" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/10" aria-hidden="true" />
         </>
       ) : null}

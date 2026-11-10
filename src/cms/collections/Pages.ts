@@ -64,7 +64,7 @@ export const Pages: CollectionConfig = {
     },
     { name: 'title', label: 'Titlu', type: 'text', localized: true, required: true },
     { name: 'intro', label: 'Introducere', type: 'textarea', localized: true },
-    { name: 'image', label: 'Fotografie principală', type: 'upload', relationTo: 'media' },
+    { name: 'image', label: 'Fotografie sau video principal', type: 'upload', relationTo: 'media' },
     {
       name: 'home',
       label: 'Secțiuni homepage',
@@ -80,7 +80,7 @@ export const Pages: CollectionConfig = {
           admin: { description: 'Ex. o idee proprie a lui Daniel, în 3–6 cuvinte. Gol = „Despre Daniel”.' },
         },
         { name: 'aboutText', label: 'Despre Daniel — 80–120 de cuvinte', type: 'textarea', localized: true },
-        { name: 'aboutImage', label: 'Portret', type: 'upload', relationTo: 'media' },
+        { name: 'aboutImage', label: 'Portret sau video', type: 'upload', relationTo: 'media' },
         {
           name: 'approach',
           label: 'Trei idei despre abordare',
@@ -115,6 +115,7 @@ export const Pages: CollectionConfig = {
           fields: [
             { name: 'title', type: 'text', required: true },
             { name: 'text', type: 'textarea', required: true },
+            { name: 'media', label: 'Fotografie sau video (opțional)', type: 'upload', relationTo: 'media' },
           ],
         },
         {

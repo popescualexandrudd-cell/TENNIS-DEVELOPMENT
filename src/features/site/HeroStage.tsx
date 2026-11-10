@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import type { Media } from '@/payload-types'
-import { hasPublicImage, MediaImage } from '@/components/MediaImage'
+import type { Locale } from '@/lib/i18n/config'
+import { hasPublicMedia, SectionMedia } from '@/components/SectionMedia'
 
 /** Liniile terenului, desenate pe stratul de sus (decorativ). */
 function CourtOnLayer() {
@@ -23,10 +24,10 @@ function CourtOnLayer() {
 /**
  * Hero cu „scenă 3D” din CSS: straturi ardezie, albastru oțel și portocaliu „în mișcare”, pe fundal albicios.
  * Fără WebGL și fără JavaScript; animația plutitoare se oprește la `prefers-reduced-motion`.
- * O fotografie reală (cu drepturi verificate) apare ca un card plutitor deasupra straturilor.
+ * O fotografie sau o buclă video (cu drepturi verificate) apare ca un card plutitor deasupra straturilor.
  */
-export function HeroStage({ image, children }: { image?: Media | number | string | null; children: ReactNode }) {
-  const photo = hasPublicImage(image)
+export function HeroStage({ image, locale, children }: { image?: Media | number | string | null; locale: Locale; children: ReactNode }) {
+  const photo = hasPublicMedia(image)
   return (
     <div className="hero-stage flex min-h-[72svh] flex-col justify-between lg:min-h-[80vh]">
       <div className="hero-layers" aria-hidden="true">
@@ -36,7 +37,7 @@ export function HeroStage({ image, children }: { image?: Media | number | string
       </div>
       {photo ? (
         <div className="relative mx-6 mt-6 aspect-[4/3] overflow-hidden rounded-lg shadow-[0_40px_80px_-30px_rgb(28_38_51/0.45)] sm:mx-10 lg:absolute lg:top-[10%] lg:right-[6%] lg:mx-0 lg:mt-0 lg:w-[42%] lg:rotate-[-2deg]">
-          <MediaImage media={image} fill priority sizes="(min-width: 1024px) 40vw, 100vw" />
+          <SectionMedia media={image} locale={locale} priority sizes="(min-width: 1024px) 40vw, 100vw" />
         </div>
       ) : null}
       <div className="relative mt-auto p-6 sm:p-10 lg:max-w-[62%] lg:p-14">

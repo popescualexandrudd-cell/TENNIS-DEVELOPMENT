@@ -65,7 +65,8 @@ Testat end-to-end în `tests/e2e/editorial.spec.ts`. Build-ul de producție are 
 - Contact: limită 16 KB, `Content-Type` JSON, verificare `Origin`, honeypot, 3 cereri / 10 min per hash IP (în PostgreSQL,
   consecvent între instanțe). Succes = solicitare salvată; emailul eșuat se marchează și se retrimite din admin.
 - Headere: `nosniff`, `Referrer-Policy`, `X-Frame-Options: SAMEORIGIN`, `Permissions-Policy`. HTTPS și HSTS la nivelul proxy-ului.
-- Uploaduri: doar imagini (JPEG/PNG/WebP/AVIF), max 15 MB, convertite în WebP de sharp.
+- Uploaduri: imagini (JPEG/PNG/WebP/AVIF, convertite în WebP de sharp) și clipuri scurte MP4/WebM (cu `poster` obligatoriu), max 15 MB.
+  URL-urile media se fac relative (`src/lib/media.ts → mediaSrc`) pentru `next/image`.
 
 ## Puncte de extindere (fără implementare acum)
 Stocare media S3-compatibilă (plugin oficial Payload), alt furnizor de email (adapter Payload), import editorial (endpoint privat),

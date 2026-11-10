@@ -5,7 +5,7 @@ import { pagePath } from '@/lib/i18n/routes'
 import { getAvailability, getConfirmedServices, getPage, getSiteSettings } from '@/lib/content'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { breadcrumbSchema, personSchema } from '@/lib/seo/structured-data'
-import { hasPublicImage, MediaImage } from '@/components/MediaImage'
+import { hasPublicMedia, SectionMedia } from '@/components/SectionMedia'
 import { RichText } from '@/components/RichText'
 import { JsonLd } from '@/components/JsonLd'
 import { ContactSection } from './ContactSection'
@@ -48,10 +48,10 @@ export async function ContentPageView({ locale, pageKey }: { locale: Locale; pag
   return (
     <>
       <PageHeader title={page.title} intro={page.intro} />
-      {hasPublicImage(page.image) ? (
+      {hasPublicMedia(page.image) ? (
         <div className="container-site">
           <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
-            <MediaImage media={page.image} fill priority sizes="(min-width: 1240px) 1240px, 100vw" />
+            <SectionMedia media={page.image} locale={locale} priority sizes="(min-width: 1240px) 1240px, 100vw" />
           </div>
         </div>
       ) : null}

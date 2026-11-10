@@ -6,6 +6,7 @@ import type { Locale } from './config'
  */
 const ro = {
   skipToContent: 'Sari la conținut',
+  video: { pause: 'Oprește clipul', play: 'Pornește clipul' },
   nav: {
     about: 'Despre',
     coaching: 'Antrenamente',
@@ -80,6 +81,7 @@ type Dictionary = typeof ro
 
 const en: Dictionary = {
   skipToContent: 'Skip to content',
+  video: { pause: 'Pause video', play: 'Play video' },
   nav: {
     about: 'About',
     coaching: 'Coaching',

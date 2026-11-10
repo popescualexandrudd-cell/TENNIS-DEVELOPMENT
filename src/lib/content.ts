@@ -28,7 +28,8 @@ export const getPage = cache(async (key: PageKey, locale: Locale): Promise<Page 
     fallbackLocale: false,
     where: { and: [{ key: { equals: key } }, { _status: { equals: 'published' } }] },
     limit: 1,
-    depth: 1,
+    // 2: media de secțiune + imaginea de previzualizare a unui clip video (media.poster).
+    depth: 2,
   })
   const page = docs[0]
   return page && page.available ? page : null

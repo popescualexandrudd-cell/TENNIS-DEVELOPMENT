@@ -114,7 +114,7 @@ export const Articles: CollectionConfig = {
       maxLength: 300,
       admin: { description: 'Una-două fraze, folosite în liste și ca descriere implicită.' },
     },
-    { name: 'coverImage', label: 'Imagine principală', type: 'upload', relationTo: 'media' },
+    { name: 'coverImage', label: 'Imagine principală', type: 'upload', relationTo: 'media', filterOptions: { mimeType: { contains: 'image' } } },
     { name: 'content', label: 'Conținut', type: 'richText', required: true },
     {
       name: 'sources',

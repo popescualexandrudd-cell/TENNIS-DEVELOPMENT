@@ -10,6 +10,7 @@ import { buildMetadata } from '@/lib/seo/metadata'
 import { articleSchema, breadcrumbSchema } from '@/lib/seo/structured-data'
 import { isLocaleEnabled } from '@/lib/content'
 import { hasPublicImage, MediaImage } from '@/components/MediaImage'
+import { MediaCredit } from '@/components/SectionMedia'
 import { RichText } from '@/components/RichText'
 import { JsonLd } from '@/components/JsonLd'
 import { SetAlternate } from '@/components/AlternateLocale'
@@ -105,6 +106,7 @@ export async function ArticleView({ locale, slug }: { locale: Locale; slug: stri
         <div className="container-site mt-10">
           <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
             <MediaImage media={article.coverImage} fill priority sizes="(min-width: 1240px) 1240px, 100vw" />
+            <MediaCredit credit={article.coverImage.credit} />
           </div>
         </div>
       ) : null}

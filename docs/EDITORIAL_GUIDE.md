@@ -23,6 +23,8 @@ Claude” = acest ghid + exemple aprobate + surse; nu fine-tuning).
 2. Draft cu Claude în afara site-ului, folosind promptul de mai jos și sursele adunate.
 3. Daniel corectează și confirmă fiecare afirmație despre el.
 4. În admin: Articol nou → `workflow: draft`; sursele în „Surse articole”; imagine cu drepturi verificate și alt text.
+   Pentru secțiunile homepage se poate încărca și o buclă video: MP4, 5–10 s, **fără sunet**, ideal < 2 MB (720p), plus un cadru
+   reprezentativ ca „Imagine de previzualizare”. Persoanele filmate trebuie să-și fi dat acordul; materialele de bancă au „Credit” completat.
 5. „În revizuire” → preview privat (butonul Preview din admin) → corecturi.
 6. Publish. Retragere: `workflow: Arhivat` (articolul dispare de pe site, rămâne în admin).
 
