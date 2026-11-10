@@ -32,6 +32,10 @@ const pairs = [
   ['focus portocaliu pe ardezie', '#F28A5E', '#1C2633', 3],
   ['control-border pe card ardezie', '#8794A6', '#2A3646', 3],
   ['negru pe portocaliu (CTA în footer)', '#0B0B0C', '#F26A3D', 4.5],
+  // Footer negru (decizia 0016)
+  ['text pe footer negru', '#F4F7FB', '#0B0B0C', 4.5],
+  ['text-secondary pe footer negru', '#AEBBCB', '#0B0B0C', 4.5],
+  ['portocaliu deschis (hover) pe footer negru', '#F28A5E', '#0B0B0C', 4.5],
   // Hero pe panou ardezie (decizia 0011): textul stă pe voalul ardezie ≥ 88%
   ['nume alb pe voalul hero (ardezie)', '#F4F7FB', '#1C2633', 4.5],
   ['ultimul cuvânt al numelui, portocaliu pe voalul hero', '#F28A5E', '#1C2633', 4.5],

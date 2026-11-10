@@ -20,3 +20,4 @@ Deciziile înlocuite nu se rescriu; se marchează și se leagă de cea nouă.
 | 0013 | [Pagini legale generate din cod + Setări site](0013-legal-pages-from-code.md) | acceptată (cerută de Daniel); de verificat juridic |
 | 0014 | [Întărirea securității](0014-security-hardening.md) | acceptată (cerută de Daniel) |
 | 0015 | [SEO tehnic](0015-technical-seo.md) | acceptată (cerută de Daniel) |
+| 0016 | [Secțiuni după referință, slide-uri 3D, footer centrat, contact în 2 pași](0016-sections-3d-slider-footer.md) | acceptată (cerută de Daniel) |

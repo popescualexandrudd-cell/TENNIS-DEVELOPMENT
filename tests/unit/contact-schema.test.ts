@@ -36,3 +36,17 @@ describe('rate limit helpers', () => {
     expect(clientIp(new Headers({ 'x-forwarded-for': '198.51.100.1, 10.0.0.1' }))).toBe('198.51.100.1')
   })
 })
+
+describe('telefon opțional', () => {
+  it('acceptă formular fără telefon și normalizează numerele cu prefix', async () => {
+    const { contactSchema, normalizePhone } = await import('@/features/contact/schema')
+    const base = { name: 'Ana Pop', email: 'ana@example.com', requestType: 'coaching', message: 'Aș vrea să încep antrenamentele.' }
+    expect(contactSchema.safeParse(base).success).toBe(true)
+    expect(contactSchema.safeParse({ ...base, phone: '0726 409 988', phoneCountry: 'RO' }).success).toBe(true)
+    expect(contactSchema.safeParse({ ...base, phone: 'abc' }).success).toBe(false)
+    expect(normalizePhone('RO', '0726 409 988')).toBe('+40726409988')
+    expect(normalizePhone('IT', '333 123 4567')).toBe('+393331234567')
+    expect(normalizePhone('RO', '+44 20 7946 0000')).toBe('+442079460000')
+    expect(normalizePhone('RO', '')).toBeNull()
+  })
+})

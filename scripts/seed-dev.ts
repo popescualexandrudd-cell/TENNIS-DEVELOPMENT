@@ -49,7 +49,10 @@ async function main() {
     intro:
       'Sunt Daniel Popescu. Abordarea mea pornește de la jucător, obiectivele lui și lucrurile pe care le putem îmbunătăți împreună.',
     home: {
+      manifestoHeading: `${EX} O frază mare, a lui Daniel`,
+      manifestoText: `${EX} Două–trei fraze care spun de unde vine felul tău de a antrena. Substituent pentru layout.`,
       aboutHeading: `${EX} Titlu-afirmație scurt`,
+      aboutLead: `${EX} O frază de deschidere, îngroșată.`,
       coachingHeading: 'Antrenamente cu obiective clare',
       // Cifre confirmate de Daniel (10.11.2026) — nu mai sunt substituente.
       facts: [
@@ -78,6 +81,29 @@ async function main() {
   }
   if (pages.docs[0]) await payload.update({ collection: 'pages', id: pages.docs[0].id, locale: 'ro', data: homeData, context: ctx })
   else await payload.create({ collection: 'pages', locale: 'ro', data: homeData, context: ctx })
+
+  // Pagina „Despre” (povestea completă), deschisă din butonul „Povestea mea”.
+  const aboutPage = await payload.find({ collection: 'pages', where: { key: { equals: 'about' } }, limit: 1 })
+  if (!aboutPage.docs[0]) {
+    await payload.create({
+      collection: 'pages',
+      locale: 'ro',
+      context: ctx,
+      data: {
+        key: 'about',
+        internalTitle: 'Despre — povestea completă, DE SCRIS de Daniel',
+        available: true,
+        title: 'Povestea mea',
+        intro: `${EX} O frază de introducere a poveștii.`,
+        body: lexical([
+          `${EX} Aici vine povestea completă, scrisă sau validată de Daniel: începuturile în tenis, anii ca jucător, trecerea la antrenorat, ce îl motivează.`,
+          { h2: `${EX} Un subtitlu` },
+          'Încă un paragraf substituent pentru verificarea tipografiei de lectură.',
+        ]),
+        _status: 'published',
+      },
+    })
+  }
 
   const { totalDocs: services } = await payload.count({ collection: 'coaching-services' })
   if (!services) {

@@ -156,9 +156,15 @@ export interface Page {
   image?: (number | null) | Media;
   home?: {
     /**
+     * O idee proprie, în 3–7 cuvinte. Gol = secțiunea nu apare.
+     */
+    manifestoHeading?: string | null;
+    manifestoText?: string | null;
+    /**
      * Ex. o idee proprie a lui Daniel, în 3–6 cuvinte. Gol = „Despre Daniel”.
      */
     aboutHeading?: string | null;
+    aboutLead?: string | null;
     aboutText?: string | null;
     aboutImage?: (number | null) | Media;
     approach?:
@@ -417,6 +423,7 @@ export interface ContactRequest {
   id: number;
   name: string;
   email: string;
+  phone?: string | null;
   requestType: 'coaching' | 'collaboration' | 'other';
   message: string;
   locale?: ('ro' | 'en') | null;
@@ -599,7 +606,10 @@ export interface PagesSelect<T extends boolean = true> {
   home?:
     | T
     | {
+        manifestoHeading?: T;
+        manifestoText?: T;
         aboutHeading?: T;
+        aboutLead?: T;
         aboutText?: T;
         aboutImage?: T;
         approach?:
@@ -793,6 +803,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface ContactRequestsSelect<T extends boolean = true> {
   name?: T;
   email?: T;
+  phone?: T;
   requestType?: T;
   message?: T;
   locale?: T;

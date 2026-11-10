@@ -13,6 +13,7 @@ import { JsonLd } from '@/components/JsonLd'
 import { personSchema, websiteSchema } from '@/lib/seo/structured-data'
 import { stillImage } from '@/lib/media'
 import { ServiceCard } from './ServiceCard'
+import { Slider3D } from '@/components/Slider3D'
 import { HeroStage } from './HeroStage'
 
 /** Titlu în două tonuri: primul cuvânt subțire, restul îngroșat. */
@@ -57,6 +58,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
   const privacyHref = availability.privacy ? pagePath(locale, 'privacy') : null
 
   const aboutStill = stillImage(home?.aboutImage)
+  const sliderLabels = t.home.slider
   return (
     <>
       <JsonLd
@@ -65,67 +67,55 @@ export async function HomeView({ locale }: { locale: Locale }) {
           personSchema(settings, locale, { description: page?.intro, image: aboutStill?.sizes?.large?.url ?? aboutStill?.url }),
         ]}
       />
-      {/* 1. Hero — card mare, cu fotografie reală sau motivul grafic */}
+      {/* 1. Hero — nume, tagline și „Povestea mea” (pagină separată) */}
       <section className="container-site pt-2 lg:pt-8" aria-labelledby="h-hero">
         <HeroStage image={page?.image} locale={locale}>
           <h1 id="h-hero" className="display">
-            {/* Ultimul cuvânt al numelui în portocaliu, ca „OWN THE NEXT POINT” din referință */}
+            {/* Ultimul cuvânt al numelui în portocaliu */}
             <span className="h-hero block">
               {nameHead ? `${nameHead} ` : null}
               <span className="text-coral-text">{nameTail}</span>
             </span>
             {tagline ? <span className="display-light mt-3 block text-[clamp(1.375rem,0.9rem+2.2vw,3rem)]">{tagline}</span> : null}
           </h1>
+          {availability.about ? (
+            <Link href={pagePath(locale, 'about')} className="btn btn-primary mt-8">
+              {t.home.story}
+              <span aria-hidden="true">→</span>
+            </Link>
+          ) : null}
         </HeroStage>
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16">
           {page?.intro ? <p className="max-w-[40rem] text-lg text-muted lg:text-xl">{page.intro}</p> : <span />}
           <div className="flex flex-wrap items-center gap-3">
-            <Link href={pagePath(locale, 'contact')} className="btn btn-primary plausible-event-name=cta_contact_click">
+            <Link href={pagePath(locale, 'contact')} className="btn btn-outline plausible-event-name=cta_contact_click">
               {t.cta.primary}
             </Link>
-            {availability.about ? (
-              <Link href={pagePath(locale, 'about')} className="btn btn-outline">
-                {t.cta.aboutLink}
-              </Link>
-            ) : null}
           </div>
         </div>
       </section>
 
-      {/* 2. Despre Daniel */}
-      {home?.aboutText ? (
-        <section className="section container-site" aria-labelledby="h-about">
-          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-            <div>
-              <p className="eyebrow">{t.home.about}</p>
-              <SplitHeading id="h-about" text={home.aboutHeading || t.home.about} className="h-section mt-4" />
-              {hasPublicMedia(home.aboutImage) ? (
-                <div className="relative mt-10 aspect-[4/5] max-w-md overflow-hidden rounded-lg">
-                  <SectionMedia media={home.aboutImage} locale={locale} sizes="(min-width: 1024px) 420px, 100vw" />
-                </div>
-              ) : null}
-            </div>
-            <div>
-              <p className="text-xl leading-relaxed lg:text-[1.375rem]">{home.aboutText}</p>
-              {home.approach && home.approach.length > 0 ? (
-                <ul className="mt-10 grid gap-6">
-                  {home.approach.map((item, i) => (
-                    <li key={item.id ?? item.title} className="grid grid-cols-[auto_1fr] gap-4 border-t border-line pt-5">
-                      <span className="text-sm font-bold text-coral-text">{String(i + 1).padStart(2, '0')}</span>
-                      <div>
-                        <h3 className="text-lg font-[800]">{item.title}</h3>
-                        <p className="mt-1 text-muted">{item.text}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-              {availability.about ? (
-                <Link href={pagePath(locale, 'about')} className="btn btn-outline mt-10">
-                  {t.cta.readStory}
-                </Link>
-              ) : null}
-            </div>
+      {/* 2. Manifest — o frază mare + câteva rânduri */}
+      {home?.manifestoHeading ? (
+        <section className="section container-site" aria-labelledby="h-manifesto">
+          <h2 id="h-manifesto" className="display h-section max-w-[18ch]">
+            {home.manifestoHeading}
+          </h2>
+          {home.manifestoText ? <p className="mt-8 max-w-[44rem] text-xl leading-relaxed text-muted lg:text-[1.375rem]">{home.manifestoText}</p> : null}
+        </section>
+      ) : null}
+
+      {/* 3. Antrenamente — slider 3D, numai oferte confirmate */}
+      {services.length > 0 ? (
+        <section className="section container-site border-t border-line" aria-labelledby="h-coaching">
+          <p className="eyebrow">{t.home.workWithMe}</p>
+          <SplitHeading id="h-coaching" text={home?.coachingHeading || t.home.coaching} className="h-section mt-4" />
+          <div className="mt-12">
+            <Slider3D label={home?.coachingHeading || t.home.coaching} labels={sliderLabels}>
+              {services.map((s, i) => (
+                <ServiceCard key={s.id} service={s} locale={locale} index={i} />
+              ))}
+            </Slider3D>
           </div>
         </section>
       ) : null}
@@ -149,20 +139,46 @@ export async function HomeView({ locale }: { locale: Locale }) {
         </section>
       ) : null}
 
-      {/* 3. Antrenamente — numai oferte confirmate */}
-      {services.length > 0 ? (
-        <section className="section container-site border-t border-line" aria-labelledby="h-coaching">
-          <p className="eyebrow">{t.home.workWithMe}</p>
-          <SplitHeading id="h-coaching" text={home?.coachingHeading || t.home.coaching} className="h-section mt-4" />
-          <div className="mt-12 grid gap-4 md:grid-cols-2">
-            {services.map((s, i) => (
-              <ServiceCard key={s.id} service={s} locale={locale} index={i} />
-            ))}
+      {/* 4. Despre — titlu-afirmație, frază îngroșată, text; povestea completă pe pagina separată */}
+      {home?.aboutText ? (
+        <section className="section container-site border-t border-line" aria-labelledby="h-about">
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="eyebrow">{t.home.about}</p>
+              <SplitHeading id="h-about" text={home.aboutHeading || t.home.about} className="h-section mt-4" />
+              {hasPublicMedia(home.aboutImage) ? (
+                <div className="relative mt-10 aspect-[4/5] max-w-md overflow-hidden rounded-lg">
+                  <SectionMedia media={home.aboutImage} locale={locale} sizes="(min-width: 1024px) 420px, 100vw" />
+                </div>
+              ) : null}
+            </div>
+            <div>
+              {home.aboutLead ? <p className="mb-6 text-xl font-bold lg:text-[1.375rem]">{home.aboutLead}</p> : null}
+              <p className="text-xl leading-relaxed text-muted lg:text-[1.375rem]">{home.aboutText}</p>
+              {home.approach && home.approach.length > 0 ? (
+                <ul className="mt-10 grid gap-6">
+                  {home.approach.map((item, i) => (
+                    <li key={item.id ?? item.title} className="grid grid-cols-[auto_1fr] gap-4 border-t border-line pt-5">
+                      <span className="text-sm font-bold text-coral-text">{String(i + 1).padStart(2, '0')}</span>
+                      <div>
+                        <h3 className="text-lg font-[800]">{item.title}</h3>
+                        <p className="mt-1 text-muted">{item.text}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {availability.about ? (
+                <Link href={pagePath(locale, 'about')} className="btn btn-outline mt-10">
+                  {t.home.story} <span aria-hidden="true">→</span>
+                </Link>
+              ) : null}
+            </div>
           </div>
         </section>
       ) : null}
 
-      {/* 4. Cum lucrez */}
+      {/* 5. Cum lucrez */}
       {home?.method && home.method.length > 0 ? (
         <section className="section container-site border-t border-line" aria-labelledby="h-method">
           <SplitHeading id="h-method" text={t.home.method} className="h-section" />
@@ -186,32 +202,34 @@ export async function HomeView({ locale }: { locale: Locale }) {
         </section>
       ) : null}
 
-      {/* Testimoniale — numai reale, cu acord; sportivii pot trimite o părere (apare după aprobare) */}
+      {/* 6. Testimoniale — numai reale, cu acord; slider 3D; sportivii pot trimite o părere (apare după aprobare) */}
       {testimonials.length > 0 || acceptTestimonials ? (
         <section className="section container-site border-t border-line" aria-labelledby="h-testimonials">
           <SplitHeading id="h-testimonials" text={t.home.testimonials} className="h-section" />
           {testimonials.length > 0 ? (
-            <div className="mt-12 grid gap-4 lg:grid-cols-2">
-              {testimonials.map((x) => {
-                const [first, ...rest] = x.name.split(' ')
-                return (
-                  <figure key={x.id} className="on-navy relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden rounded-lg bg-navy-card p-8 sm:p-10">
-                    {hasPublicMedia(x.image) ? (
-                      <>
-                        <SectionMedia media={x.image} locale={locale} sizes="(min-width: 1024px) 50vw, 100vw" className="-z-10" />
-                        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/60 to-black/20" aria-hidden="true" />
-                      </>
-                    ) : null}
-                    <blockquote className="text-[1.375rem] leading-snug font-bold">„{x.quote}”</blockquote>
-                    <figcaption className="mt-6">
-                      <span className="display block text-[1.75rem]">
-                        <span className="display-light">{first}</span> {rest.join(' ')}
-                      </span>
-                      {x.role ? <span className="mt-1 block text-muted">{x.role}</span> : null}
-                    </figcaption>
-                  </figure>
-                )
-              })}
+            <div className="mt-12">
+              <Slider3D label={t.home.testimonials} labels={sliderLabels}>
+                {testimonials.map((x) => {
+                  const [first, ...rest] = x.name.split(' ')
+                  return (
+                    <figure key={x.id} className="on-navy relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden rounded-lg bg-navy-card p-8 sm:p-10">
+                      {hasPublicMedia(x.image) ? (
+                        <>
+                          <SectionMedia media={x.image} locale={locale} sizes="(min-width: 1024px) 560px, 86vw" className="-z-10" />
+                          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/60 to-black/20" aria-hidden="true" />
+                        </>
+                      ) : null}
+                      <blockquote className="text-[1.375rem] leading-snug font-bold">„{x.quote}”</blockquote>
+                      <figcaption className="mt-6">
+                        <span className="display block text-[1.75rem]">
+                          <span className="display-light">{first}</span> {rest.join(' ')}
+                        </span>
+                        {x.role ? <span className="mt-1 block text-muted">{x.role}</span> : null}
+                      </figcaption>
+                    </figure>
+                  )
+                })}
+              </Slider3D>
             </div>
           ) : null}
           {acceptTestimonials ? (
@@ -227,7 +245,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
         </section>
       ) : null}
 
-      {/* 5. Din jurnal — numai articole publicate */}
+      {/* 7. Din jurnal — numai articole publicate */}
       {articles.length > 0 ? (
         <section className="section container-site border-t border-line" aria-labelledby="h-journal">
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -244,7 +262,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
         </section>
       ) : null}
 
-      {/* 6. Contact */}
+      {/* 8. Contact */}
       <section className="section container-site border-t border-line" aria-labelledby="h-contact">
         <ContactSection
           locale={locale}

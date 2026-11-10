@@ -4,6 +4,7 @@ import * as migration_20261110_133409_media_video_poster_method_media from './20
 import * as migration_20261110_142643_testimonials_submissions from './20261110_142643_testimonials_submissions';
 import * as migration_20261110_152821_legal_settings from './20261110_152821_legal_settings';
 import * as migration_20261110_194357_whatsapp_setting from './20261110_194357_whatsapp_setting';
+import * as migration_20261110_195331_sections_footer_phone from './20261110_195331_sections_footer_phone';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261110_194357_whatsapp_setting.up,
     down: migration_20261110_194357_whatsapp_setting.down,
-    name: '20261110_194357_whatsapp_setting'
+    name: '20261110_194357_whatsapp_setting',
+  },
+  {
+    up: migration_20261110_195331_sections_footer_phone.up,
+    down: migration_20261110_195331_sections_footer_phone.down,
+    name: '20261110_195331_sections_footer_phone'
   },
 ];

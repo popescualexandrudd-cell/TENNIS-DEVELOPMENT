@@ -1,5 +1,6 @@
 import type { Payload } from 'payload'
 import { contactSchema, fieldErrors, MAX_BODY_BYTES, type ContactField } from './schema'
+import { normalizePhone } from './phone'
 import { clientIp, hashIp, isRateLimited } from './rate-limit'
 import { sendContactNotification } from './notify'
 import { readJsonBody } from '@/lib/http'
@@ -31,11 +32,11 @@ export async function handleContactRequest(payload: Payload, request: Request): 
   try {
     if (await isRateLimited(payload, ipHash)) return { status: 429, body: { ok: false, error: 'rate_limited' } }
 
-    const { website: _honeypot, ...data } = parsed.data
+    const { website: _honeypot, phone, phoneCountry, ...data } = parsed.data
     const doc = await payload.create({
       collection: 'contact-requests',
       overrideAccess: true,
-      data: { ...data, ipHash, status: 'new', notificationStatus: 'pending' },
+      data: { ...data, phone: normalizePhone(phoneCountry, phone), ipHash, status: 'new', notificationStatus: 'pending' },
     })
 
     // Solicitarea este salvată: de aici înainte răspunsul este succes, chiar dacă emailul eșuează.

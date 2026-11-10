@@ -21,6 +21,7 @@ Verificările de mai jos au rulat **local** pe `11052f8` și din nou pe design v
 - [x] Legal (0013): Confidențialitate, Cookie-uri, Termeni — generate din cod + Setări site → Date legale; în producție doar complete; `pnpm retention` aplică duratele de păstrare. **De completat de Daniel:** datele operatorului; de verificat juridic.
 - [x] Securitate (0014): next 16.4.6 + sharp/zod/overrides (14 → 1 vulnerabilitate low), CSP/HSTS/COOP, fără Gravatar, security.txt — `tests/e2e/security-seo.spec.ts`.
 - [x] SEO tehnic (0015): imagini OG generate, Twitter cards, JSON-LD homepage, iconițe + manifest, sitemap cu lastModified.
+- [x] Secțiuni după structura referinței (0016): hero cu „Povestea mea” → pagina Despre, manifest, slider 3D pentru antrenamente și testimoniale, footer negru centrat, contact în 2 pași cu telefon opțional; buton WhatsApp (0726 409 988) în „Hai să vorbim”.
 - [x] CMS homepage: cifre confirmate, testimoniale doar cu acord, titluri-afirmație; antrenamente cu fotografie opțională (migrația `20261110_103117`).
 - [x] SEO tehnic: metadata per pagină, canonical, sitemap, robots (`Disallow: /` în afara producției), Open Graph, JSON-LD.
 - [x] Backup + restaurare testate local (`docs/RUNBOOK.md`).

@@ -316,6 +316,54 @@
       height: 66%;
     }
   }
+  /* —— Slider 3D (decizia 0016): scroll nativ cu snap; transformările 3D le pune Slider3D.tsx —— */
+  .slider3d-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* spațiu lateral ca primul și ultimul slide să poată sta în centru */
+    padding-inline: max(0px, calc((100% - var(--slide-w)) / 2));
+    padding-block: 1.5rem;
+    margin-block: -1.5rem;
+    --slide-w: min(86vw, 560px);
+  }
+  .slider3d-track::-webkit-scrollbar {
+    display: none;
+  }
+  .slider3d-slide {
+    flex: 0 0 var(--slide-w);
+    scroll-snap-align: center;
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+    transition:
+      transform 120ms linear,
+      opacity 120ms linear;
+  }
+  .slider3d-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    flex: none;
+    border-radius: var(--radius-pill);
+    border-width: 1.5px;
+    transition:
+      border-color 180ms var(--ease),
+      opacity 180ms var(--ease);
+  }
+  .slider3d-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slider3d-slide {
+      transition: none;
+    }
+  }
   .field-label {
     display: block;
     font-weight: 600;

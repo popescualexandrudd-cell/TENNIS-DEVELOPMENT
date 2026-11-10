@@ -66,7 +66,7 @@ export function PrivacyRo({ settings, analyticsEnabled }: Props) {
       <Section id="contact-form" title="2. Formularul de contact">
         <ul>
           <li>
-            <strong>Date:</strong> nume, adresă de email, tipul solicitării, mesajul și limba formularului; data trimiterii.
+            <strong>Date:</strong> nume, adresă de email, telefon (opțional, dacă vrei să te sun), tipul solicitării, mesajul și limba formularului; data trimiterii.
           </li>
           <li>
             <strong>Scop:</strong> să îți răspund și să discutăm despre antrenamente, o colaborare sau întrebarea ta.

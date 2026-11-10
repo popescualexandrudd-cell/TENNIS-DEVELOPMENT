@@ -41,6 +41,7 @@ export const ContactRequests: CollectionConfig = {
   fields: [
     { name: 'name', label: 'Nume', type: 'text', required: true, maxLength: 120 },
     { name: 'email', label: 'Email', type: 'email', required: true },
+    { name: 'phone', label: 'Telefon (opțional)', type: 'text', maxLength: 24 },
     {
       name: 'requestType',
       label: 'Tip solicitare',
