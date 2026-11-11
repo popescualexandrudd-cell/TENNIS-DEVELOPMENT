@@ -65,6 +65,111 @@ test.describe('meniu (telefon: ecran complet, laptop: dropdown)', () => {
     await page.mouse.click(5, 5)
     await expect(nav).toBeHidden()
   })
+
+  test('telefon: Tab / Shift+Tab rămân în meniu, inclusiv cu un câmp de formular la final', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/ro')
+    const button = page.getByRole('button', { name: 'Meniu' })
+    await button.click()
+    const nav = page.getByRole('navigation', { name: 'Meniu' })
+    await expect(nav).toBeVisible()
+    // Simulăm un control din `extra` care nu e link/buton (ex. input) ca ultim element focalizabil.
+    await nav.evaluate((el) => {
+      const input = document.createElement('input')
+      input.setAttribute('aria-label', 'camp-test')
+      el.lastElementChild?.appendChild(input)
+    })
+    const input = page.getByLabel('camp-test')
+    const closeButton = page.getByRole('button', { name: 'Închide meniul' })
+    await closeButton.focus()
+    await page.keyboard.press('Shift+Tab')
+    await expect(input).toBeFocused()
+    await page.keyboard.press('Tab')
+    await expect(closeButton).toBeFocused()
+    // Parcurgem tot meniul cu Tab: focusul nu ajunge niciodată în spatele panoului.
+    for (let i = 0; i < 30; i++) {
+      await page.keyboard.press('Tab')
+      const inside = await closeButton.evaluate((btn) => !!btn.parentElement?.contains(document.activeElement))
+      expect(inside, `Tab #${i + 1}`).toBe(true)
+    }
+    await page.keyboard.press('Escape')
+    await expect(nav).toBeHidden()
+    await expect(button).toBeFocused()
+  })
+
+  test('telefon: un control dezactivat cu tabindex la final nu blochează Shift+Tab', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/ro')
+    await page.getByRole('button', { name: 'Meniu' }).click()
+    const nav = page.getByRole('navigation', { name: 'Meniu' })
+    await expect(nav).toBeVisible()
+    // Ultimul control din `extra`: un input activ urmat de un buton dezactivat cu tabindex="0".
+    await nav.evaluate((el) => {
+      const input = document.createElement('input')
+      input.setAttribute('aria-label', 'camp-activ')
+      const disabled = document.createElement('button')
+      disabled.textContent = 'buton-dezactivat'
+      disabled.disabled = true
+      disabled.setAttribute('tabindex', '0')
+      el.lastElementChild?.append(input, disabled)
+    })
+    const input = page.getByLabel('camp-activ')
+    const closeButton = page.getByRole('button', { name: 'Închide meniul' })
+    await closeButton.focus()
+    // Shift+Tab de pe primul control sare pe ultimul control activ, nu pe cel dezactivat.
+    await page.keyboard.press('Shift+Tab')
+    await expect(input).toBeFocused()
+    // Tab de pe ultimul control activ revine pe primul.
+    await page.keyboard.press('Tab')
+    await expect(closeButton).toBeFocused()
+    // Parcurgem invers tot meniul: focusul rămâne mereu în panou.
+    for (let i = 0; i < 30; i++) {
+      await page.keyboard.press('Shift+Tab')
+      const inside = await closeButton.evaluate((btn) => !!btn.parentElement?.contains(document.activeElement))
+      expect(inside, `Shift+Tab #${i + 1}`).toBe(true)
+    }
+  })
+
+  test('se închide la navigarea „Înapoi”', async ({ page }) => {
+    await page.goto('/ro')
+    await page.goto('/ro/contact')
+    await page.getByRole('button', { name: 'Meniu' }).click()
+    const nav = page.getByRole('navigation', { name: 'Meniu' })
+    await expect(nav).toBeVisible()
+    await page.goBack()
+    await expect(page).toHaveURL(/\/ro$/)
+    await expect(nav).toBeHidden()
+  })
+
+  test('se închide la navigare din meniu (rută client)', async ({ page }) => {
+    await page.goto('/ro')
+    await page.getByRole('button', { name: 'Meniu' }).click()
+    const nav = page.getByRole('navigation', { name: 'Meniu' })
+    await nav.getByRole('link', { name: 'Contact', exact: true }).click()
+    await expect(page).toHaveURL(/\/ro\/contact$/)
+    await expect(nav).toBeHidden()
+    await page.getByRole('button', { name: 'Meniu' }).click()
+    await expect(nav).toBeVisible()
+    await page.goBack()
+    await expect(page).toHaveURL(/\/ro$/)
+    await expect(nav).toBeHidden()
+  })
+
+  test('pragul de 1024 px: derularea se blochează doar pe ecran mic și se reevaluează la redimensionare', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/ro')
+    await page.getByRole('button', { name: 'Meniu' }).click()
+    await expect(page.getByRole('navigation', { name: 'Meniu' })).toBeVisible()
+    const overflow = () => page.evaluate(() => document.body.style.overflow)
+    await expect.poll(overflow).toBe('hidden')
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await expect.poll(overflow).toBe('')
+    await expect(page.getByRole('navigation', { name: 'Meniu' })).toBeVisible()
+    await page.setViewportSize({ width: 1023, height: 800 })
+    await expect.poll(overflow).toBe('hidden')
+    await page.keyboard.press('Escape')
+    await expect.poll(overflow).toBe('')
+  })
 })
 
 test.describe('media de secțiune', () => {
