@@ -45,7 +45,7 @@ plutire de 14 s (oprită la `prefers-reduced-motion`). Fără WebGL, fără Java
 ## Layout
 - Toate ecranele: bară de sus lipicioasă (wordmark + buton pastilă „Meniu”), container max 1240 px (cerut de Daniel: meniul de pe
   laptop la fel ca pe telefon). `src/components/SiteMenu.tsx`.
-- Telefon / tabletă (< 1024 px): meniul se deschide pe tot ecranul, cu linkuri mari, CTA, limbă și social; derularea paginii e blocată.
+- Telefon / tabletă (< 1024 px): meniul se deschide pe tot ecranul, cu linkuri mari, CTA și social (limba e în bara de sus); derularea paginii e blocată.
 - Laptop (≥ 1024 px): același meniu, ca dropdown (card alb de 420 px ancorat sub buton); se închide cu Escape, clic în afară sau la navigare.
   Fără `backdrop-filter` pe header: ar limita panoul `fixed` de pe telefon la înălțimea barei (bug găsit și testat în e2e).
 - Spațiere secțiuni 64 px mobil / 112 px desktop; secțiunile sunt separate de linii subțiri.
@@ -55,7 +55,8 @@ plutire de 14 s (oprită la `prefers-reduced-motion`). Fără WebGL, fără Java
 ## Componente
 Hero 3D (nume uriaș + tagline subțire; introducerea și CTA-urile **sub** scenă) · `btn-primary` (coral, text negru) · `btn-outline` (contur gri-albăstrui) · carduri de antrenament (numerotate, foto opțional,
 2 pe rând) · carduri navy pentru cifre și pași · testimoniale (doar cu acord) · carduri de articol · formular cu inputuri pastilă și
-tipuri de solicitare ca pastile selectabile · comutator de limbă pastilă (apare doar când engleza e publică).
+tipuri de solicitare ca pastile selectabile · selector de limbă (buton pastilă glob + cod, lângă „Meniu”, mereu vizibil; dropdown
+RO/EN/UK/DE/FR, limbile nepublice dezactivate „în pregătire” — decizia 0016).
 
 ## Conținut condiționat (nimic inventat)
 Secțiunile apar doar cu date reale din CMS: „Pe scurt” (cifre confirmate), „Ce spun jucătorii” (citat + acord bifat), antrenamente
