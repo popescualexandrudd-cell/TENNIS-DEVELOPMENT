@@ -19,6 +19,8 @@ const ro = {
     languageCurrent: 'Limba curentă',
     // Indicație lângă limbile fără versiune proprie (UK/DE/FR): conținutul se deschide în limba de rezervă.
     languageFallback: { ro: 'în română', en: 'în engleză' },
+    // Indicație când browserul poate traduce pagina pe loc (Translator API, decizia 0016).
+    languageAuto: 'traducere automată',
   },
   cta: { primary: 'Discutăm despre antrenamente', aboutLink: 'Despre mine', readStory: 'Povestea completă' },
   home: {
@@ -132,6 +134,7 @@ const en: Dictionary = {
     languageSwitch: 'Change language',
     languageCurrent: 'Current language',
     languageFallback: { ro: 'in Romanian', en: 'in English' },
+    languageAuto: 'automatic translation',
   },
   cta: { primary: "Let's talk about coaching", aboutLink: 'About me', readStory: 'The full story' },
   home: {

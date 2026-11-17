@@ -32,7 +32,12 @@ export function SiteHeader({ locale, availability, other, settings }: Props) {
     <LanguageSwitch
       locale={locale}
       other={other}
-      labels={{ switch: t.nav.languageSwitch, current: t.nav.languageCurrent, fallback: t.nav.languageFallback }}
+      labels={{
+        switch: t.nav.languageSwitch,
+        current: t.nav.languageCurrent,
+        fallback: t.nav.languageFallback,
+        auto: t.nav.languageAuto,
+      }}
     />
   )
   const home = (

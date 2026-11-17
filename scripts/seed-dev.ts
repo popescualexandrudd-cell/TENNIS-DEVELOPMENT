@@ -78,8 +78,53 @@ async function main() {
     },
     _status: 'published' as const,
   }
-  if (pages.docs[0]) await payload.update({ collection: 'pages', id: pages.docs[0].id, locale: 'ro', data: homeData, context: ctx })
-  else await payload.create({ collection: 'pages', locale: 'ro', data: homeData, context: ctx })
+  const homeId = pages.docs[0]
+    ? (await payload.update({ collection: 'pages', id: pages.docs[0].id, locale: 'ro', data: homeData, context: ctx })).id
+    : (await payload.create({ collection: 'pages', locale: 'ro', data: homeData, context: ctx })).id
+
+  // Versiunea EN a homepage-ului (numai dezvoltare). Câmpurile paginii sunt localizate cu `fallbackLocale: false`,
+  // iar `available` e implicit fals pe EN: fără acest bloc, `/en` se deschidea fără titlu, intro, „Despre” și cifre,
+  // deci la selectarea English pagina nu se traducea (rămâneau doar etichetele din dicționar).
+  // Traducere a textelor PROPUSE de mai sus, la fel „de validat”; substituenții rămân marcați [EXAMPLE].
+  const EXEN = '[EXAMPLE]'
+  await payload.update({
+    collection: 'pages',
+    id: homeId,
+    locale: 'en',
+    context: ctx,
+    data: {
+      available: true,
+      title: 'Tennis. Progress built on court.',
+      intro:
+        'I am Daniel Popescu. My approach starts with the player, their goals and the things we can improve together.',
+      home: {
+        aboutHeading: `${EXEN} Short statement headline`,
+        coachingHeading: 'Coaching with clear goals',
+        facts: [
+          { value: '12', label: 'Years of experience as a player' },
+          { value: '5', label: 'Years of coaching' },
+          { value: '200+', label: 'Beginner players introduced to tennis' },
+          { value: '20+', label: 'Competitive players coached' },
+        ],
+        testimonials: [
+          { name: 'Example Name', role: `${EXEN} Player context`, quote: `${EXEN} A real quote appears here, published only with the person's written consent.`, consent: true },
+        ],
+        aboutText: `${EXEN} This is where 80–120 words written or approved by Daniel will go: who he is, how he came to tennis and what he cares about in every player he works with. This text is only a layout placeholder and does not describe his real experience.`,
+        approach: [
+          { title: `${EXEN} The player before the method`, text: 'The first idea about the approach, worded by Daniel.' },
+          { title: `${EXEN} Clear goals`, text: 'A second concrete idea about how he works.' },
+          { title: `${EXEN} Attention to detail`, text: 'A third idea, applicable on court.' },
+        ],
+        method: [
+          { title: 'We talk about your goals', text: 'We start from what you want to achieve and the time you have available.' },
+          { title: 'We assess the starting point', text: 'On court we see what already works and what is worth working on first.' },
+          { title: 'We work and adjust', text: 'Sessions adapt as progress and new questions come up.' },
+        ],
+        contactInvite: 'Tell me briefly what you want to work on and I will reply personally.',
+      },
+      _status: 'published',
+    },
+  })
 
   const { totalDocs: services } = await payload.count({ collection: 'coaching-services' })
   if (!services) {

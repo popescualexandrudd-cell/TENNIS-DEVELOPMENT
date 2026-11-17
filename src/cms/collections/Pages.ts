@@ -60,7 +60,10 @@ export const Pages: CollectionConfig = {
       type: 'checkbox',
       localized: true,
       defaultValue: false,
-      admin: { description: 'Bifează separat pentru RO și EN. O limbă nebifată nu apare pe site (404).' },
+      admin: {
+        description:
+          'Bifează separat pentru RO și EN. O limbă nebifată nu apare pe site (404); pe homepage-ul /en, fără bifă EN, textele din CMS (titlu, introducere, „Despre”, cifre) lipsesc și la selectarea English rămân doar etichetele interfeței.',
+      },
     },
     { name: 'title', label: 'Titlu', type: 'text', localized: true, required: true },
     { name: 'intro', label: 'Introducere', type: 'textarea', localized: true },

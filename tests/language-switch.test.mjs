@@ -63,6 +63,25 @@ test('LanguageSwitch: nicio limbă „în pregătire”; toate sunt linkuri sele
   assert.doesNotMatch(src, /['`]\/(uk|de|fr)\b/)
 })
 
+test('LanguageSwitch: UK/DE/FR traduc pagina pe loc (Translator API), cu rezervă și alegere păstrată', () => {
+  const src = read('src/components/LanguageSwitch.tsx')
+  // Clicul pe o limbă fără versiune proprie aplică traducerea, nu doar închide lista („nu traduce când selectez”).
+  assert.match(src, /onClick=\{\(e\) => void onAutoSelect\(e, code\)\}/)
+  assert.match(src, /translateTree\(document\.body, locale, code, factory\)/)
+  assert.match(src, /document\.documentElement\.lang = ok \? code : locale/)
+  // Fără API sau fără perechea de limbi: linkul de rezervă rămâne funcțional.
+  assert.match(src, /if \(!factory\) return\s*e\.preventDefault\(\)/)
+  assert.match(src, /window\.location\.assign\(fallbackHref\)/)
+  // Alegerea rezistă la navigare și refresh; Română revine la textul original.
+  assert.match(src, /storage\(\)\?\.setItem\(STORAGE_KEY, code\)/)
+  assert.match(src, /savedLanguage\(storage\(\), autoKey\.split\(','\)\)/)
+  assert.match(src, /resetTranslation\(\)/)
+  const dict = read('src/lib/i18n/dictionaries.ts')
+  assert.match(dict, /languageAuto: 'traducere automată'/)
+  assert.match(dict, /languageAuto: 'automatic translation'/)
+  assert.match(read('src/components/SiteHeader.tsx'), /auto: t\.nav\.languageAuto/)
+})
+
 test('fallbackLocale: engleza când e publică, altfel româna', () => {
   assert.equal(config.fallbackLocale('ro', null), 'ro')
   assert.equal(config.fallbackLocale('ro', { locale: 'en' }), 'en')
@@ -75,12 +94,13 @@ test('LanguageSwitch: funcțional cu tastatura și protejat de traducerea automa
   // Captura „ENGLISH / EN” + „in preparation” pe /ro = pagina tradusă de browser; selectorul trebuie exclus.
   assert.match(src, /translate="no"/)
   // Navigare: focus pe prima limbă selectabilă la deschidere, săgeți/Home/End, închidere la Tab în afară.
-  assert.match(src, /querySelectorAll<HTMLAnchorElement>\('a\[href\]'\)/)
+  // Elementele focusabile: linkurile limbilor + butonul „revino la limba paginii” (când pagina e tradusă automat).
+  assert.match(src, /querySelectorAll<HTMLElement>\('a\[href\], button'\)/)
   for (const key of ['ArrowDown', 'ArrowUp', 'Home', 'End']) assert.ok(src.includes(`'${key}'`), `tasta ${key}`)
   assert.match(src, /onBlur=\{/)
   assert.match(src, /relatedTarget/)
-  // Linkul închide lista și păstrează pagina echivalentă (decizia 0002).
-  assert.match(src, /onClick=\{\(\) => setOpen\(false\)\}/)
+  // Linkul celeilalte limbi publice închide lista, renunță la traducerea automată și păstrează pagina echivalentă (0002).
+  assert.match(src, /if \(translated\) resetTranslation\(\)\s*setOpen\(false\)/)
   assert.match(src, /href=\{hrefFor\(other\.locale, other\.availability\)\}/)
 })
 
@@ -101,6 +121,26 @@ test('seed-ul de dezvoltare publică engleza, ca selectorul să aibă o a doua l
   // Fără `other`, linkurile de rezervă rămân pe pagina curentă — de aceea a doua limbă trebuie să fie publică.
   const sw = read('src/components/LanguageSwitch.tsx')
   assert.match(sw, /other && target === other\.locale \? hrefFor\(other\.locale, other\.availability\) : pathname/)
+})
+
+test('seed-ul are versiunea EN a homepage-ului, ca selectarea English să traducă și conținutul din CMS', () => {
+  // Câmpurile paginii sunt localizate, `getPage` folosește `fallbackLocale: false`, iar `available` e implicit fals:
+  // fără versiunea EN, `/en` se deschidea fără titlu, intro, „Despre” și cifre („nu traduce când selectez”).
+  const seed = read('scripts/seed-dev.ts')
+  const en = seed.match(/collection: 'pages',\s*id: homeId,\s*locale: 'en',[\s\S]*?_status: 'published'/)
+  assert.ok(en, 'update pe homepage cu locale: en')
+  for (const field of ['available: true', "title: 'Tennis. Progress built on court.'", 'intro:', 'aboutText:', 'facts:', 'approach:', 'contactInvite:']) {
+    assert.ok(en[0].includes(field), `EN trebuie să aibă ${field}`)
+  }
+  // Substituenții rămân marcați; nicio diacritică românească în textele EN.
+  // Substituentul vine din constanta `EXEN` (interpolată), nu din literal.
+  assert.match(seed, /const EXEN = '\[EXAMPLE\]'/)
+  assert.match(en[0], /\$\{EXEN\}/)
+  assert.doesNotMatch(en[0], /[ăâîșțĂÂÎȘȚ]/)
+  const content = read('src/lib/content.ts')
+  assert.match(content, /page && page\.available \? page : null/)
+  const spec = read('tests/e2e/site.spec.ts')
+  assert.match(spec, /toContainText\('Tennis\. Progress built on court\.'\)/)
 })
 
 test('dicționarele RO/EN au etichetele selectorului', () => {
