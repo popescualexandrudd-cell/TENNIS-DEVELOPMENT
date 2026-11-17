@@ -4,13 +4,12 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { mkdtempSync, mkdirSync, writeFileSync, symlinkSync, realpathSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join, dirname, parse } from 'node:path'
+import { join, dirname } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { importTs } from './helpers/import-ts.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-const { resolveTurbopackRoot, commonAncestor } = await import(
-  pathToFileURL(join(root, 'src/lib/turbopack-root.ts')).href
-)
+const { resolveTurbopackRoot, commonAncestor } = await importTs(join(root, 'src/lib/turbopack-root.ts'))
 
 const fakeNext = (nodeModules) => {
   mkdirSync(join(nodeModules, 'next'), { recursive: true })
@@ -56,11 +55,9 @@ test('next lipsă: se păstrează directorul aplicației', () => {
 })
 
 test('commonAncestor găsește directorul comun', () => {
-  const rootDir = parse(root).root
-  const base = join(rootDir, 'a', 'b')
-  assert.equal(commonAncestor(join(rootDir, 'work', 'app'), join(rootDir, 'opt', 'shared', 'next')), rootDir)
-  assert.equal(commonAncestor(join(base, 'app'), join(base, 'c', 'next')), base)
-  assert.equal(commonAncestor(base, base), base)
+  assert.equal(commonAncestor('/work/app', '/opt/shared/node_modules/next'), '/')
+  assert.equal(commonAncestor('/a/b/app', '/a/b/c/next'), '/a/b')
+  assert.equal(commonAncestor('/a/b', '/a/b'), '/a/b')
 })
 
 test('next.config.ts folosește resolveTurbopackRoot, nu o rădăcină fixată pe aplicație', () => {

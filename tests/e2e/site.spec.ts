@@ -90,6 +90,39 @@ test.describe('meniu (telefon: ecran complet, laptop: dropdown)', () => {
   })
 })
 
+test.describe('selector de limbă (decizia 0016)', () => {
+  test('se deschide lângă „Meniu”, arată cele 5 limbi și se închide cu Escape', async ({ page }) => {
+    await page.goto('/ro')
+    const button = page.getByRole('button', { name: /^Schimbă limba: RO$/ })
+    await expect(button).toHaveAttribute('aria-expanded', 'false')
+    await button.click()
+    await expect(button).toHaveAttribute('aria-expanded', 'true')
+    const list = page.getByRole('list', { name: 'Schimbă limba' })
+    await expect(list).toBeVisible()
+    // Exclus de la traducerea automată a browserului (altfel „Română” devine „English”).
+    await expect(page.locator('[translate="no"]').filter({ has: list })).toHaveCount(1)
+    for (const name of ['Română', 'English', 'Українська', 'Deutsch', 'Français']) {
+      await expect(list.getByText(name, { exact: true })).toBeVisible()
+    }
+    await expect(list.locator('[aria-current="true"]')).toContainText('Română')
+    await expect(list.locator('[aria-disabled="true"]')).toHaveCount(await list.getByRole('link').count() ? 3 : 4)
+    await page.keyboard.press('Escape')
+    await expect(list).toBeHidden()
+    await expect(button).toBeFocused()
+  })
+
+  test('cu engleza publică, English duce la pagina echivalentă /en', async ({ page }) => {
+    await page.goto('/ro')
+    await page.getByRole('button', { name: /^Schimbă limba: RO$/ }).click()
+    const english = page.getByRole('list', { name: 'Schimbă limba' }).getByRole('link', { name: /English/ })
+    test.skip((await english.count()) === 0, 'englishEnabled este debifat în Setări site (EN „în pregătire”)')
+    await english.click()
+    await expect(page).toHaveURL(/\/en$/)
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+    await expect(page.getByRole('button', { name: /^Change language: EN$/ })).toBeVisible()
+  })
+})
+
 test.describe('media de secțiune', () => {
   test('buclele video rulează doar pe ecrane mari, fără sunet, cu buton de pauză', async ({ page, isMobile }) => {
     // Clipurile apar după hidratare (decizia se ia în browser, după ecran și preferințe).

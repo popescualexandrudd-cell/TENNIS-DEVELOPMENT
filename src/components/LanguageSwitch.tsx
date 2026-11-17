@@ -26,14 +26,32 @@ export function LanguageSwitch({ locale, other, labels }: Props) {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
   const override = useAlternateOverride()
+  const listRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
     if (!open) return
+    const focusableItems = (): HTMLAnchorElement[] =>
+      Array.from(listRef.current?.querySelectorAll<HTMLAnchorElement>('a[href]') ?? [])
+    // La deschidere, focus pe prima limbă selectabilă (dacă există), ca lista să fie folosibilă din tastatură.
+    focusableItems()[0]?.focus()
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setOpen(false)
         buttonRef.current?.focus()
+        return
       }
+      // Săgeți / Home / End mută focusul între limbile selectabile (linkuri); cele „în pregătire” sunt sărite.
+      if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return
+      const items = focusableItems()
+      if (items.length === 0) return
+      e.preventDefault()
+      const at = items.indexOf(document.activeElement as HTMLAnchorElement)
+      const next =
+        e.key === 'Home' ? 0
+        : e.key === 'End' ? items.length - 1
+        : e.key === 'ArrowDown' ? (at + 1) % items.length
+        : (at <= 0 ? items.length : at) - 1
+      items[next]?.focus()
     }
     const onPointer = (e: PointerEvent) => {
       if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false)
@@ -56,7 +74,19 @@ export function LanguageSwitch({ locale, other, labels }: Props) {
 
   const row = 'flex min-h-11 w-full items-center justify-between gap-4 rounded-md px-3 text-sm'
   return (
-    <div ref={rootRef} className="relative">
+    // translate="no": traducerea automată a browserului înlocuia „Română”/„RO” cu „English”/„EN” și „în pregătire”
+    // cu „in preparation”, iar selectorul părea blocat pe engleză. Numele native și codurile rămân neatinse.
+    // onBlur: lista se închide când focusul trece pe alt element din afara selectorului (Tab). Fără `relatedTarget`
+    // (clic, Safari) nu închide aici — clicurile în afară sunt tratate de `pointerdown`.
+    <div
+      ref={rootRef}
+      className="relative"
+      translate="no"
+      onBlur={(e) => {
+        const next = e.relatedTarget as Node | null
+        if (open && next && !e.currentTarget.contains(next)) setOpen(false)
+      }}
+    >
       <button
         ref={buttonRef}
         type="button"
@@ -76,6 +106,7 @@ export function LanguageSwitch({ locale, other, labels }: Props) {
         </svg>
       </button>
       <ul
+        ref={listRef}
         id={id}
         hidden={!open}
         aria-label={labels.switch}
