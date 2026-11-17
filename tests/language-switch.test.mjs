@@ -91,6 +91,18 @@ test('setarea englishEnabled descrie corect efectul asupra selectorului', () => 
   assert.match(s, /rămâne selectabilă/)
 })
 
+test('seed-ul de dezvoltare publică engleza, ca selectorul să aibă o a doua limbă reală', () => {
+  // Cu englishEnabled fals nu există `other`: EN/UK/DE/FR duceau la aceeași pagină în română (selectorul „nu mergea”).
+  const seed = read('scripts/seed-dev.ts')
+  assert.match(seed, /slug: 'site-settings'[\s\S]*?englishEnabled: true/)
+  assert.doesNotMatch(seed, /englishEnabled: false/)
+  // Seed-ul rămâne interzis în producție: bifarea pe site-ul public e decizia lui Daniel.
+  assert.match(seed, /NODE_ENV === 'production'[\s\S]*?process\.exit\(1\)/)
+  // Fără `other`, linkurile de rezervă rămân pe pagina curentă — de aceea a doua limbă trebuie să fie publică.
+  const sw = read('src/components/LanguageSwitch.tsx')
+  assert.match(sw, /other && target === other\.locale \? hrefFor\(other\.locale, other\.availability\) : pathname/)
+})
+
 test('dicționarele RO/EN au etichetele selectorului', () => {
   const dict = read('src/lib/i18n/dictionaries.ts')
   for (const key of ['languageSwitch', 'languageCurrent', 'languageFallback']) {

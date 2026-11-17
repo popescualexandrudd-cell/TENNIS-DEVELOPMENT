@@ -32,11 +32,14 @@ async function main() {
     if (!totalDocs) await payload.create({ collection: 'admin-users', data: { email, password, name: 'Admin local', roles: ['admin'] }, context: ctx })
   }
 
+  // englishEnabled: true NUMAI în dezvoltare: cu engleza nepublică nu există o a doua limbă, iar toate opțiunile
+  // selectorului (EN/UK/DE/FR) duceau înapoi la aceeași pagină în română — selectorul părea că „nu merge”.
+  // Pe site-ul public bifarea rămâne decizia lui Daniel, după traducerea paginilor (decizia 0002).
   await payload.updateGlobal({
     slug: 'site-settings',
     locale: 'ro',
     context: ctx,
-    data: { personName: 'Daniel Popescu', signature: 'Beyond the Game', englishEnabled: false, email: 'contact@example.test' },
+    data: { personName: 'Daniel Popescu', signature: 'Beyond the Game', englishEnabled: true, email: 'contact@example.test' },
   })
 
   const pages = await payload.find({ collection: 'pages', where: { key: { equals: 'home' } }, limit: 1 })

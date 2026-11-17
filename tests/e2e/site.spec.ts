@@ -56,10 +56,29 @@ test.describe('site public', () => {
     await expect(page.getByRole('link', { name: 'Sari la conținut' })).toBeFocused()
   })
 
-  test('engleza nepublicată răspunde 404, fără pagini goale', async ({ request }) => {
-    for (const path of ['/en', '/en/about', '/en/contact']) {
-      expect((await request.get(path)).status(), path).toBe(404)
+  // Starea EN vine din Setări site (seed-ul de dezvoltare/CI o bifează): ambele ramuri sunt verificate, fără presupuneri.
+  test('engleza: 404 cât e nepublicată, pagini reale (nu goale) când e publică', async ({ page, request }) => {
+    await page.goto('/ro')
+    await page.getByRole('button', { name: /^Schimbă limba: RO$/ }).click()
+    const english = page.getByRole('list', { name: 'Schimbă limba' }).getByRole('link', { name: /English/ })
+    const published = (await english.getAttribute('hreflang')) === 'en'
+    if (!published) {
+      for (const path of ['/en', '/en/about', '/en/contact']) {
+        expect((await request.get(path)).status(), path).toBe(404)
+      }
+      return
     }
+    for (const path of ['/en', '/en/contact']) {
+      const res = await request.get(path)
+      expect(res.status(), path).toBe(200)
+      const html = await res.text()
+      expect(html, path).toMatch(/<html[^>]*lang="en"/)
+      expect(html, path).toMatch(/<h1[\s>]/)
+    }
+    // „Despre” există în EN doar dacă pagina are text englez publicat; altfel 404, niciodată pagină goală sau eroare.
+    const about = await request.get('/en/about')
+    expect([200, 404], '/en/about').toContain(about.status())
+    if (about.status() === 200) expect(await about.text()).toMatch(/<h1[\s>]/)
   })
 
   test('administrarea și API-ul sunt excluse din indexare', async ({ request }) => {
