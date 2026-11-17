@@ -134,6 +134,10 @@ test.describe('selector de limbă (decizia 0016)', () => {
   })
 
   test('Deutsch este selectabilă și deschide pagina în limba de rezervă, cu indicația limbii', async ({ page }) => {
+    // Browser fără Translator API (Firefox/Safari): ramura de rezervă.
+    await page.addInitScript(() => {
+      delete (window as { Translator?: unknown }).Translator
+    })
     await page.goto('/ro')
     await page.getByRole('button', { name: /^Schimbă limba: RO$/ }).click()
     const deutsch = page.getByRole('list', { name: 'Schimbă limba' }).getByRole('link', { name: /Deutsch/ })
@@ -142,6 +146,41 @@ test.describe('selector de limbă (decizia 0016)', () => {
     await deutsch.click()
     await expect(page).toHaveURL(/\/(ro|en)$/)
     await expect(page.getByRole('list', { name: /Schimbă limba|Change language/ })).toBeHidden()
+  })
+
+  test('cu Translator API, Deutsch traduce pagina pe loc, păstrează alegerea și revine la Română', async ({ page }) => {
+    // Translator API simulat (determinist): prefixează textul, ca să vedem ce noduri au fost traduse.
+    await page.addInitScript(() => {
+      ;(window as unknown as { Translator: unknown }).Translator = {
+        availability: async () => 'available',
+        create: async ({ targetLanguage }: { targetLanguage: string }) => ({
+          translate: async (text: string) => `[${targetLanguage}] ${text}`,
+        }),
+      }
+    })
+    await page.goto('/ro')
+    const main = page.locator('main')
+    await page.getByRole('button', { name: /^Schimbă limba: RO$/ }).click()
+    const deutsch = page.getByRole('list', { name: 'Schimbă limba' }).getByRole('link', { name: /Deutsch/ })
+    await expect(deutsch).toContainText('traducere automată')
+    await deutsch.click()
+    // Aceeași adresă, textul paginii tradus, `<html lang>` și butonul actualizate; selectorul rămâne netradus.
+    await expect(page).toHaveURL(/\/ro$/)
+    await expect(page.locator('html')).toHaveAttribute('lang', 'de')
+    await expect(main).toContainText('[de] ')
+    const button = page.getByRole('button', { name: /^Schimbă limba: DE$/ })
+    await expect(button).toBeVisible()
+    await expect(page.locator('[translate="no"]').first()).not.toContainText('[de]')
+    // Alegerea rezistă la refresh.
+    await page.reload()
+    await expect(page.locator('html')).toHaveAttribute('lang', 'de')
+    await expect(main).toContainText('[de] ')
+    // Română readuce textul original, fără reîncărcare.
+    await page.getByRole('button', { name: /^Schimbă limba: DE$/ }).click()
+    await page.getByRole('list', { name: 'Schimbă limba' }).getByRole('button', { name: /Română/ }).click()
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ro')
+    await expect(main).not.toContainText('[de]')
+    await expect(page.getByRole('button', { name: /^Schimbă limba: RO$/ })).toBeVisible()
   })
 
   test('cu engleza publică, English duce la pagina echivalentă /en', async ({ page }) => {
@@ -153,6 +192,11 @@ test.describe('selector de limbă (decizia 0016)', () => {
     await expect(page).toHaveURL(/\/en$/)
     await expect(page.locator('html')).toHaveAttribute('lang', 'en')
     await expect(page.getByRole('button', { name: /^Change language: EN$/ })).toBeVisible()
+    // Conținutul se traduce, nu doar etichetele: seed-ul are versiunea EN a homepage-ului (titlu + „Despre”).
+    const main = page.locator('main')
+    await expect(main.locator('#h-hero')).toContainText('Tennis. Progress built on court.')
+    await expect(main.locator('#h-about')).toBeVisible()
+    await expect(main).not.toContainText('Progres construit pe teren')
   })
 })
 
