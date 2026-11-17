@@ -16,6 +16,8 @@ const ro = {
     close: 'Închide meniul',
     primary: 'Navigație principală',
     languageSwitch: 'Schimbă limba',
+    languageCurrent: 'Limba curentă',
+    languageSoon: 'în pregătire',
   },
   cta: { primary: 'Discutăm despre antrenamente', aboutLink: 'Despre mine', readStory: 'Povestea completă' },
   home: {
@@ -131,6 +133,8 @@ const en: Dictionary = {
     close: 'Close menu',
     primary: 'Main navigation',
     languageSwitch: 'Change language',
+    languageCurrent: 'Current language',
+    languageSoon: 'coming soon',
   },
   cta: { primary: "Let's talk about coaching", aboutLink: 'About me', readStory: 'The full story' },
   home: {
