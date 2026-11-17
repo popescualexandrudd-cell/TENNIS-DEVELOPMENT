@@ -10,6 +10,16 @@ test.describe('site public', () => {
     await expect(page.getByRole('link', { name: 'Discutăm despre antrenamente' }).first()).toBeVisible()
   })
 
+  test('homepage-ul randat nu mai conține secțiunea „Lucrează cu mine” (cod, CMS sau build vechi)', async ({ page }) => {
+    await page.goto('/ro')
+    const main = page.locator('main')
+    await expect(main.getByText(/lucrează cu mine|work with me/i)).toHaveCount(0)
+    // Ofertele (ServiceCard) apar doar pe pagina Antrenamente, nu pe homepage.
+    await expect(page.locator('main a[href="#work-with-me"], main #work-with-me')).toHaveCount(0)
+    const headings = await main.getByRole('heading', { level: 2 }).allInnerTexts()
+    expect(headings.map((h) => h.trim().toLowerCase())).not.toContain('antrenamente')
+  })
+
   test('fără scroll orizontal', async ({ page }) => {
     for (const path of ['/ro', '/ro/contact', '/ro/antrenamente', '/ro/jurnal', '/ro/confidentialitate', '/ro/cookies', '/ro/termeni']) {
       await page.goto(path)

@@ -56,6 +56,13 @@ test('dicționarele RO/EN nu mai au cheile secțiunii; restul cheilor home răm�
   assert.equal([...dict.matchAll(/home: \{/g)].length, 2)
 })
 
+test('e2e verifică pagina randată (prinde text din CMS sau un build vechi)', () => {
+  const spec = read('tests/e2e/site.spec.ts')
+  assert.match(spec, /lucrează cu mine\|work with me/)
+  assert.match(spec, /page\.goto\('\/ro'\)[\s\S]*?not\.toContain\('antrenamente'\)/)
+  assert.match(read('src/components/SiteLayout.tsx'), /<main /)
+})
+
 test('ofertele rămân pe pagina Antrenamente și în meniu', () => {
   const views = read('src/features/site/views.tsx')
   assert.match(views, /getConfirmedServices\(locale\)/)
