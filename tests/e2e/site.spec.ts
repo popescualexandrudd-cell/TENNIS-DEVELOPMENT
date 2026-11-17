@@ -105,17 +105,31 @@ test.describe('selector de limbă (decizia 0016)', () => {
       await expect(list.getByText(name, { exact: true })).toBeVisible()
     }
     await expect(list.locator('[aria-current="true"]')).toContainText('Română')
-    await expect(list.locator('[aria-disabled="true"]')).toHaveCount(await list.getByRole('link').count() ? 3 : 4)
+    // Toate limbile sunt selectabile: nicio opțiune dezactivată sau „în pregătire”; 4 linkuri + limba curentă.
+    await expect(list.locator('[aria-disabled="true"]')).toHaveCount(0)
+    await expect(list).not.toContainText('în pregătire')
+    await expect(list.getByRole('link')).toHaveCount(4)
     await page.keyboard.press('Escape')
     await expect(list).toBeHidden()
     await expect(button).toBeFocused()
+  })
+
+  test('Deutsch este selectabilă și deschide pagina în limba de rezervă, cu indicația limbii', async ({ page }) => {
+    await page.goto('/ro')
+    await page.getByRole('button', { name: /^Schimbă limba: RO$/ }).click()
+    const deutsch = page.getByRole('list', { name: 'Schimbă limba' }).getByRole('link', { name: /Deutsch/ })
+    await expect(deutsch).toBeVisible()
+    await expect(deutsch).toContainText(/în (română|engleză)/)
+    await deutsch.click()
+    await expect(page).toHaveURL(/\/(ro|en)$/)
+    await expect(page.getByRole('list', { name: /Schimbă limba|Change language/ })).toBeHidden()
   })
 
   test('cu engleza publică, English duce la pagina echivalentă /en', async ({ page }) => {
     await page.goto('/ro')
     await page.getByRole('button', { name: /^Schimbă limba: RO$/ }).click()
     const english = page.getByRole('list', { name: 'Schimbă limba' }).getByRole('link', { name: /English/ })
-    test.skip((await english.count()) === 0, 'englishEnabled este debifat în Setări site (EN „în pregătire”)')
+    test.skip((await english.getAttribute('hreflang')) !== 'en', 'englishEnabled este debifat în Setări site (EN se deschide în română)')
     await english.click()
     await expect(page).toHaveURL(/\/en$/)
     await expect(page.locator('html')).toHaveAttribute('lang', 'en')

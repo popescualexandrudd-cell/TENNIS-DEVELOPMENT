@@ -28,7 +28,7 @@ export const SiteSettings: GlobalConfig = {
               label: 'Versiunea în engleză este publică',
               type: 'checkbox',
               defaultValue: false,
-              admin: { description: 'Cât timp e debifat, rutele /en returnează 404, iar în selectorul de limbă English apare „în pregătire” (neselectabil). Bifează după ce paginile au traducerea în engleză.' },
+              admin: { description: 'Cât timp e debifat, rutele /en returnează 404, iar în selectorul de limbă English (ca și UK/DE/FR) rămâne selectabilă, dar deschide pagina în română („în română”). Când e bifată, UK/DE/FR deschid versiunea în engleză. Bifează după ce paginile au traducerea în engleză.' },
             },
           ],
         },

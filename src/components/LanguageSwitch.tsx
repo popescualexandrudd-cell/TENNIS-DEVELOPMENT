@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useId, useRef, useState } from 'react'
-import { siteLanguages, type Locale, type PageKey } from '@/lib/i18n/config'
+import { fallbackLocale, siteLanguages, type Locale, type PageKey } from '@/lib/i18n/config'
 import { pageKeyFromPath, pagePath } from '@/lib/i18n/routes'
 import { useAlternateOverride } from './AlternateLocale'
 
@@ -11,13 +11,15 @@ type Props = {
   locale: Locale
   /** Cealaltă limbă publică și paginile ei disponibile; `null` dacă nu este publică. */
   other: { locale: Locale; availability: Record<PageKey, boolean> } | null
-  labels: { switch: string; current: string; soon: string }
+  /** `fallback[l]`: indicația afișată lângă o limbă fără versiune proprie, de ex. „în engleză”. */
+  labels: { switch: string; current: string; fallback: Record<Locale, string> }
 }
 
 /**
  * Selector de limbă lângă butonul „Meniu” (decizia 0016): buton cu codul limbii curente + listă dropdown
- * cu toate `siteLanguages`. Doar limbile publice sunt linkuri (păstrează pagina echivalentă când traducerea
- * există, decizia 0002); restul apar dezactivate, „în pregătire”. Se închide cu Escape sau la clic în afară.
+ * cu toate `siteLanguages`, toate selectabile. Cealaltă limbă publică păstrează pagina echivalentă (decizia 0002);
+ * limbile fără versiune proprie duc la pagina echivalentă în limba publică de rezervă (`fallbackLocale`) și
+ * afișează în ce limbă este conținutul. Se închide cu Escape sau la clic în afară.
  */
 export function LanguageSwitch({ locale, other, labels }: Props) {
   const [open, setOpen] = useState(false)
@@ -40,7 +42,7 @@ export function LanguageSwitch({ locale, other, labels }: Props) {
         buttonRef.current?.focus()
         return
       }
-      // Săgeți / Home / End mută focusul între limbile selectabile (linkuri); cele „în pregătire” sunt sărite.
+      // Săgeți / Home / End mută focusul între limbile selectabile (linkuri; limba curentă nu este link).
       if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return
       const items = focusableItems()
       if (items.length === 0) return
@@ -141,12 +143,21 @@ export function LanguageSwitch({ locale, other, labels }: Props) {
               </li>
             )
           }
+          // Limbă fără versiune proprie publicată (UK/DE/FR, EN cât timp e nepublică): selectabilă, duce la pagina
+          // echivalentă în limba publică de rezervă (EN dacă e publică, altfel RO), cu indicația limbii reale.
+          // Fără traduceri automate/inventate (decizia 0016, actualizată 18.11.2026).
+          const target = fallbackLocale(locale, other)
           return (
             <li key={code}>
-              <span className={`${row} cursor-not-allowed text-muted`} aria-disabled="true">
+              <Link
+                href={other && target === other.locale ? hrefFor(other.locale, other.availability) : pathname}
+                hrefLang={target}
+                onClick={() => setOpen(false)}
+                className={`${row} text-ink no-underline hover:text-coral-text`}
+              >
                 <span lang={code}>{label}</span>
-                <span className="text-xs">{labels.soon}</span>
-              </span>
+                <span className="text-xs text-muted">{labels.fallback[target]}</span>
+              </Link>
             </li>
           )
         })}

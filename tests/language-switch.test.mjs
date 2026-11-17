@@ -47,10 +47,27 @@ test('LanguageSwitch: dropdown accesibil peste siteLanguages, limbile fără rut
   assert.match(src, /aria-controls=\{id\}/)
   assert.match(src, /e\.key === 'Escape'/)
   assert.match(src, /aria-current="true"/)
-  assert.match(src, /aria-disabled="true"/)
   assert.match(src, /hrefLang=\{code\}/)
-  // Linkuri doar către cealaltă limbă publică (fără rute /uk, /de, /fr inexistente).
-  assert.equal((src.match(/<Link\b/g) ?? []).length, 1)
+})
+
+test('LanguageSwitch: nicio limbă „în pregătire”; toate sunt linkuri selectabile', () => {
+  const src = read('src/components/LanguageSwitch.tsx')
+  assert.doesNotMatch(src, /aria-disabled/)
+  assert.doesNotMatch(src, /cursor-not-allowed/)
+  assert.doesNotMatch(src, /labels\.soon/)
+  // Două linkuri: cealaltă limbă publică + limbile fără versiune proprie (spre limba de rezervă).
+  assert.equal((src.match(/<Link\b/g) ?? []).length, 2)
+  assert.match(src, /fallbackLocale\(locale, other\)/)
+  assert.match(src, /labels\.fallback\[target\]/)
+  // Fără rute inventate /uk, /de, /fr.
+  assert.doesNotMatch(src, /['`]\/(uk|de|fr)\b/)
+})
+
+test('fallbackLocale: engleza când e publică, altfel româna', () => {
+  assert.equal(config.fallbackLocale('ro', null), 'ro')
+  assert.equal(config.fallbackLocale('ro', { locale: 'en' }), 'en')
+  assert.equal(config.fallbackLocale('en', { locale: 'ro' }), 'en')
+  assert.equal(config.fallbackLocale('en', null), 'en')
 })
 
 test('LanguageSwitch: funcțional cu tastatura și protejat de traducerea automată a browserului', () => {
@@ -70,15 +87,20 @@ test('LanguageSwitch: funcțional cu tastatura și protejat de traducerea automa
 test('setarea englishEnabled descrie corect efectul asupra selectorului', () => {
   const s = read('src/cms/globals/SiteSettings.ts')
   assert.doesNotMatch(s, /selectorul de limbă e ascuns/)
-  assert.match(s, /„în pregătire”/)
+  assert.doesNotMatch(s, /„în pregătire”/)
+  assert.match(s, /rămâne selectabilă/)
 })
 
 test('dicționarele RO/EN au etichetele selectorului', () => {
   const dict = read('src/lib/i18n/dictionaries.ts')
-  for (const key of ['languageSwitch', 'languageCurrent', 'languageSoon']) {
+  for (const key of ['languageSwitch', 'languageCurrent', 'languageFallback']) {
     assert.equal((dict.match(new RegExp(`\\b${key}:`, 'g')) ?? []).length, 2, `${key} trebuie să existe în ro și en`)
   }
-  assert.match(dict, /languageSoon: 'în pregătire'/)
+  assert.doesNotMatch(dict, /languageSoon/)
+  assert.match(dict, /languageFallback: \{ ro: 'în română', en: 'în engleză' \}/)
+  assert.match(dict, /languageFallback: \{ ro: 'in Romanian', en: 'in English' \}/)
+  const header = read('src/components/SiteHeader.tsx')
+  assert.match(header, /fallback: t\.nav\.languageFallback/)
 })
 
 test('e2e exercită selectorul în browser (deschidere, stări, Escape, navigare spre /en)', () => {
@@ -86,6 +108,7 @@ test('e2e exercită selectorul în browser (deschidere, stări, Escape, navigare
   assert.match(spec, /test\.describe\('selector de limbă/)
   assert.match(spec, /name: \/\^Schimbă limba: RO\$\//)
   assert.match(spec, /aria-current="true"/)
-  assert.match(spec, /aria-disabled="true"/)
+  assert.match(spec, /\[aria-disabled="true"\]'\)\)\.toHaveCount\(0\)/)
+  assert.match(spec, /getByRole\('link', \{ name: \/Deutsch\/ \}\)/)
   assert.match(spec, /toHaveURL\(\/\\\/en\$\/\)/)
 })

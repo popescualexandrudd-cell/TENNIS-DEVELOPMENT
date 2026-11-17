@@ -17,7 +17,8 @@ const ro = {
     primary: 'Navigație principală',
     languageSwitch: 'Schimbă limba',
     languageCurrent: 'Limba curentă',
-    languageSoon: 'în pregătire',
+    // Indicație lângă limbile fără versiune proprie (UK/DE/FR): conținutul se deschide în limba de rezervă.
+    languageFallback: { ro: 'în română', en: 'în engleză' },
   },
   cta: { primary: 'Discutăm despre antrenamente', aboutLink: 'Despre mine', readStory: 'Povestea completă' },
   home: {
@@ -130,7 +131,7 @@ const en: Dictionary = {
     primary: 'Main navigation',
     languageSwitch: 'Change language',
     languageCurrent: 'Current language',
-    languageSoon: 'coming soon',
+    languageFallback: { ro: 'in Romanian', en: 'in English' },
   },
   cta: { primary: "Let's talk about coaching", aboutLink: 'About me', readStory: 'The full story' },
   home: {

@@ -4,8 +4,9 @@ export const defaultLocale: Locale = 'ro'
 
 /**
  * Limbile afișate în selectorul din header (decizia 0016), în ordinea afișării.
- * Doar cele din `locales` au rute și conținut; celelalte apar „în pregătire” până primesc
- * arbore de rute, dicționar și conținut tradus (fără traduceri automate/inventate).
+ * Toate sunt selectabile. Doar cele din `locales` au rute și conținut propriu; celelalte duc la pagina
+ * echivalentă în limba de rezervă (`fallbackLocale`) până primesc arbore de rute, dicționar și conținut
+ * tradus și verificat (fără traduceri automate/inventate).
  */
 export const siteLanguages = [
   { code: 'ro', label: 'Română' },
@@ -15,6 +16,15 @@ export const siteLanguages = [
   { code: 'fr', label: 'Français' },
 ] as const
 export type SiteLanguageCode = (typeof siteLanguages)[number]['code']
+
+/**
+ * Limba publică în care se deschide o limbă din selector fără versiune proprie: engleza (limba internațională)
+ * când este publică, altfel româna. `other` = cealaltă limbă publică, `null` dacă nu există.
+ */
+export function fallbackLocale(current: Locale, other: { locale: Locale } | null): Locale {
+  if (current === 'en' || other?.locale === 'en') return 'en'
+  return 'ro'
+}
 
 export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value)

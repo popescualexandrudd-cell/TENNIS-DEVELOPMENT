@@ -26,12 +26,13 @@ export function SiteHeader({ locale, availability, other, settings }: Props) {
     .filter((key) => availability[key])
     .map((key) => ({ href: pagePath(locale, key), label: t.nav[key] }))
   const cta = { href: pagePath(locale, 'contact'), label: t.cta.primary }
-  // Mereu vizibil lângă „Meniu”; limbile fără rute publice apar „în pregătire” (decizia 0016).
+  // Mereu vizibil lângă „Meniu”; toate limbile sunt selectabile, cele fără rute proprii se deschid
+  // în limba publică de rezervă, cu indicația limbii (decizia 0016).
   const switcher = (
     <LanguageSwitch
       locale={locale}
       other={other}
-      labels={{ switch: t.nav.languageSwitch, current: t.nav.languageCurrent, soon: t.nav.languageSoon }}
+      labels={{ switch: t.nav.languageSwitch, current: t.nav.languageCurrent, fallback: t.nav.languageFallback }}
     />
   )
   const home = (
