@@ -90,6 +90,34 @@ test.describe('meniu (telefon: ecran complet, laptop: dropdown)', () => {
   })
 })
 
+test.describe('selector de limbă', () => {
+  test('se deschide, marchează RO, numele nu se traduc; EN e link doar când engleza e publică', async ({ page, request }) => {
+    await page.goto('/ro')
+    const button = page.getByRole('button', { name: 'Schimbă limba: RO' })
+    await button.click()
+    await expect(button).toHaveAttribute('aria-expanded', 'true')
+    const list = page.getByRole('list', { name: 'Schimbă limba' })
+    await expect(list).toBeVisible()
+    await expect(list.locator('[aria-current="true"]')).toContainText('Română')
+    // Traducerea automată a browserului nu are voie să schimbe numele native.
+    await expect(list.locator('[translate="no"]', { hasText: 'Română' })).toHaveCount(1)
+    const enPublic = (await request.get('/en')).status() === 200
+    const english = list.getByRole('link', { name: /English/ })
+    if (enPublic) {
+      await english.click()
+      await expect(page).toHaveURL(/\/en$/)
+      await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+      await expect(page.getByRole('button', { name: 'Change language: EN' })).toBeVisible()
+    } else {
+      await expect(english).toHaveCount(0)
+      await expect(list.locator('[aria-disabled="true"]', { hasText: 'English' })).toContainText('în pregătire')
+    }
+    await page.keyboard.press('Escape')
+    await expect(list).toBeHidden()
+    await expect(button).toBeFocused()
+  })
+})
+
 test.describe('media de secțiune', () => {
   test('buclele video rulează doar pe ecrane mari, fără sunet, cu buton de pauză', async ({ page, isMobile }) => {
     // Clipurile apar după hidratare (decizia se ia în browser, după ecran și preferințe).

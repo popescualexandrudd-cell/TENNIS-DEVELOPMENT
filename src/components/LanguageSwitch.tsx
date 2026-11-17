@@ -18,6 +18,8 @@ type Props = {
  * Selector de limbă lângă butonul „Meniu” (decizia 0016): buton cu codul limbii curente + listă dropdown
  * cu toate `siteLanguages`. Doar limbile publice sunt linkuri (păstrează pagina echivalentă când traducerea
  * există, decizia 0002); restul apar dezactivate, „în pregătire”. Se închide cu Escape sau la clic în afară.
+ * Engleza devine link doar cu Setări site → „Versiunea în engleză este publică” bifată (`englishEnabled`).
+ * Numele și codurile limbilor au `translate="no"`: traducerea automată a browserului nu le mai schimbă.
  */
 export function LanguageSwitch({ locale, other, labels }: Props) {
   const [open, setOpen] = useState(false)
@@ -70,7 +72,9 @@ export function LanguageSwitch({ locale, other, labels }: Props) {
           <circle cx="12" cy="12" r="9" />
           <path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" />
         </svg>
-        <span lang={locale}>{locale.toUpperCase()}</span>
+        <span lang={locale} translate="no">
+          {locale.toUpperCase()}
+        </span>
         <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.5">
           <path d={open ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6'} />
         </svg>
@@ -82,12 +86,22 @@ export function LanguageSwitch({ locale, other, labels }: Props) {
         className="absolute right-0 top-full z-50 mt-3 w-56 list-none rounded-lg border border-line bg-panel p-2 shadow-[0_30px_60px_-20px_rgb(28_38_51/0.35)]"
       >
         {siteLanguages.map(({ code, label }) => {
-          const tag = <span className="font-bold">{code.toUpperCase()}</span>
+          const tag = (
+            <span className="font-bold" translate="no">
+              {code.toUpperCase()}
+            </span>
+          )
+          // Numele native nu se traduc: traducerea automată a browserului transforma „Română” în „English”.
+          const name = (
+            <span lang={code} translate="no">
+              {label}
+            </span>
+          )
           if (code === locale) {
             return (
               <li key={code}>
                 <span className={`${row} bg-ink text-background`} aria-current="true" lang={code}>
-                  <span>{label}</span>
+                  {name}
                   <span className="sr-only">({labels.current})</span>
                   {tag}
                 </span>
@@ -104,7 +118,7 @@ export function LanguageSwitch({ locale, other, labels }: Props) {
                   onClick={() => setOpen(false)}
                   className={`${row} text-ink no-underline hover:text-coral-text`}
                 >
-                  <span>{label}</span>
+                  {name}
                   {tag}
                 </Link>
               </li>
@@ -113,7 +127,7 @@ export function LanguageSwitch({ locale, other, labels }: Props) {
           return (
             <li key={code}>
               <span className={`${row} cursor-not-allowed text-muted`} aria-disabled="true">
-                <span lang={code}>{label}</span>
+                {name}
                 <span className="text-xs">{labels.soon}</span>
               </span>
             </li>
