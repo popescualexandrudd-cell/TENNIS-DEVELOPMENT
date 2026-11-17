@@ -22,7 +22,6 @@ const ro = {
   cta: { primary: 'Discutăm despre antrenamente', aboutLink: 'Despre mine', readStory: 'Povestea completă' },
   home: {
     about: 'Despre Daniel',
-    coaching: 'Antrenamente',
     method: 'Cum lucrez',
     journal: 'Din jurnal',
     journalAll: 'Toate articolele',
@@ -30,7 +29,6 @@ const ro = {
     facts: 'Pe scurt',
     testimonials: 'Ce spun jucătorii',
     step: 'Pasul',
-    workWithMe: 'Lucrează cu mine',
   },
   coaching: {
     audience: 'Cui se adresează',
@@ -139,7 +137,6 @@ const en: Dictionary = {
   cta: { primary: "Let's talk about coaching", aboutLink: 'About me', readStory: 'The full story' },
   home: {
     about: 'About Daniel',
-    coaching: 'Coaching',
     method: 'How I work',
     journal: 'From the journal',
     journalAll: 'All articles',
@@ -147,7 +144,6 @@ const en: Dictionary = {
     facts: 'At a glance',
     testimonials: 'What players say',
     step: 'Step',
-    workWithMe: 'Work with me',
   },
   coaching: {
     audience: 'Who it is for',

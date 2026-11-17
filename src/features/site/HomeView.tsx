@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Locale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n/dictionaries'
 import { pagePath } from '@/lib/i18n/routes'
-import { getAvailability, getConfirmedServices, getPage, getSiteSettings } from '@/lib/content'
+import { getAvailability, getPage, getSiteSettings } from '@/lib/content'
 import { getPublishedArticles } from '@/features/journal/queries'
 import { getApprovedTestimonials } from '@/features/testimonials/queries'
 import { TestimonialForm } from '@/features/testimonials/TestimonialForm'
@@ -12,7 +12,6 @@ import { ContactSection } from './ContactSection'
 import { JsonLd } from '@/components/JsonLd'
 import { personSchema, websiteSchema } from '@/lib/seo/structured-data'
 import { stillImage } from '@/lib/media'
-import { ServiceCard } from './ServiceCard'
 import { HeroStage } from './HeroStage'
 
 /** Titlu în două tonuri: primul cuvânt subțire, restul îngroșat. */
@@ -33,11 +32,10 @@ function SplitHeading({ text, id, as: H = 'h2', className = '' }: { text: string
 
 export async function HomeView({ locale }: { locale: Locale }) {
   const t = getDictionary(locale)
-  const [page, settings, availability, services, articles, submitted] = await Promise.all([
+  const [page, settings, availability, articles, submitted] = await Promise.all([
     getPage('home', locale),
     getSiteSettings(locale),
     getAvailability(locale),
-    getConfirmedServices(locale),
     getPublishedArticles(locale, 3),
     getApprovedTestimonials(locale),
   ])
@@ -149,20 +147,10 @@ export async function HomeView({ locale }: { locale: Locale }) {
         </section>
       ) : null}
 
-      {/* 3. Antrenamente — numai oferte confirmate */}
-      {services.length > 0 ? (
-        <section className="section container-site border-t border-line" aria-labelledby="h-coaching">
-          <p className="eyebrow">{t.home.workWithMe}</p>
-          <SplitHeading id="h-coaching" text={home?.coachingHeading || t.home.coaching} className="h-section mt-4" />
-          <div className="mt-12 grid gap-4 md:grid-cols-2">
-            {services.map((s, i) => (
-              <ServiceCard key={s.id} service={s} locale={locale} index={i} />
-            ))}
-          </div>
-        </section>
-      ) : null}
+      {/* Secțiunea „Lucrează cu mine / Work with me” (oferte de antrenament) a fost scoasă de pe homepage;
+          ofertele rămân pe pagina Antrenamente (meniu + CTA către contact). */}
 
-      {/* 4. Cum lucrez */}
+      {/* 3. Cum lucrez */}
       {home?.method && home.method.length > 0 ? (
         <section className="section container-site border-t border-line" aria-labelledby="h-method">
           <SplitHeading id="h-method" text={t.home.method} className="h-section" />
