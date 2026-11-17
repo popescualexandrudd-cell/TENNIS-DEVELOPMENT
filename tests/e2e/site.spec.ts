@@ -20,6 +20,17 @@ test.describe('site public', () => {
     expect(headings.map((h) => h.trim().toLowerCase())).not.toContain('antrenamente')
   })
 
+  test('homepage-ul randat nu mai conține secțiunea „Cum lucrez” (cod, CMS sau build vechi)', async ({ page }) => {
+    for (const path of ['/ro', '/en']) {
+      await page.goto(path)
+      const main = page.locator('main')
+      await expect(main.getByRole('heading', { name: /cum lucrez|how i work/i }), path).toHaveCount(0)
+      await expect(page.locator('#h-method, [aria-labelledby="h-method"], a[href$="#h-method"]'), path).toHaveCount(0)
+      // Secțiunile vecine rămân: contactul de la final e tot acolo.
+      await expect(page.locator('section[aria-labelledby="h-contact"]'), path).toHaveCount(1)
+    }
+  })
+
   test('fără scroll orizontal', async ({ page }) => {
     for (const path of ['/ro', '/ro/contact', '/ro/antrenamente', '/ro/jurnal', '/ro/confidentialitate', '/ro/cookies', '/ro/termeni']) {
       await page.goto(path)

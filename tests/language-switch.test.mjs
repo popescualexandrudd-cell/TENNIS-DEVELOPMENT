@@ -4,11 +4,11 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { pathToFileURL } from 'node:url'
+import { importTs } from './helpers/import-ts.mjs'
 
 const root = join(import.meta.dirname, '..')
 const read = (p) => readFileSync(join(root, p), 'utf8')
-const config = await import(pathToFileURL(join(root, 'src/lib/i18n/config.ts')).href)
+const config = await importTs(join(root, 'src/lib/i18n/config.ts'))
 
 test('siteLanguages: RO, EN, UK, DE, FR în ordine, cu nume native', () => {
   assert.deepEqual(

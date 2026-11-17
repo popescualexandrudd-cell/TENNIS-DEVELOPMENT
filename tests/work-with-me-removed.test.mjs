@@ -28,7 +28,8 @@ test('homepage nu mai randează secțiunea „Work with me” / ofertele', () =>
   assert.doesNotMatch(code, /getConfirmedServices/)
   assert.doesNotMatch(code, /coachingHeading/)
   // Secțiunile vecine rămân, iar ordinea lor e neschimbată.
-  const order = ['h-hero', 'h-about', 'h-facts', 'h-method', 'h-testimonials', 'h-journal', 'h-contact']
+  // „Cum lucrez” (h-method) a fost scoasă ulterior — vezi tests/how-i-work-removed.test.mjs.
+  const order = ['h-hero', 'h-about', 'h-facts', 'h-testimonials', 'h-journal', 'h-contact']
   const pos = order.map((id) => code.indexOf(`"${id}"`))
   assert.ok(pos.every((p) => p >= 0), `lipsesc secțiuni: ${order.filter((_, i) => pos[i] < 0)}`)
   assert.deepEqual([...pos].sort((a, b) => a - b), pos)
@@ -49,7 +50,7 @@ test('dicționarele RO/EN nu mai au cheile secțiunii; restul cheilor home răm�
   assert.doesNotMatch(dict, /workWithMe/)
   for (const block of dict.matchAll(/home: \{([\s\S]*?)\n {2}\}/g)) {
     assert.doesNotMatch(block[1], /\bcoaching:/)
-    for (const k of ['about', 'method', 'journal', 'journalAll', 'contact', 'facts', 'testimonials', 'step']) {
+    for (const k of ['about', 'journal', 'journalAll', 'contact', 'facts', 'testimonials']) {
       assert.match(block[1], new RegExp(`\\b${k}:`), `lipsește home.${k}`)
     }
   }
