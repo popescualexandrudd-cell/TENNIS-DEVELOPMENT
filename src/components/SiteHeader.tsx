@@ -17,7 +17,7 @@ type Props = {
 }
 
 /**
- * Bară de sus pe toate ecranele: wordmark + buton „Meniu”.
+ * Bară de sus pe toate ecranele: wordmark + selector de limbă + buton „Meniu”.
  * Meniul se deschide pe tot ecranul pe telefon și ca dropdown pe laptop (SiteMenu).
  */
 export function SiteHeader({ locale, availability, other, settings }: Props) {
@@ -26,9 +26,14 @@ export function SiteHeader({ locale, availability, other, settings }: Props) {
     .filter((key) => availability[key])
     .map((key) => ({ href: pagePath(locale, key), label: t.nav[key] }))
   const cta = { href: pagePath(locale, 'contact'), label: t.cta.primary }
-  const switcher = other ? (
-    <LanguageSwitch locale={locale} target={other.locale} targetAvailability={other.availability} label={t.nav.languageSwitch} />
-  ) : null
+  // Mereu vizibil lângă „Meniu”; limbile fără rute publice apar „în pregătire” (decizia 0016).
+  const switcher = (
+    <LanguageSwitch
+      locale={locale}
+      other={other}
+      labels={{ switch: t.nav.languageSwitch, current: t.nav.languageCurrent, soon: t.nav.languageSoon }}
+    />
+  )
   const home = (
     <Link href={pagePath(locale, 'home')} className="inline-flex min-h-11 items-center rounded-sm text-ink no-underline">
       <Wordmark />
@@ -40,17 +45,19 @@ export function SiteHeader({ locale, availability, other, settings }: Props) {
     <header className="sticky top-0 z-50 bg-background">
       <div className="container-site flex h-[var(--header-h)] items-center justify-between gap-4">
         {home}
-        <SiteMenu
-          items={items}
-          cta={cta}
-          labels={{ menu: t.nav.menu, close: t.nav.close }}
-          extra={
-            <div className="flex flex-col items-start gap-4">
-              {switcher}
-              <SocialLinks settings={settings} />
-            </div>
-          }
-        />
+        <div className="flex items-center gap-2">
+          {switcher}
+          <SiteMenu
+            items={items}
+            cta={cta}
+            labels={{ menu: t.nav.menu, close: t.nav.close }}
+            extra={
+              <div className="flex flex-col items-start gap-4">
+                <SocialLinks settings={settings} />
+              </div>
+            }
+          />
+        </div>
       </div>
     </header>
   )

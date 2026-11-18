@@ -3,6 +3,7 @@ import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { buildSecurityHeaders } from './src/lib/security-headers'
+import { resolveTurbopackRoot } from './src/lib/turbopack-root'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -41,7 +42,8 @@ const nextConfig: NextConfig = {
     }
     return webpackConfig
   },
-  turbopack: { root: path.resolve(dirname) },
+  // Include și node_modules partajat/simlinkat în afara aplicației (vezi src/lib/turbopack-root.ts).
+  turbopack: { root: resolveTurbopackRoot(dirname) },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

@@ -28,24 +28,39 @@ Orice furnizor SMTP. Fără SMTP, solicitările se salvează cu notificare „E�
 după configurare, în admin → Solicitări → bifează „Retrimite notificarea la salvare” → Save.
 Verificare înainte de lansare: o solicitare de test trebuie să ajungă la `CONTACT_NOTIFY_TO` (inclusiv în spam check).
 
-## Producție (de pregătit — nimic nu este configurat încă)
+## Publicare pe VPS
 Cerințe: HTTPS (reverse proxy cu TLS și HSTS), PostgreSQL cu backup separat de server, director media persistent,
 procesul Node rulat de un supervizor (systemd sau Docker), `SITE_ENV=production`.
-Staging: aceeași configurație, protejat (autentificare la proxy), `SITE_ENV` diferit de `production` (robots `Disallow: /`).
+Preview-ul de pe VPS rulează ca build Next.js standalone prin `tennis-site-preview.service`, cu PostgreSQL
+și HTTPS protejat prin `tennis-preview-https.service`. În staging setăm `SITE_ENV` diferit de `production`
+(robots `Disallow: /`).
+
+- [CI pentru revizia preview `286dad9`](https://github.com/popescualexandrudd-cell/TENNIS-DEVELOPMENT/actions/runs/44268268044):
+  instalare, lint, TypeScript, Vitest, migrații pe o bază de test, build Turbopack și Playwright.
+- Verificare pe VPS: `systemctl status tennis-site-preview.service tennis-preview-https.service`,
+  `curl -fsS http://127.0.0.1:3100/ro -o /dev/null`, apoi deschide pagina prin HTTPS și autentifică-te în CMS.
+
+Pentru lansare, confirmă domeniul canonic și direcționează înregistrarea DNS către VPS. Pregătește release-ul
+cu `NEXT_PUBLIC_SITE_URL` setat la originea HTTPS finală. Folosește o bază și un director media de producție,
+iar datele pentru lansare trebuie verificate înainte de import. Activează ruta Caddy pentru domeniu după
+validarea configurației, verificarea certificatului și confirmarea aplicației pe portul său local.
 
 ### Înainte de lansare — legal, securitate, SEO (deciziile 0013–0015)
 - [ ] Setări site → **Date legale** completate (paginile legale nu apar în producție fără ele); textele verificate de un specialist.
-- [ ] `pnpm retention` programat zilnic în cron (șterge datele la termenele din politică): `15 3 * * * cd /srv/app && pnpm retention`.
+- [ ] `pnpm retention` programat zilnic (șterge datele la termenele din politică). Configurează jobul în directorul sursă al release-ului, cu mediul și contul aplicației..
 - [ ] TLS la reverse proxy; `NEXT_PUBLIC_SITE_URL=https://…` (activează HSTS și `upgrade-insecure-requests`).
 - [ ] Firewall: doar 80/443 public, SSH cu cheie; PostgreSQL ascultă doar local; backup criptat în altă locație.
 - [ ] `pnpm audit --prod` fără vulnerabilități high/critical; apoi lunar.
 - [ ] Email în Setări site (pentru `/.well-known/security.txt`) și SMTP (#4).
 - [ ] Google Search Console: verificare domeniu, trimitere `sitemap.xml`; test imagine OG cu un link distribuit.
 
-### Docker (fișiere pregătite, **neverificate** — mediul inițial nu avea daemon Docker)
+### Docker
+
+[Verificat pentru `928cc3c` pe Ubuntu în GitHub Actions](https://github.com/popescualexandrudd-cell/TENNIS-DEVELOPMENT/actions/runs/44290779149):
+PostgreSQL în Compose, migrații și seed cu date sintetice, build al imaginii, pornirea serviciului și `GET /ro` cu HTTP 200.
 ```bash
 # 1. pornește baza
-POSTGRES_PASSWORD=... docker compose up -d db
+docker compose up -d --wait db
 # 2. build cu acces la bază (paginile se pre-randează din DB)
 docker build --network host \
   --build-arg DATABASE_URL=postgresql://dp:...@localhost:5432/dp_web \

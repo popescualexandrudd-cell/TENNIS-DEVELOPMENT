@@ -54,6 +54,16 @@ validarea textelor din hero și „Cum lucrez” · operatorul datelor · domeni
 1. Daniel: răspunde la întrebările din #1 și #2 (se pot introduce direct în /admin sau trimise ca text).
 2. Agent: #7 (verifică prima rulare CI pe PR), apoi introducerea conținutului real primit, apoi #5.
 
+## Pregătirea mutării pe VPS (#4)
+
+Fluxul CI pornește PostgreSQL ca serviciu nativ pe runnerul Ubuntu 24.04. Integrarea și build-ul
+folosesc baze distincte cu date de test. Ramura preia selectorul de limbă și corecția Turbopack
+din revizia locală `4c31c4e`. Selectorul afișează cinci limbi. Rutele și conținutul public sunt RO/EN.
+
+Prima pornire pe VPS are nevoie de destinația SSH, domeniu și un export verificat al bazei și al
+fișierelor media. Importul se verifică în privat înainte de expunerea site-ului, inclusiv pentru
+conținutul demonstrativ din preview. Release-ul folosește datele și setările de producție.
+
 ## Predare
 - Obiectiv activ: Etapa 1 — validarea designului și conținutul real.
 - Stare actuală: fundație + site + fluxuri verificate local; conținut real lipsă.

@@ -1,4 +1,4 @@
-# Mediu local/self-hosted: PostgreSQL + aplicația. NEVERIFICAT încă (fără daemon Docker în mediul de dezvoltare inițial).
+# Mediu local/self-hosted: PostgreSQL + aplicația.
 # Pași: docs/RUNBOOK.md → „Docker”.
 services:
   db:

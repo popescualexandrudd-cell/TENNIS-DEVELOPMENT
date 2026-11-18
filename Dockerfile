@@ -1,4 +1,4 @@
-# Imagine de producție (Next.js standalone + Payload). NEVERIFICAT încă într-un daemon Docker — vezi docs/RUNBOOK.md.
+# Imagine de producție (Next.js standalone + Payload). Verificare și configurare în docs/RUNBOOK.md.
 # Build-ul pre-randează pagini din baza de date: DATABASE_URL trebuie să fie accesibilă la build
 #   docker build --network host --build-arg DATABASE_URL=postgresql://... --build-arg NEXT_PUBLIC_SITE_URL=https://... -t dp-web .
 FROM node:22.23.4-alpine AS base

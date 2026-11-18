@@ -105,13 +105,23 @@ export const Pages: CollectionConfig = {
             { name: 'note', label: 'Detaliu / sursă', type: 'text', maxLength: 90 },
           ],
         },
-        { name: 'coachingHeading', label: 'Antrenamente — titlu-afirmație (opțional)', type: 'text', localized: true, maxLength: 60 },
+        {
+          name: 'coachingHeading',
+          label: 'Antrenamente — titlu-afirmație (opțional)',
+          type: 'text',
+          localized: true,
+          maxLength: 60,
+          // Câmp păstrat (fără migrație), dar nefolosit: secțiunea „Lucrează cu mine” a fost scoasă de pe homepage.
+          admin: { description: 'Momentan nu apare pe site: secțiunea „Lucrează cu mine” nu mai e afișată pe homepage.' },
+        },
         {
           name: 'method',
           label: 'Cum lucrez — pași',
           type: 'array',
           localized: true,
           maxRows: 3,
+          // Câmp păstrat (fără migrație), dar nefolosit: secțiunea „Cum lucrez” a fost scoasă de pe homepage.
+          admin: { description: 'Momentan nu apare pe site: secțiunea „Cum lucrez” nu mai e afișată pe homepage.' },
           fields: [
             { name: 'title', type: 'text', required: true },
             { name: 'text', type: 'textarea', required: true },
