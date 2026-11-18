@@ -35,7 +35,7 @@ Preview-ul de pe VPS rulează ca build Next.js standalone prin `tennis-site-prev
 și HTTPS protejat prin `tennis-preview-https.service`. În staging setăm `SITE_ENV` diferit de `production`
 (robots `Disallow: /`).
 
-- [CI pentru revizia preview `928cc3c`](https://github.com/popescualexandrudd-cell/TENNIS-DEVELOPMENT/actions/runs/44097277942):
+- [CI pentru revizia preview `286dad9`](https://github.com/popescualexandrudd-cell/TENNIS-DEVELOPMENT/actions/runs/44268268044):
   instalare, lint, TypeScript, Vitest, migrații pe o bază de test, build Turbopack și Playwright.
 - Verificare pe VPS: `systemctl status tennis-site-preview.service tennis-preview-https.service`,
   `curl -fsS http://127.0.0.1:3100/ro -o /dev/null`, apoi deschide pagina prin HTTPS și autentifică-te în CMS.
@@ -56,7 +56,7 @@ validarea configurației, verificarea certificatului și confirmarea aplicației
 
 ### Docker
 
-[Verificat pe Ubuntu în GitHub Actions](https://github.com/popescualexandrudd-cell/TENNIS-DEVELOPMENT/actions/runs/44290779149):
+[Verificat pentru `928cc3c` pe Ubuntu în GitHub Actions](https://github.com/popescualexandrudd-cell/TENNIS-DEVELOPMENT/actions/runs/44290779149):
 PostgreSQL în Compose, migrații și seed cu date sintetice, build al imaginii, pornirea serviciului și `GET /ro` cu HTTP 200.
 ```bash
 # 1. pornește baza

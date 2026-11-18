@@ -150,29 +150,8 @@ export async function HomeView({ locale }: { locale: Locale }) {
       {/* Secțiunea „Lucrează cu mine / Work with me” (oferte de antrenament) a fost scoasă de pe homepage;
           ofertele rămân pe pagina Antrenamente (meniu + CTA către contact). */}
 
-      {/* 3. Cum lucrez */}
-      {home?.method && home.method.length > 0 ? (
-        <section className="section container-site border-t border-line" aria-labelledby="h-method">
-          <SplitHeading id="h-method" text={t.home.method} className="h-section" />
-          <ol className="mt-12 grid gap-1.5 md:grid-cols-3">
-            {home.method.map((step, i) => (
-              <li key={step.id ?? step.title} className="card-navy relative isolate flex min-h-[320px] flex-col overflow-hidden p-8 sm:p-10">
-                {hasPublicMedia(step.media) ? (
-                  <>
-                    <SectionMedia media={step.media} locale={locale} sizes="(min-width: 768px) 33vw, 100vw" className="-z-10" />
-                    <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/60 to-black/25" aria-hidden="true" />
-                  </>
-                ) : null}
-                <span className="display text-sm text-coral-text">
-                  {t.home.step} {String(i + 1).padStart(2, '0')}
-                </span>
-                <h3 className="mt-auto pt-10 text-[1.5rem] leading-tight font-[800]">{step.title}</h3>
-                <p className="mt-3 text-muted">{step.text}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-      ) : null}
+      {/* Secțiunea „Cum lucrez / How I work” (pașii home.method) a fost scoasă de pe homepage;
+          câmpul rămâne în CMS (fără migrație), dar nu mai este afișat. */}
 
       {/* Testimoniale — numai reale, cu acord; sportivii pot trimite o părere (apare după aprobare) */}
       {testimonials.length > 0 || acceptTestimonials ? (
